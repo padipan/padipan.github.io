@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ครูเจเจ-TechQuest 2025 - เกมเรียนรู้อุปกรณ์คอมพิวเตอร์</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f0f7ff;
+            background-image: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.2) 5%, transparent 10%), radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.2) 5%, transparent 10%), linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            background-attachment: fixed;
+            background-size: 20px 20px, 20px 20px, 100% 100%;
+        }
+        
+        .tech-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        
+        .quiz-option:hover:not(.selected) {
+            transform: translateX(10px);
+        }
+        
+        .quiz-option.selected {
+            border-width: 2px;
+        }
+        
+        .quiz-option.correct {
+            background-color: rgba(52, 211, 153, 0.2);
+            border-color: #34D399;
+        }
+        
+        .quiz-option.incorrect {
+            background-color: rgba(248, 113, 113, 0.2);
+            border-color: #F87171;
+        }
+        
+        .matching-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .matching-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .matching-card.selected {
+            border: 3px solid #6366f1;
+        }
+        
+        .matching-card.matched {
+            background-color: rgba(52, 211, 153, 0.2);
+            border: 3px solid #34D399;
+            pointer-events: none;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: fall 3s ease-in infinite;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .glow-button {
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 5px -5px #6366f1;
+            }
+            to {
+                box-shadow: 0 0 20px 5px #6366f1;
+            }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <div id="app" class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Main Content Area -->
+        <img src="https://github.com/padipan/dbtsrvc/blob/main/img/bg-ai-jay001.png?raw=true" alt="Description of the image" class="container mx-auto px-2 py-4 max-w-2xl">
+        <div id="content" class="mt-4">
+            <!-- Content will be dynamically loaded here -->
+
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        const state = {
+            currentScreen: 'home',
+            username: localStorage.getItem('username') || '',
+            totalScore: parseInt(localStorage.getItem('totalScore') || '0'),
+            currentQuiz: {
+                type: null,
+                questions: [],
+                currentQuestionIndex: 0,
+                score: 0,
+                selectedAnswers: [],
+                isAnswered: false
+            },
+            matchingGame: {
+                cards: [],
+                selectedCards: [],
+                matchedPairs: 0,
+                attempts: 0
+            },
+            leaderboard: JSON.parse(localStorage.getItem('leaderboard') || '[]')
+        };
+
+        // Computer Hardware Data
+        const hardwareData = {
+            cpu: {
+                name: "CPU (หน่วยประมวลผลกลาง)",
+                description: "สมองของคอมพิวเตอร์ ทำหน้าที่ประมวลผลคำสั่งและข้อมูลทั้งหมด",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>`,
+                facts: [
+                    "CPU มีหน่วยวัดความเร็วเป็น GHz (กิกะเฮิรตซ์)",
+                    "CPU ประกอบด้วยทรานซิสเตอร์หลายพันล้านตัว",
+                    "CPU รุ่นใหม่มักมีหลายคอร์ (Core) เพื่อประมวลผลหลายงานพร้อมกัน"
+                ]
+            },
+            gpu: {
+                name: "GPU (หน่วยประมวลผลกราฟิก)",
+                description: "ทำหน้าที่ประมวลผลข้อมูลกราฟิก ช่วยให้แสดงภาพที่ซับซ้อนได้อย่างรวดเร็ว",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" /></svg>`,
+                facts: [
+                    "GPU มีหน่วยประมวลผลย่อยหลายพันหน่วย",
+                    "GPU ไม่เพียงใช้สำหรับเกมแต่ยังใช้ในการประมวลผล AI และการทำเหมืองคริปโตเคอร์เรนซี",
+                    "GPU รุ่นใหม่ในปี 2025 สามารถรองรับการแสดงผล 8K และเทคโนโลยี Ray Tracing"
+                ]
+            },
+            ram: {
+                name: "RAM (หน่วยความจำหลัก)",
+                description: "หน่วยความจำชั่วคราวที่ใช้เก็บข้อมูลที่กำลังประมวลผล ข้อมูลจะหายไปเมื่อปิดเครื่อง",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>`,
+                facts: [
+                    "RAM มีความเร็วในการเข้าถึงข้อมูลมากกว่าฮาร์ดดิสก์หลายร้อยเท่า",
+                    "RAM แบบ DDR5 ในปี 2025 มีความเร็วสูงถึง 8400 MHz",
+                    "RAM เป็นหน่วยความจำแบบ Volatile คือข้อมูลจะหายไปเมื่อไม่มีไฟเลี้ยง"
+                ]
+            },
+            storage: {
+                name: "Storage (อุปกรณ์เก็บข้อมูล)",
+                description: "อุปกรณ์เก็บข้อมูลถาวร เช่น HDD, SSD หรือ NVMe ใช้เก็บระบบปฏิบัติการและไฟล์ต่างๆ",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>`,
+                facts: [
+                    "SSD เร็วกว่า HDD ประมาณ 10 เท่า",
+                    "NVMe SSD เร็วกว่า SATA SSD ประมาณ 5-7 เท่า",
+                    "ในปี 2025 SSD ความจุ 4TB มีราคาถูกลงมากและเป็นมาตรฐานในคอมพิวเตอร์ทั่วไป"
+                ]
+            },
+            motherboard: {
+                name: "Motherboard (เมนบอร์ด)",
+                description: "แผงวงจรหลักที่เชื่อมต่ออุปกรณ์ทุกชิ้นในคอมพิวเตอร์เข้าด้วยกัน",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>`,
+                facts: [
+                    "เมนบอร์ดมีชิปเซ็ต (Chipset) ที่ควบคุมการทำงานของอุปกรณ์ต่างๆ",
+                    "เมนบอร์ดมีขนาดมาตรฐานหลายแบบ เช่น ATX, Micro-ATX และ Mini-ITX",
+                    "เมนบอร์ดรุ่นใหม่รองรับ PCIe 5.0 และ USB4 ที่มีความเร็วสูงมาก"
+                ]
+            },
+            psu: {
+                name: "Power Supply (แหล่งจ่ายไฟ)",
+                description: "อุปกรณ์แปลงไฟฟ้ากระแสสลับเป็นกระแสตรงเพื่อจ่ายให้กับอุปกรณ์ต่างๆ ในคอมพิวเตอร์",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`,
+                facts: [
+                    "PSU มีหน่วยวัดกำลังไฟเป็นวัตต์ (W)",
+                    "PSU มีมาตรฐานประสิทธิภาพ เช่น 80 Plus Bronze, Gold, Platinum",
+                    "PSU แบบ Modular ช่วยให้จัดการสายไฟได้เป็นระเบียบมากขึ้น"
+                ]
+            },
+            input: {
+                name: "Input Devices (อุปกรณ์นำเข้า)",
+                description: "อุปกรณ์ที่ใช้ป้อนข้อมูลเข้าสู่คอมพิวเตอร์ เช่น คีย์บอร์ด เมาส์ ไมโครโฟน",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>`,
+                facts: [
+                    "คีย์บอร์ดมีกลไกสวิตช์หลายแบบ เช่น Mechanical, Membrane",
+                    "เมาส์มีเซ็นเซอร์หลายประเภท เช่น Optical, Laser",
+                    "อุปกรณ์นำเข้าไร้สายในปี 2025 มีเทคโนโลยีประหยัดพลังงานและตอบสนองเร็วเทียบเท่าแบบมีสาย"
+                ]
+            },
+            output: {
+                name: "Output Devices (อุปกรณ์แสดงผล)",
+                description: "อุปกรณ์ที่แสดงผลลัพธ์จากคอมพิวเตอร์ เช่น จอภาพ ลำโพง เครื่องพิมพ์",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-teal-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>`,
+                facts: [
+                    "จอภาพ OLED และ MicroLED มีความคมชัดและสีสันที่สมจริงมาก",
+                    "จอภาพในปี 2025 มีอัตรารีเฟรชสูงถึง 360Hz เป็นมาตรฐาน",
+                    "เทคโนโลยีเสียง 3D Audio ช่วยให้รู้สึกเหมือนอยู่ในสถานการณ์จริง"
+                ]
+            },
+            network: {
+                name: "Networking Devices (อุปกรณ์เครือข่าย)",
+                description: "อุปกรณ์ที่ใช้ในการเชื่อมต่อคอมพิวเตอร์เข้ากับเครือข่าย เช่น เราเตอร์ สวิตช์",
+                icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>`,
+                facts: [
+                    "Wi-Fi 7 ในปี 2025 มีความเร็วสูงถึง 40 Gbps",
+                    "เทคโนโลยี 6G เริ่มมีการทดลองใช้งานในบางประเทศ",
+                    "เราเตอร์รุ่นใหม่มีระบบ AI ที่ช่วยจัดการการใช้งานเครือข่ายอย่างมีประสิทธิภาพ"
+                ]
+            }
+        };
+
+        // Quiz Questions
+        const quizQuestions = [{
+            question: "อุปกรณ์ใดทำหน้าที่เป็น 'สมอง' ของคอมพิวเตอร์?",
+            options: ["CPU", "RAM", "GPU", "HDD"],
+            answer: 0,
+            explanation: "CPU (Central Processing Unit) ทำหน้าที่เป็นสมองของคอมพิวเตอร์ โดยประมวลผลคำสั่งและข้อมูลทั้งหมด"
+        }, {
+            question: "อุปกรณ์ใดใช้เก็บข้อมูลแม้ว่าจะปิดเครื่องคอมพิวเตอร์?",
+            options: ["RAM", "CPU Cache", "HDD/SSD", "GPU Memory"],
+            answer: 2,
+            explanation: "HDD (Hard Disk Drive) และ SSD (Solid State Drive) เป็นอุปกรณ์เก็บข้อมูลถาวร ข้อมูลจะยังคงอยู่แม้ว่าจะปิดเครื่องคอมพิวเตอร์"
+        }, {
+            question: "อุปกรณ์ใดทำหน้าที่ประมวลผลกราฟิกในเกม?",
+            options: ["CPU", "RAM", "Motherboard", "GPU"],
+            answer: 3,
+            explanation: "GPU (Graphics Processing Unit) ทำหน้าที่ประมวลผลข้อมูลกราฟิก ช่วยให้แสดงภาพที่ซับซ้อนได้อย่างรวดเร็ว โดยเฉพาะในเกม"
+        }, {
+            question: "RAM ย่อมาจากอะไร?",
+            options: ["Random Access Memory", "Read Access Memory", "Rapid Access Memory", "Remote Access Memory"],
+            answer: 0,
+            explanation: "RAM ย่อมาจาก Random Access Memory หรือหน่วยความจำแบบสุ่ม เป็นหน่วยความจำชั่วคราวที่ใช้เก็บข้อมูลที่กำลังประมวลผล"
+        }, {
+            question: "อุปกรณ์ใดเชื่อมต่ออุปกรณ์ทุกชิ้นในคอมพิวเตอร์เข้าด้วยกัน?",
+            options: ["CPU", "Power Supply", "Motherboard", "Hard Drive"],
+            answer: 2,
+            explanation: "Motherboard (เมนบอร์ด) เป็นแผงวงจรหลักที่เชื่อมต่ออุปกรณ์ทุกชิ้นในคอมพิวเตอร์เข้าด้วยกัน"
+        }, {
+            question: "อุปกรณ์ใดแปลงไฟฟ้ากระแสสลับเป็นกระแสตรงเพื่อจ่ายให้กับอุปกรณ์ต่างๆ ในคอมพิวเตอร์?",
+            options: ["Motherboard", "Power Supply", "CPU", "Cooling Fan"],
+            answer: 1,
+            explanation: "Power Supply (แหล่งจ่ายไฟ) ทำหน้าที่แปลงไฟฟ้ากระแสสลับเป็นกระแสตรงเพื่อจ่ายให้กับอุปกรณ์ต่างๆ ในคอมพิวเตอร์"
+        }, {
+            question: "อุปกรณ์ใดไม่ใช่อุปกรณ์นำเข้า (Input Device)?",
+            options: ["คีย์บอร์ด", "เมาส์", "ลำโพง", "ไมโครโฟน"],
+            answer: 2,
+            explanation: "ลำโพงเป็นอุปกรณ์แสดงผล (Output Device) ไม่ใช่อุปกรณ์นำเข้า (Input Device)"
+        }, {
+            question: "อุปกรณ์ใดใช้ในการเชื่อมต่อคอมพิวเตอร์หลายเครื่องเข้าด้วยกันในเครือข่ายท้องถิ่น?",
+            options: ["Modem", "Router", "Switch", "Repeater"],
+            answer: 2,
+            explanation: "Switch ใช้ในการเชื่อมต่อคอมพิวเตอร์หลายเครื่องเข้าด้วยกันในเครือข่ายท้องถิ่น (LAN)"
+        }, {
+            question: "SSD ดีกว่า HDD อย่างไร?",
+            options: ["มีความจุมากกว่า", "ราคาถูกกว่า", "เร็วกว่า", "ใช้พลังงานมากกว่า"],
+            answer: 2,
+            explanation: "SSD (Solid State Drive) เร็วกว่า HDD (Hard Disk Drive) เนื่องจากไม่มีชิ้นส่วนที่เคลื่อนไหว ทำให้อ่านและเขียนข้อมูลได้เร็วกว่า"
+        }, {
+            question: "หน่วยวัดความเร็วของ CPU คืออะไร?",
+            options: ["Byte", "Hertz (Hz)", "Volt", "Watt"],
+            answer: 1,
+            explanation: "ความเร็วของ CPU วัดเป็น Hertz (Hz) โดยทั่วไปจะเป็น GHz (กิกะเฮิรตซ์) ซึ่งบ่งบอกถึงจำนวนรอบการทำงานต่อวินาที"
+        }];
+
+        // Matching Game Data
+        const matchingGameData = [{
+            id: 1,
+            type: 'name',
+            content: 'CPU',
+            pair: 11
+        }, {
+            id: 2,
+            type: 'name',
+            content: 'GPU',
+            pair: 12
+        }, {
+            id: 3,
+            type: 'name',
+            content: 'RAM',
+            pair: 13
+        }, {
+            id: 4,
+            type: 'name',
+            content: 'SSD',
+            pair: 14
+        }, {
+            id: 5,
+            type: 'name',
+            content: 'Motherboard',
+            pair: 15
+        }, {
+            id: 6,
+            type: 'name',
+            content: 'Power Supply',
+            pair: 16
+        }, {
+            id: 7,
+            type: 'name',
+            content: 'คีย์บอร์ด',
+            pair: 17
+        }, {
+            id: 8,
+            type: 'name',
+            content: 'จอภาพ',
+            pair: 18
+        }, {
+            id: 9,
+            type: 'name',
+            content: 'Router',
+            pair: 19
+        }, {
+            id: 10,
+            type: 'name',
+            content: 'เมาส์',
+            pair: 20
+        }, {
+            id: 11,
+            type: 'desc',
+            content: 'สมองของคอมพิวเตอร์',
+            pair: 1
+        }, {
+            id: 12,
+            type: 'desc',
+            content: 'ประมวลผลกราฟิก',
+            pair: 2
+        }, {
+            id: 13,
+            type: 'desc',
+            content: 'หน่วยความจำชั่วคราว',
+            pair: 3
+        }, {
+            id: 14,
+            type: 'desc',
+            content: 'อุปกรณ์เก็บข้อมูลถาวร',
+            pair: 4
+        }, {
+            id: 15,
+            type: 'desc',
+            content: 'แผงวงจรหลัก',
+            pair: 5
+        }, {
+            id: 16,
+            type: 'desc',
+            content: 'แปลงไฟฟ้าให้อุปกรณ์',
+            pair: 6
+        }, {
+            id: 17,
+            type: 'desc',
+            content: 'อุปกรณ์พิมพ์ข้อความ',
+            pair: 7
+        }, {
+            id: 18,
+            type: 'desc',
+            content: 'แสดงภาพจากคอมพิวเตอร์',
+            pair: 8
+        }, {
+            id: 19,
+            type: 'desc',
+            content: 'เชื่อมต่อเครือข่าย',
+            pair: 9
+        }, {
+            id: 20,
+            type: 'desc',
+            content: 'ควบคุมตำแหน่งเคอร์เซอร์',
+            pair: 10
+        }];
+
+        // Render Functions
+        function renderHome() {
+            const username = state.username;
+            const content = document.getElementById('content');
+
+            content.innerHTML = `
+                <div class="flex flex-col items-center justify-center">
+                    <div class="text-center mb-8">
+                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">รู้ COM กับ เจโว 2025</h1>
+                        <p class="text-xl text-white mb-2">เกมเรียนรู้อุปกรณ์คอมพิวเตอร์</p>
+                        <p class="text-white opacity-80">ผู้พัฒนาและต่อยอด คุณครูปฎิภาณ พานทอง แผนกวิชาเทคโนโลยีธุรกิจดิจิทัล วิทยาลัยอาชีวศึกษาสุรินทร์</p>
+                    </div>
+                    
+                    ${!username ? `
+                        <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mb-8">
+                            <h2 class="text-xl font-semibold text-indigo-800 mb-4">ยินดีต้อนรับ!</h2>
+                            <p class="text-gray-600 mb-4">กรุณาใส่ชื่อของคุณเพื่อเริ่มเล่นเกม</p>
+                            <div class="flex">
+                                <input type="text" id="usernameInput" placeholder="ชื่อของคุณ" 
+                                    class="flex-grow px-4 py-2 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <button onclick="setUsername()" 
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition duration-200">
+                                    ตกลง
+                                </button>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mb-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <h2 class="text-xl font-semibold text-indigo-800">สวัสดี, ${username}!</h2>
+                                <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium">
+                                    คะแนนสะสม: ${state.totalScore}
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-2">เลือกเกมที่คุณต้องการเล่น</p>
+                        </div>
+                    `}
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+                        <div class="tech-card bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 text-white text-center cursor-pointer hover:from-indigo-600 hover:to-purple-700" onclick="startQuiz()">
+                            <div class="text-5xl mb-4">🎯</div>
+                            <h2 class="text-2xl font-bold mb-2">เกมตอบคำถาม</h2>
+                            <p>ทดสอบความรู้เกี่ยวกับอุปกรณ์คอมพิวเตอร์</p>
+                        </div>
+                        
+                        <div class="tech-card bg-gradient-to-br from-pink-500 to-red-600 rounded-xl shadow-lg p-6 text-white text-center cursor-pointer hover:from-pink-600 hover:to-red-700" onclick="startMatchingGame()">
+                            <div class="text-5xl mb-4">🔍</div>
+                            <h2 class="text-2xl font-bold mb-2">เกมจับคู่</h2>
+                            <p>จับคู่อุปกรณ์กับคำอธิบาย</p>
+                        </div>
+                        
+                        <div class="tech-card bg-gradient-to-br from-green-500 to-teal-600 rounded-xl shadow-lg p-6 text-white text-center cursor-pointer hover:from-green-600 hover:to-teal-700" onclick="showLearnPage()">
+                            <div class="text-5xl mb-4">📚</div>
+                            <h2 class="text-2xl font-bold mb-2">เรียนรู้อุปกรณ์</h2>
+                            <p>ศึกษาข้อมูลเกี่ยวกับอุปกรณ์คอมพิวเตอร์</p>
+                        </div>
+                        
+                        <div class="tech-card bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl shadow-lg p-6 text-white text-center cursor-pointer hover:from-yellow-600 hover:to-orange-700" onclick="showLeaderboard()">
+                            <div class="text-5xl mb-4">🏆</div>
+                            <h2 class="text-2xl font-bold mb-2">อันดับคะแนน</h2>
+                            <p>ดูอันดับคะแนนสูงสุด</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLearnPage() {
+            const content = document.getElementById('content');
+            
+            content.innerHTML = `
+                <div class="mb-6 flex justify-between items-center">
+                    <h1 class="text-3xl font-bold text-white drop-shadow-lg">เรียนรู้อุปกรณ์คอมพิวเตอร์</h1>
+                    <button onclick="navigateTo('home')" class="bg-white hover:bg-gray-100 text-indigo-800 font-semibold py-2 px-4 rounded-lg shadow transition duration-200">
+                        กลับหน้าหลัก
+                    </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${Object.keys(hardwareData).map(key => {
+                        const item = hardwareData[key];
+                        return `
+                            <div class="tech-card bg-white rounded-xl shadow-lg overflow-hidden">
+                                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4">
+                                    <div class="bg-white/20 backdrop-blur-sm rounded-lg p-4 flex justify-center">
+                                        ${item.icon}
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <h2 class="text-xl font-bold text-gray-800 mb-2">${item.name}</h2>
+                                    <p class="text-gray-600 mb-4">${item.description}</p>
+                                    <div class="border-t border-gray-200 pt-4 mt-2">
+                                        <h3 class="font-semibold text-indigo-700 mb-2">ข้อมูลน่ารู้:</h3>
+                                        <ul class="space-y-1">
+                                            ${item.facts.map(fact => `
+                                                <li class="text-sm text-gray-600 flex items-start">
+                                                    <span class="text-indigo-500 mr-2">•</span>
+                                                    ${fact}
+                                                </li>
+                                            `).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function renderQuiz() {
+            const { currentQuestionIndex, questions, isAnswered, selectedAnswers } = state.currentQuiz;
+            const question = questions[currentQuestionIndex];
+            const content = document.getElementById('content');
+            
+            content.innerHTML = `
+                <div class="mb-6 flex justify-between items-center">
+                    <h1 class="text-3xl font-bold text-white drop-shadow-lg">เกมตอบคำถาม</h1>
+                    <div class="flex items-center">
+                        <span class="bg-white text-indigo-800 px-4 py-2 rounded-lg shadow mr-4">
+                            คำถามที่ ${currentQuestionIndex + 1}/${questions.length}
+                        </span>
+                        <button onclick="navigateTo('home')" class="bg-white hover:bg-gray-100 text-indigo-800 font-semibold py-2 px-4 rounded-lg shadow transition duration-200">
+                            ออกจากเกม
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+                        <h2 class="text-xl md:text-2xl font-bold text-white">${question.question}</h2>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-3">
+                            ${question.options.map((option, index) => `
+                                <div class="quiz-option border rounded-lg p-4 cursor-pointer ${
+                                    selectedAnswers[currentQuestionIndex] === index ? 
+                                    'selected ' + (isAnswered ? 
+                                        (index === question.answer ? 'correct' : 'incorrect') : '') : ''
+                                }" 
+                                onclick="${isAnswered ? '' : `selectAnswer(${index})`}">
+                                    <div class="flex items-center">
+                                        <div class="w-6 h-6 rounded-full flex items-center justify-center mr-3
+                                            ${selectedAnswers[currentQuestionIndex] === index ? 
+                                            'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-600'}">
+                                            ${String.fromCharCode(65 + index)}
+                                        </div>
+                                        <span class="text-lg">${option}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        ${isAnswered ? `
+                            <div class="mt-6 p-4 bg-indigo-50 rounded-lg">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-0.5">
+                                        ${selectedAnswers[currentQuestionIndex] === question.answer ? 
+                                            '<svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>' : 
+                                            '<svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>'
+                                        }
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-sm font-medium ${selectedAnswers[currentQuestionIndex] === question.answer ? 'text-green-800' : 'text-red-800'}">
+                                            ${selectedAnswers[currentQuestionIndex] === question.answer ? 'ถูกต้อง!' : 'ไม่ถูกต้อง'}
+                                        </p>
+                                        <p class="mt-1 text-sm text-gray-600">${question.explanation}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 flex justify-end">
+                                <button onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg shadow transition duration-200">
+                                    ${currentQuestionIndex < questions.length - 1 ? 'ข้อถัดไป' : 'ดูผลลัพธ์'}
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderQuizResult() {
+            const { questions, score, selectedAnswers } = state.currentQuiz;
+            const content = document.getElementById('content');
+            
+            // Update total score
+            state.totalScore += score;
+            localStorage.setItem('totalScore', state.totalScore);
+            
+            // Update leaderboard
+            if (state.username) {
+                const leaderboard = state.leaderboard;
+                const existingEntry = leaderboard.find(entry => entry.name === state.username);
+                
+                if (existingEntry) {
+                    existingEntry.score = Math.max(existingEntry.score, score);
+                } else {
+                    leaderboard.push({ name: state.username, score });
+                }
+                
+                leaderboard.sort((a, b) => b.score - a.score);
+                localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+                state.leaderboard = leaderboard;
+            }
+            
+            // Create confetti effect
+            createConfetti(score / questions.length >= 0.7);
+            
+            content.innerHTML = `
+                <div class="mb-6 flex justify-between items-center">
+                    <h1 class="text-3xl font-bold text-white drop-shadow-lg">ผลลัพธ์</h1>
+                    <button onclick="navigateTo('home')" class="bg-white hover:bg-gray-100 text-indigo-800 font-semibold py-2 px-4 rounded-lg shadow transition duration-200">
+                        กลับหน้าหลัก
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-center">
+                        <h2 class="text-2xl font-bold text-white mb-2">คะแนนของคุณ</h2>
+                        <div class="text-5xl font-bold text-white">${score} / ${questions.length}</div>
+                        <p class="mt-2 text-indigo-100">
+                            ${score / questions.length >= 0.8 ? '🎉 ยอดเยี่ยม!' : 
+                              score / questions.length >= 0.6 ? '👍 ดีมาก!' : 
+                              score / questions.length >= 0.4 ? '😊 พยายามต่อไป!' : '🤔 ลองใหม่อีกครั้ง!'}
+                        </p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">สรุปคำตอบ</h3>
+                        
+                        <div class="space-y-4">
+                            ${questions.map((question, index) => `
+                                <div class="border rounded-lg overflow-hidden">
+                                    <div class="bg-gray-50 p-3 flex justify-between items-center">
+                                        <span class="font-medium">ข้อที่ ${index + 1}</span>
+                                        <span class="${selectedAnswers[index] === question.answer ? 'text-green-600' : 'text-red-600'}">
+                                            ${selectedAnswers[index] === question.answer ? '✓ ถูกต้อง' : '✗ ไม่ถูกต้อง'}
+                                        </span>
+                                    </div>
+                                    <div class="p-3">
+                                        <p class="text-gray-800 mb-2">${question.question}</p>
+                                        <p class="text-sm text-gray-600">
+                                            <span class="font-medium">คำตอบที่ถูกต้อง:</span> ${question.options[question.answer]}
+                                        </p>
+                                        ${selectedAnswers[index] !== question.answer ? `
+                                            <p class="text-sm text-gray-600">
+                                                <span class="font-medium">คำตอบของคุณ:</span> ${question.options[selectedAnswers[index]]}
+                                            </p>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+                            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow transition duration-200">
+                                เล่นอีกครั้ง
+                            </button>
+                            <button onclick="showLearnPage()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg shadow transition duration-200">
+                                เรียนรู้เพิ่มเติม
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMatchingGame() {
+            const { cards, selectedCards, matchedPairs, attempts } = state.matchingGame;
+            const content = document.getElementById('content');
+            
+            content.innerHTML = `
+                <div class="mb-6 flex justify-between items-center">
+                    <h1 class="text-3xl font-bold text-white drop-shadow-lg">เกมจับคู่</h1>
+                    <div class="flex items-center">
+                        <span class="bg-white text-indigo-800 px-4 py-2 rounded-lg shadow mr-4">
+                            จับคู่ได้: ${matchedPairs}/10 คู่
+                        </span>
+                        <button onclick="navigateTo('home')" class="bg-white hover:bg-gray-100 text-indigo-800 font-semibold py-2 px-4 rounded-lg shadow transition duration-200">
+                            ออกจากเกม
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <p class="text-gray-600">จับคู่อุปกรณ์กับคำอธิบายให้ถูกต้อง</p>
+                        <span class="text-sm text-gray-500">จำนวนครั้งที่ลอง: ${attempts}</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        ${cards.map(card => {
+                            const isSelected = selectedCards.includes(card.id);
+                            const isMatched = card.matched;
+                            
+                            return `
+                                <div class="aspect-w-3 aspect-h-4">
+                                    <div onclick="${isMatched ? '' : `selectCard(${card.id})`}" 
+                                        class="matching-card h-full flex items-center justify-center p-2 rounded-lg text-center
+                                        ${isMatched ? 'matched' : isSelected ? 'selected' : 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white hover:from-indigo-600 hover:to-purple-700'}">
+                                        ${isMatched || isSelected ? 
+                                            `<span class="text-sm sm:text-base font-medium">${card.content}</span>` : 
+                                            '<span class="text-xl">?</span>'}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMatchingGameResult() {
+            const { attempts } = state.matchingGame;
+            const content = document.getElementById('content');
+            
+            // Calculate score based on attempts (fewer attempts = higher score)
+            const maxScore = 100;
+            const minScore = 20;
+            const perfectAttempts = 10; // Minimum possible attempts
+            const worstAttempts = 30; // A high number of attempts
+            
+            let score = Math.max(minScore, maxScore - Math.floor((attempts - perfectAttempts) * (maxScore - minScore) / (worstAttempts - perfectAttempts)));
+            
+            // Update total score
+            state.totalScore += score;
+            localStorage.setItem('totalScore', state.totalScore);
+            
+            // Update leaderboard
+            if (state.username) {
+                const leaderboard = state.leaderboard;
+                const existingEntry = leaderboard.find(entry => entry.name === state.username);
+                
+                if (existingEntry) {
+                    existingEntry.score = Math.max(existingEntry.score, score);
+                } else {
+                    leaderboard.push({ name: state.username, score });
+                }
+                
+                leaderboard.sort((a, b) => b.score - a.score);
+                localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+                state.leaderboard = leaderboard;
+            }
+            
+            // Create confetti effect
+            createConfetti(true);
+            
+            content.innerHTML = `
+                <div class="mb-6 flex justify-between items-center">
+                    <h1 class="text-3xl font-bold text-white drop-shadow-lg">ผลลัพธ์</h1>
+                    <button onclick="navigateTo('home')" class="bg-white hover:bg-gray-100 text-indigo-800 font-semibold py-2 px-4 rounded-lg shadow transition duration-200">
+                        กลับหน้าหลัก
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6 text-center">
+                        <h2 class="text-2xl font-bold text-white mb-2">ยินดีด้วย!</h2>
+                        <div class="text-5xl font-bold text-white">${score} คะแนน</div>
+                        <p class="mt-2 text-indigo-100">
+                            คุณจับคู่สำเร็จทั้งหมดใน ${attempts} ครั้ง
+                        </p>
+                    </div>
+                    
+                    <div class="p-6 text-center">
+                        <p class="text-gray-600 mb-6">
+                            ${attempts <= 15 ? '🎉 ยอดเยี่ยมมาก! คุณมีความจำที่ดีเยี่ยม!' : 
+                              attempts <= 20 ? '👍 ดีมาก! คุณทำได้ดี!' : 
+                              '😊 สำเร็จแล้ว! ลองอีกครั้งเพื่อทำคะแนนให้ดีขึ้น!'}
+                        </p>
+                        
+                        <div class="flex flex-col sm:flex-row justify-center gap-4">
+                            <button onclick="startMatchingGame()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg shadow transition duration-200">
+                                เล่นอีกครั้ง
+                            </button>
+                            <button onclick="showLearnPage()" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg shadow transition duration-200">
+                                เรียนรู้เพิ่มเติม
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderLeaderboard() {
+            const content = document.getElementById('content');
+            const leaderboard = state.leaderboard;
+            
+            content.innerHTML = `
+                <div class="mb-6 flex justify-between items-center">
+                    <h1 class="text-3xl font-bold text-white drop-shadow-lg">อันดับคะแนน</h1>
+                    <button onclick="navigateTo('home')" class="bg-white hover:bg-gray-100 text-indigo-800 font-semibold py-2 px-4 rounded-lg shadow transition duration-200">
+                        กลับหน้าหลัก
+                    </button>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+                        <h2 class="text-xl font-bold text-white">ผู้เล่นที่มีคะแนนสูงสุด</h2>
+                    </div>
+                    
+                    <div class="p-6">
+                        ${leaderboard.length > 0 ? `
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead>
+                                        <tr class="border-b-2 border-gray-200">
+                                            <th class="px-4 py-3 text-left text-gray-600">อันดับ</th>
+                                            <th class="px-4 py-3 text-left text-gray-600">ชื่อ</th>
+                                            <th class="px-4 py-3 text-right text-gray-600">คะแนน</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${leaderboard.slice(0, 10).map((entry, index) => `
+                                            <tr class="border-b border-gray-100 ${entry.name === state.username ? 'bg-indigo-50' : ''}">
+                                                <td class="px-4 py-3">
+                                                    ${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : (index + 1)}
+                                                </td>
+                                                <td class="px-4 py-3 font-medium ${entry.name === state.username ? 'text-indigo-700' : 'text-gray-800'}">
+                                                    ${entry.name}
+                                                    ${entry.name === state.username ? ' <span class="text-xs text-indigo-500">(คุณ)</span>' : ''}
+                                                </td>
+                                                <td class="px-4 py-3 text-right font-semibold ${entry.name === state.username ? 'text-indigo-700' : 'text-gray-800'}">
+                                                    ${entry.score}
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        ` : `
+                            <div class="text-center py-8">
+                                <p class="text-gray-500">ยังไม่มีข้อมูลคะแนน</p>
+                                <p class="text-gray-500 mt-2">เล่นเกมเพื่อบันทึกคะแนนของคุณ!</p>
+                            </div>
+                        `}
+                        
+                        <div class="mt-6 flex justify-center">
+                            <button onclick="navigateTo('home')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg shadow transition duration-200">
+                                เริ่มเล่นเกม
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Helper Functions
+        function createConfetti(isSuccess) {
+            if (!isSuccess) return;
+            
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            const confettiCount = 100;
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Navigation and Game Logic
+        window.navigateTo = function(screen) {
+            state.currentScreen = screen;
+            
+            switch (screen) {
+                case 'home':
+                    renderHome();
+                    break;
+                case 'learn':
+                    renderLearnPage();
+                    break;
+                case 'quiz':
+                    renderQuiz();
+                    break;
+                case 'quizResult':
+                    renderQuizResult();
+                    break;
+                case 'matching':
+                    renderMatchingGame();
+                    break;
+                case 'matchingResult':
+                    renderMatchingGameResult();
+                    break;
+                case 'leaderboard':
+                    renderLeaderboard();
+                    break;
+            }
+        };
+
+        window.setUsername = function() {
+            const usernameInput = document.getElementById('usernameInput');
+            const username = usernameInput.value.trim();
+            
+            if (username) {
+                state.username = username;
+                localStorage.setItem('username', username);
+                renderHome();
+            }
+        };
+
+        window.startQuiz = function() {
+            if (!state.username) {
+                alert('กรุณาใส่ชื่อของคุณก่อนเริ่มเล่นเกม');
+                return;
+            }
+            
+            state.currentQuiz = {
+                type: 'quiz',
+                questions: shuffleArray(quizQuestions).slice(0, 10),
+                currentQuestionIndex: 0,
+                score: 0,
+                selectedAnswers: [],
+                isAnswered: false
+            };
+            
+            navigateTo('quiz');
+        };
+
+        window.selectAnswer = function(index) {
+            state.currentQuiz.selectedAnswers[state.currentQuiz.currentQuestionIndex] = index;
+            state.currentQuiz.isAnswered = true;
+            
+            const currentQuestion = state.currentQuiz.questions[state.currentQuiz.currentQuestionIndex];
+            if (index === currentQuestion.answer) {
+                state.currentQuiz.score++;
+            }
+            
+            renderQuiz();
+        };
+
+        window.nextQuestion = function() {
+            state.currentQuiz.currentQuestionIndex++;
+            state.currentQuiz.isAnswered = false;
+            
+            if (state.currentQuiz.currentQuestionIndex < state.currentQuiz.questions.length) {
+                renderQuiz();
+            } else {
+                navigateTo('quizResult');
+            }
+        };
+
+        window.startMatchingGame = function() {
+            if (!state.username) {
+                alert('กรุณาใส่ชื่อของคุณก่อนเริ่มเล่นเกม');
+                return;
+            }
+            
+            // Create shuffled cards
+            const shuffledCards = shuffleArray(matchingGameData).map(card => ({
+                ...card,
+                matched: false
+            }));
+            
+            state.matchingGame = {
+                cards: shuffledCards,
+                selectedCards: [],
+                matchedPairs: 0,
+                attempts: 0
+            };
+            
+            navigateTo('matching');
+        };
+
+        window.selectCard = function(cardId) {
+            const { cards, selectedCards } = state.matchingGame;
+            
+            // If already two cards selected, do nothing
+            if (selectedCards.length >= 2) return;
+            
+            // If card already selected, do nothing
+            if (selectedCards.includes(cardId)) return;
+            
+            // Add card to selected cards
+            state.matchingGame.selectedCards.push(cardId);
+            
+            // If two cards selected, check for match
+            if (state.matchingGame.selectedCards.length === 2) {
+                state.matchingGame.attempts++;
+                
+                const card1 = cards.find(card => card.id === selectedCards[0]);
+                const card2 = cards.find(card => card.id === selectedCards[1]);
+                
+                if (card1.pair === card2.id) {
+                    // Match found
+                    card1.matched = true;
+                    card2.matched = true;
+                    state.matchingGame.matchedPairs++;
+                    state.matchingGame.selectedCards = [];
+                    
+                    // Check if game completed
+                    if (state.matchingGame.matchedPairs === 10) {
+                        setTimeout(() => {
+                            navigateTo('matchingResult');
+                        }, 500);
+                    } else {
+                        renderMatchingGame();
+                    }
+                } else {
+                    // No match
+                    renderMatchingGame();
+                    
+                    // Clear selected cards after a delay
+                    setTimeout(() => {
+                        state.matchingGame.selectedCards = [];
+                        renderMatchingGame();
+                    }, 1000);
+                }
+            } else {
+                renderMatchingGame();
+            }
+        };
+
+        window.showLearnPage = function() {
+            navigateTo('learn');
+        };
+
+        window.showLeaderboard = function() {
+            navigateTo('leaderboard');
+        };
+
+        // Initialize the app
+        navigateTo('home');
+    </script>
+    <script>
+        (function() {
+            function c() {
+                var b = a.contentDocument || a.contentWindow.document;
+                if (b) {
+                    var d = b.createElement('script');
+                    d.innerHTML = "window.__CF$cv$params={r:'9365f7bef11e1100',t:'MTc0NTY2OTMzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+                    b.getElementsByTagName('head')[0].appendChild(d)
+                }
+            }
+            if (document.body) {
+                var a = document.createElement('iframe');
+                a.height = 1;
+                a.width = 1;
+                a.style.position = 'absolute';
+                a.style.top = 0;
+                a.style.left = 0;
+                a.style.border = 'none';
+                a.style.visibility = 'hidden';
+                document.body.appendChild(a);
+                if ('loading' !== document.readyState) c();
+                else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c);
+                else {
+                    var e = document.onreadystatechange || function() {};
+                    document.onreadystatechange = function(b) {
+                        e(b);
+                        'loading' !== document.readyState && (document.onreadystatechange = e, c())
+                    }
+                }
+            }
+        })();
+    </script>
+</body>
+
+</html>
