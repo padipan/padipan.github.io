@@ -1,0 +1,852 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ครูเจโว-โลกแห่งภาษาคอมพิวเตอร์</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f0f9ff;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        .game-card {
+            transition: all 0.3s ease;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        .quiz-option:hover {
+            transform: scale(1.02);
+        }
+        .quiz-option.selected {
+            background-color: #818cf8;
+            color: white;
+        }
+        .quiz-option.correct {
+            background-color: #34d399;
+            color: white;
+        }
+        .quiz-option.incorrect {
+            background-color: #f87171;
+            color: white;
+        }
+        .memory-card {
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        .memory-card.flipped .memory-card-inner {
+            transform: rotateY(180deg);
+        }
+        .memory-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+        }
+        .memory-card-front, .memory-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+        .memory-card-back {
+            transform: rotateY(180deg);
+        }
+        .character {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white p-4 shadow-lg">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-bold">โลกแห่งภาษาคอมพิวเตอร์ กับ ครูเจโว</h1>
+                <button id="menuToggle" class="p-2 rounded-full hover:bg-white/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobileMenu" class="bg-white shadow-lg rounded-b-lg hidden absolute top-16 right-0 left-0 z-50">
+            <div class="container mx-auto p-4">
+                <nav class="flex flex-col space-y-3">
+                    <a href="#" class="p-2 rounded hover:bg-indigo-100 flex items-center" onclick="showScreen('home')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        หน้าหลัก
+                    </a>
+                    <a href="#" class="p-2 rounded hover:bg-indigo-100 flex items-center" onclick="showScreen('quiz')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        เกมตอบคำถาม
+                    </a>
+                    <a href="#" class="p-2 rounded hover:bg-indigo-100 flex items-center" onclick="showScreen('memory')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                        </svg>
+                        เกมจับคู่
+                    </a>
+                    <a href="#" class="p-2 rounded hover:bg-indigo-100 flex items-center" onclick="showScreen('history')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        ประวัติภาษาคอมพิวเตอร์
+                    </a>
+                    <a href="#" class="p-2 rounded hover:bg-indigo-100 flex items-center" onclick="showScreen('people')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        บุคคลสำคัญ
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto p-4">
+            <!-- Home Screen -->
+            <div id="home" class="screen">
+                <div class="flex flex-col items-center mb-8">
+                    <div class="character w-100 h-100 mb-4">
+                        <!--<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                             Wizard Character
+                            <circle cx="100" cy="70" r="40" fill="#8b5cf6" />
+                            <path d="M60 110 L140 110 L130 180 L70 180 Z" fill="#c4b5fd" />
+                            <circle cx="85" cy="65" r="8" fill="white" />
+                            <circle cx="115" cy="65" r="8" fill="white" />
+                            <circle cx="85" cy="65" r="4" fill="#1e293b" />
+                            <circle cx="115" cy="65" r="4" fill="#1e293b" />
+                            <path d="M90 85 Q100 95 110 85" stroke="#1e293b" stroke-width="2" fill="none" />
+                            <path d="M70 50 L60 30 L80 40 Z" fill="#8b5cf6" />
+                            <path d="M130 50 L140 30 L120 40 Z" fill="#8b5cf6" />
+                            <path d="M100 110 L100 140" stroke="#8b5cf6" stroke-width="4" />
+                            <path d="M80 140 L120 140" stroke="#8b5cf6" stroke-width="4" />
+                            <path d="M70 180 L60 200" stroke="#c4b5fd" stroke-width="4" />
+                            <path d="M130 180 L140 200" stroke="#c4b5fd" stroke-width="4" />
+                            <path d="M100 20 L100 0 L120 10 Z" fill="#f472b6" />
+                        </svg>-->
+                        <img src="https://github.com/padipan/padipan.github.io/blob/main/al001.png?raw=true" alt="Profile Image" class="character w-100 ">
+                    </div>
+                    <h2 class="text-2xl font-bold text-center mb-2">ยินดีต้อนรับสู่โลกแห่งภาษาคอมพิวเตอร์!</h2>
+                    <p class="text-center text-gray-600 mb-6">เรียนรู้ประวัติศาสตร์ของภาษาคอมพิวเตอร์ผ่านเกมและกิจกรรมที่สนุกสนาน</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="game-card bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-lg p-6 text-white" onclick="showScreen('quiz')">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-white/20 p-3 rounded-full mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold">เกมตอบคำถาม</h3>
+                        </div>
+                        <p class="mb-4">ทดสอบความรู้เกี่ยวกับจุดกำเนิดของภาษาคอมพิวเตอร์ผ่านคำถามหลากหลายระดับ</p>
+                        <button class="bg-white text-indigo-600 font-medium py-2 px-4 rounded-lg hover:bg-indigo-100 transition">เริ่มเล่น</button>
+                    </div>
+
+                    <div class="game-card bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl shadow-lg p-6 text-white" onclick="showScreen('memory')">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-white/20 p-3 rounded-full mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold">เกมจับคู่</h3>
+                        </div>
+                        <p class="mb-4">จับคู่คำศัพท์และแนวคิดที่เกี่ยวข้องกับภาษาคอมพิวเตอร์เพื่อฝึกความจำ</p>
+                        <button class="bg-white text-pink-600 font-medium py-2 px-4 rounded-lg hover:bg-pink-100 transition">เริ่มเล่น</button>
+                    </div>
+
+                    <div class="game-card bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl shadow-lg p-6 text-white" onclick="showScreen('history')">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-white/20 p-3 rounded-full mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold">ประวัติภาษาคอมพิวเตอร์</h3>
+                        </div>
+                        <p class="mb-4">เรียนรู้เกี่ยวกับจุดเริ่มต้นและการพัฒนาของภาษาคอมพิวเตอร์</p>
+                        <button class="bg-white text-amber-600 font-medium py-2 px-4 rounded-lg hover:bg-amber-100 transition">เริ่มเรียนรู้</button>
+                    </div>
+
+                    <div class="game-card bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl shadow-lg p-6 text-white" onclick="showScreen('people')">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-white/20 p-3 rounded-full mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold">บุคคลสำคัญ</h3>
+                        </div>
+                        <p class="mb-4">รู้จักกับบุคคลที่มีบทบาทสำคัญในการพัฒนาภาษาคอมพิวเตอร์</p>
+                        <button class="bg-white text-emerald-600 font-medium py-2 px-4 rounded-lg hover:bg-emerald-100 transition">เริ่มเรียนรู้</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Game Screen -->
+            <div id="quiz" class="screen hidden">
+                <div class="flex items-center mb-6">
+                    <button class="mr-4 p-2 bg-indigo-100 rounded-full" onclick="showScreen('home')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h2 class="text-2xl font-bold">เกมตอบคำถาม</h2>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="text-sm font-medium text-gray-500">คำถามที่ <span id="questionNumber">1</span>/10</div>
+                        <div class="bg-indigo-100 text-indigo-800 py-1 px-3 rounded-full text-sm font-medium">คะแนน: <span id="score">0</span></div>
+                    </div>
+                    
+                    <div id="questionContainer" class="mb-6">
+                        <h3 class="text-lg font-medium mb-2">ภาษาคอมพิวเตอร์ภาษาแรกของโลกคือภาษาอะไร?</h3>
+                        <div class="space-y-3">
+                            <div class="quiz-option bg-gray-100 p-4 rounded-lg cursor-pointer hover:bg-gray-200" data-correct="false">
+                                BASIC
+                            </div>
+                            <div class="quiz-option bg-gray-100 p-4 rounded-lg cursor-pointer hover:bg-gray-200" data-correct="false">
+                                COBOL
+                            </div>
+                            <div class="quiz-option bg-gray-100 p-4 rounded-lg cursor-pointer hover:bg-gray-200" data-correct="true">
+                                FORTRAN
+                            </div>
+                            <div class="quiz-option bg-gray-100 p-4 rounded-lg cursor-pointer hover:bg-gray-200" data-correct="false">
+                                C
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="resultContainer" class="mb-6 hidden">
+                        <div id="correctAnswer" class="bg-green-100 text-green-800 p-4 rounded-lg mb-4">
+                            ถูกต้อง! FORTRAN เป็นภาษาคอมพิวเตอร์ภาษาแรกที่ได้รับการพัฒนาอย่างสมบูรณ์
+                        </div>
+                        <div id="wrongAnswer" class="bg-red-100 text-red-800 p-4 rounded-lg mb-4 hidden">
+                            ไม่ถูกต้อง คำตอบที่ถูกคือ FORTRAN ซึ่งเป็นภาษาคอมพิวเตอร์ภาษาแรกที่ได้รับการพัฒนาอย่างสมบูรณ์
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button id="nextQuestion" class="bg-indigo-600 text-white py-2 px-6 rounded-lg hover:bg-indigo-700 transition hidden">
+                            คำถามถัดไป
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-indigo-50 rounded-xl p-4">
+                    <h3 class="font-medium text-indigo-800 mb-2">เกร็ดความรู้</h3>
+                    <p class="text-sm text-indigo-700">FORTRAN (Formula Translation) ถูกพัฒนาโดย IBM ในปี 1957 และเป็นภาษาโปรแกรมระดับสูงภาษาแรกที่ได้รับความนิยม โดยเฉพาะในงานด้านวิทยาศาสตร์และคณิตศาสตร์</p>
+                </div>
+            </div>
+
+            <!-- Memory Game Screen -->
+            <div id="memory" class="screen hidden">
+                <div class="flex items-center mb-6">
+                    <button class="mr-4 p-2 bg-pink-100 rounded-full" onclick="showScreen('home')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h2 class="text-2xl font-bold">เกมจับคู่</h2>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="text-sm font-medium text-gray-500">การจับคู่ที่สำเร็จ: <span id="matchCount">0</span>/6</div>
+                        <div class="bg-pink-100 text-pink-800 py-1 px-3 rounded-full text-sm font-medium">เวลา: <span id="timer">00:00</span></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="memory-card aspect-square" data-pair="fortran">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">FORTRAN</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="fortran">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">ภาษาคอมพิวเตอร์ภาษาแรก</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="cobol">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">COBOL</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="cobol">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">ภาษาสำหรับงานธุรกิจ</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="pascal">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">Pascal</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="pascal">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">ภาษาสำหรับการศึกษา</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="c">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">C</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="c">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">พัฒนาโดย Dennis Ritchie</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="basic">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">BASIC</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="basic">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">ภาษาสำหรับผู้เริ่มต้น</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="java">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">Java</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="memory-card aspect-square" data-pair="java">
+                            <div class="memory-card-inner h-full">
+                                <div class="memory-card-front bg-gradient-to-br from-pink-400 to-purple-500 rounded-lg flex items-center justify-center h-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="memory-card-back bg-white border-2 border-purple-300 rounded-lg flex items-center justify-center h-full p-2">
+                                    <span class="font-medium text-center">Write Once, Run Anywhere</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="gameComplete" class="bg-green-100 rounded-xl p-6 text-center hidden">
+                    <h3 class="font-bold text-green-800 text-xl mb-2">ยินดีด้วย!</h3>
+                    <p class="text-green-700 mb-4">คุณจับคู่ได้ครบทั้งหมดแล้ว</p>
+                    <p class="text-green-700 mb-4">เวลาที่ใช้: <span id="finalTime">00:00</span></p>
+                    <button class="bg-green-600 text-white py-2 px-6 rounded-lg hover:bg-green-700 transition" onclick="resetMemoryGame()">
+                        เล่นอีกครั้ง
+                    </button>
+                </div>
+            </div>
+
+            <!-- History Screen -->
+            <div id="history" class="screen hidden">
+                <div class="flex items-center mb-6">
+                    <button class="mr-4 p-2 bg-amber-100 rounded-full" onclick="showScreen('home')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h2 class="text-2xl font-bold">ประวัติภาษาคอมพิวเตอร์</h2>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
+                    <div class="bg-gradient-to-r from-amber-500 to-orange-600 p-6 text-white">
+                        <h3 class="text-xl font-bold mb-2">จุดเริ่มต้นของภาษาคอมพิวเตอร์</h3>
+                        <p>การเดินทางของภาษาคอมพิวเตอร์เริ่มต้นจากภาษาเครื่อง (Machine Language) สู่ภาษาระดับสูงที่เราใช้กันในปัจจุบัน</p>
+                    </div>
+                    
+                    <div class="p-6">
+                        <div class="space-y-6">
+                            <div>
+                                <img src="https://www.womenshistory.org/sites/default/files/images/2018-07/Hopper-3%20square.jpg" alt="Profile Image" class="h-60 w-60 full">
+                                <h4 class="font-medium text-lg mb-2">ยุคแรกเริ่ม (1940s - 1950s)</h4>
+                                <p class="text-gray-700">ในยุคแรกของคอมพิวเตอร์ การเขียนโปรแกรมทำได้โดยการใช้ภาษาเครื่อง (Machine Language) ซึ่งประกอบด้วยเลขฐานสอง (0 และ 1) เท่านั้น ต่อมาได้มีการพัฒนาภาษาแอสเซมบลี (Assembly Language) ที่ใช้คำสั่งที่อ่านง่ายขึ้น แต่ยังต้องเขียนคำสั่งในระดับต่ำอยู่</p>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-medium text-lg mb-2">ภาษาระดับสูงภาษาแรก (1950s)</h4>
+                                <p class="text-gray-700">FORTRAN (Formula Translation) ถูกพัฒนาโดย IBM ในปี 1957 และถือเป็นภาษาโปรแกรมระดับสูงภาษาแรกที่ได้รับความนิยม โดยเฉพาะในงานด้านวิทยาศาสตร์และคณิตศาสตร์ ตามมาด้วย COBOL (Common Business-Oriented Language) ในปี 1959 ที่ถูกออกแบบมาสำหรับงานธุรกิจ</p>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-medium text-lg mb-2">ยุคทองของภาษาโปรแกรม (1960s - 1970s)</h4>
+                                <p class="text-gray-700">ในช่วงนี้มีการพัฒนาภาษาโปรแกรมมากมาย เช่น BASIC ที่ถูกออกแบบมาให้ง่ายต่อการเรียนรู้สำหรับผู้เริ่มต้น, Pascal ที่เน้นการสอนหลักการเขียนโปรแกรมที่ดี และ C ที่พัฒนาโดย Dennis Ritchie ที่ Bell Labs ซึ่งกลายเป็นภาษาที่มีอิทธิพลมากที่สุดภาษาหนึ่ง</p>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-medium text-lg mb-2">ยุคของการเขียนโปรแกรมเชิงวัตถุ (1980s - 1990s)</h4>
+                                <p class="text-gray-700">ภาษา C++ ถูกพัฒนาต่อยอดจาก C โดย Bjarne Stroustrup เพื่อรองรับการเขียนโปรแกรมเชิงวัตถุ (Object-Oriented Programming) ตามมาด้วย Java ที่พัฒนาโดย Sun Microsystems ซึ่งมีแนวคิด "Write Once, Run Anywhere" ทำให้โปรแกรมสามารถทำงานได้บนแพลตฟอร์มที่แตกต่างกัน</p>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-medium text-lg mb-2">ยุคของเว็บและโมบาย (2000s - ปัจจุบัน)</h4>
+                                <p class="text-gray-700">ภาษาโปรแกรมในยุคนี้มุ่งเน้นไปที่การพัฒนาเว็บและแอปพลิเคชันบนอุปกรณ์เคลื่อนที่ เช่น JavaScript, Python, Ruby, PHP และล่าสุดคือภาษาที่เน้นประสิทธิภาพและความปลอดภัย เช่น Rust, Go และ Swift</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 rounded-xl p-4">
+                    <h3 class="font-medium text-amber-800 mb-2">เกร็ดความรู้</h3>
+                    <p class="text-sm text-amber-700">รู้หรือไม่? Ada Lovelace ถือเป็นโปรแกรมเมอร์คนแรกของโลก เธอได้เขียนอัลกอริทึมสำหรับเครื่องวิเคราะห์ (Analytical Engine) ของ Charles Babbage ในช่วงกลางศตวรรษที่ 19 ก่อนที่จะมีคอมพิวเตอร์เสียอีก</p>
+                </div>
+            </div>
+
+            <!-- People Screen -->
+            <div id="people" class="screen hidden">
+                <div class="flex items-center mb-6">
+                    <button class="mr-4 p-2 bg-emerald-100 rounded-full" onclick="showScreen('home')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <h2 class="text-2xl font-bold">บุคคลสำคัญในประวัติศาสตร์คอมพิวเตอร์</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="md:flex">
+                            <div class="md:w-1/3 bg-gradient-to-br from-emerald-500 to-teal-600 p-6 flex items-center justify-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Ada_Lovelace_1838.jpg/500px-Ada_Lovelace_1838.jpg" alt="Profile Image" class="h-60 w-60 rounded-full">
+                            </div>
+                            <div class="p-6 md:w-2/3">
+                                <h3 class="text-xl font-bold mb-2">Ada Lovelace (1815-1852)</h3>
+                                <p class="text-gray-700 mb-4">Ada Lovelace ถือเป็นโปรแกรมเมอร์คนแรกของโลก เธอได้เขียนอัลกอริทึมสำหรับเครื่องวิเคราะห์ (Analytical Engine) ของ Charles Babbage ซึ่งเป็นเครื่องคำนวณเชิงกลที่ซับซ้อน เธอมองเห็นศักยภาพของเครื่องที่สามารถทำงานได้มากกว่าการคำนวณตัวเลข และได้เขียนโน้ตที่อธิบายวิธีการคำนวณลำดับ Bernoulli ซึ่งถือเป็นโปรแกรมคอมพิวเตอร์แรกของโลก</p>
+                                <div class="text-emerald-600 font-medium">ผลงานสำคัญ: อัลกอริทึมแรกสำหรับเครื่องคำนวณ</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="md:flex">
+                            <div class="md:w-1/3 bg-gradient-to-br from-emerald-500 to-teal-600 p-6 flex items-center justify-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Alan_Turing_%281951%29.jpg/500px-Alan_Turing_%281951%29.jpg" alt="Profile Image" class="h-60 w-60 rounded-full">
+                            </div>
+                            <div class="p-6 md:w-2/3">
+                                <h3 class="text-xl font-bold mb-2">Alan Turing (1912-1954)</h3>
+                                <p class="text-gray-700 mb-4">Alan Turing เป็นนักคณิตศาสตร์ชาวอังกฤษที่ถือเป็นบิดาของวิทยาการคอมพิวเตอร์และปัญญาประดิษฐ์ เขาได้พัฒนาแนวคิดของเครื่องจักรที่สามารถจำลองการทำงานของอัลกอริทึมใดๆ ซึ่งรู้จักกันในชื่อ "Turing Machine" นอกจากนี้ เขายังมีบทบาทสำคัญในการถอดรหัสลับของนาซีในช่วงสงครามโลกครั้งที่ 2 ซึ่งช่วยให้ฝ่ายสัมพันธมิตรได้รับชัยชนะ</p>
+                                <div class="text-emerald-600 font-medium">ผลงานสำคัญ: Turing Machine, การถอดรหัส Enigma</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="md:flex">
+                            <div class="md:w-1/3 bg-gradient-to-br from-emerald-500 to-teal-600 p-6 flex items-center justify-center">
+                                <img src="https://www.womenshistory.org/sites/default/files/images/2018-07/Hopper-3%20square.jpg" alt="Profile Image" class="h-60 w-60 rounded-full">
+                            </div>
+                            <div class="p-6 md:w-2/3">
+                                <h3 class="text-xl font-bold mb-2">Grace Hopper (1906-1992)</h3>
+                                <p class="text-gray-700 mb-4">Grace Hopper เป็นนักคณิตศาสตร์และนายพลในกองทัพเรือสหรัฐฯ เธอเป็นผู้บุกเบิกในการพัฒนาภาษาโปรแกรมระดับสูง และเป็นผู้พัฒนาคอมไพเลอร์ตัวแรกของโลก เธอมีส่วนร่วมในการพัฒนาภาษา COBOL ซึ่งเป็นภาษาโปรแกรมที่ใช้กันอย่างแพร่หลายในงานธุรกิจ นอกจากนี้ เธอยังเป็นผู้คิดค้นคำว่า "bug" ในความหมายของข้อผิดพลาดในโปรแกรมคอมพิวเตอร์</p>
+                                <div class="text-emerald-600 font-medium">ผลงานสำคัญ: คอมไพเลอร์ตัวแรก, ภาษา COBOL</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="md:flex">
+                            <div class="md:w-1/3 bg-gradient-to-br from-emerald-500 to-teal-600 p-6 flex items-center justify-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Dennis_Ritchie_2011.jpg/500px-Dennis_Ritchie_2011.jpg" alt="Profile Image" class="h-60 w-60 rounded-full">
+                            </div>
+                            <div class="p-6 md:w-2/3">
+                                <h3 class="text-xl font-bold mb-2">Dennis Ritchie (1941-2011)</h3>
+                                <p class="text-gray-700 mb-4">Dennis Ritchie เป็นนักวิทยาการคอมพิวเตอร์ชาวอเมริกันที่มีชื่อเสียงจากการเป็นผู้สร้างภาษา C และมีส่วนร่วมในการพัฒนาระบบปฏิบัติการ UNIX ภาษา C ที่เขาพัฒนาขึ้นได้กลายเป็นภาษาโปรแกรมที่มีอิทธิพลมากที่สุดภาษาหนึ่ง และเป็นรากฐานของภาษาโปรแกรมอื่นๆ อีกมากมาย เช่น C++, Java, JavaScript, C# และอื่นๆ</p>
+                                <div class="text-emerald-600 font-medium">ผลงานสำคัญ: ภาษา C, ระบบปฏิบัติการ UNIX</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white p-4 mt-8">
+
+            <div class="p-4 bg-gray-800 text-white text-center">
+                <!-- ตัวนับคนเข้าชม -->
+                <div class="mb-4">
+                    <span class="text-xl font-bold">จำนวนผู้เข้าชม:</span>
+                    <span id="visitorCount" class="text-2xl font-extrabold">0</span>
+                </div>
+            
+                <!-- ลิงก์ติดตาม -->
+                <div class="flex justify-center gap-4">
+                    <!-- Facebook -->
+                    <a href="https://www.facebook.com/profile.php?id=61574316201494" target="_blank" class="flex items-center gap-2 text-blue-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.437 9.878v-6.988H8.219v-2.89h2.218v-2.2c0-2.19 1.313-3.406 3.328-3.406.964 0 1.973.175 1.973.175v2.157h-1.112c-1.096 0-1.438.683-1.438 1.384v1.89h2.5l-.399 2.89h-2.101v6.988C18.343 21.128 22 16.991 22 12z" />
+                        </svg>
+                        ติดตาม ครูปฎิภาณเพจ
+                    </a>
+                    <!-- YouTube -->
+                    <a href="https://www.youtube.com/@KRUJAYPADIPAN" target="_blank" class="flex items-center gap-2 text-red-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.498 6.186a2.971 2.971 0 00-2.08-2.09C19.88 3.5 12 3.5 12 3.5s-7.88 0-9.418.597a2.971 2.971 0 00-2.08 2.09A31.63 31.63 0 000 12c0 2.855.5 5.67 1.502 8.314a2.971 2.971 0 002.08 2.09C4.12 20.5 12 20.5 12 20.5s7.88 0 9.418-.597a2.971 2.971 0 002.08-2.09A31.63 31.63 0 0024 12c0-2.855-.5-5.67-1.502-8.314zM9.75 16.02V7.98L16 12l-6.25 4.02z" />
+                        </svg>
+                        Subscribe ช่อง Youtube ครูปฎิภาณ
+                    </a>
+                </div>
+            </div>
+
+            <div class="container mx-auto text-center text-sm">
+                <p>© 2025 โลกแห่งภาษาคอมพิวเตอร์ - แอปพลิเคชันเพื่อการเรียนรู้ กับครูเจโว</p>
+                <p>ผู้พัฒนา : คุณครูปฎิภาณ พานทอง ครูแผนกวิชาเทคโนโลยีธุรกิจดิจิทัล วิทยาลัยอาชีวศึกษาสุรินทร์</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            
+            // Show the selected screen
+            document.getElementById(screenId).classList.remove('hidden');
+            
+            // Hide mobile menu if open
+            document.getElementById('mobileMenu').classList.add('hidden');
+            
+            // Initialize specific screen functionality
+            if (screenId === 'quiz') {
+                initQuiz();
+            } else if (screenId === 'memory') {
+                initMemoryGame();
+            }
+        }
+
+        // Quiz Game
+        let currentQuestion = 0;
+        let score = 0;
+        const questions = [
+            {
+                question: "ภาษาคอมพิวเตอร์ภาษาแรกของโลกคือภาษาอะไร?",
+                options: ["BASIC", "COBOL", "FORTRAN", "C"],
+                correctIndex: 2,
+                explanation: "FORTRAN เป็นภาษาคอมพิวเตอร์ภาษาแรกที่ได้รับการพัฒนาอย่างสมบูรณ์"
+            },
+            {
+                question: "ใครเป็นผู้พัฒนาภาษา C?",
+                options: ["Bill Gates", "Dennis Ritchie", "Ada Lovelace", "Grace Hopper"],
+                correctIndex: 1,
+                explanation: "Dennis Ritchie เป็นผู้พัฒนาภาษา C ที่ Bell Labs ในช่วงปี 1970"
+            },
+            {
+                question: "ภาษาใดถูกพัฒนาขึ้นเพื่อใช้ในงานธุรกิจโดยเฉพาะ?",
+                options: ["COBOL", "Pascal", "Python", "Java"],
+                correctIndex: 0,
+                explanation: "COBOL (Common Business-Oriented Language) ถูกพัฒนาขึ้นเพื่อใช้ในงานธุรกิจโดยเฉพาะ"
+            }
+        ];
+
+        function initQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('score').textContent = score;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const questionData = questions[currentQuestion];
+            document.getElementById('questionNumber').textContent = currentQuestion + 1;
+            
+            const questionContainer = document.getElementById('questionContainer');
+            questionContainer.innerHTML = `
+                <h3 class="text-lg font-medium mb-2">${questionData.question}</h3>
+                <div class="space-y-3">
+                    ${questionData.options.map((option, index) => `
+                        <div class="quiz-option bg-gray-100 p-4 rounded-lg cursor-pointer hover:bg-gray-200" data-correct="${index === questionData.correctIndex}">
+                            ${option}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Add event listeners to options
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', handleOptionClick);
+            });
+            
+            // Hide result and next button
+            document.getElementById('resultContainer').classList.add('hidden');
+            document.getElementById('correctAnswer').classList.add('hidden');
+            document.getElementById('wrongAnswer').classList.add('hidden');
+            document.getElementById('nextQuestion').classList.add('hidden');
+        }
+
+        function handleOptionClick(e) {
+            // Remove event listeners to prevent multiple clicks
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.removeEventListener('click', handleOptionClick);
+                option.classList.add('pointer-events-none');
+            });
+            
+            const isCorrect = e.currentTarget.getAttribute('data-correct') === 'true';
+            const questionData = questions[currentQuestion];
+            
+            if (isCorrect) {
+                e.currentTarget.classList.add('correct');
+                document.getElementById('correctAnswer').textContent = `ถูกต้อง! ${questionData.explanation}`;
+                document.getElementById('correctAnswer').classList.remove('hidden');
+                score++;
+                document.getElementById('score').textContent = score;
+            } else {
+                e.currentTarget.classList.add('incorrect');
+                document.getElementById('wrongAnswer').textContent = `ไม่ถูกต้อง คำตอบที่ถูกคือ ${questionData.options[questionData.correctIndex]} ${questionData.explanation}`;
+                document.getElementById('wrongAnswer').classList.remove('hidden');
+                
+                // Highlight correct answer
+                document.querySelectorAll('.quiz-option')[questionData.correctIndex].classList.add('correct');
+            }
+            
+            // Show result container and next button
+            document.getElementById('resultContainer').classList.remove('hidden');
+            
+            if (currentQuestion < questions.length - 1) {
+                document.getElementById('nextQuestion').classList.remove('hidden');
+                document.getElementById('nextQuestion').addEventListener('click', () => {
+                    currentQuestion++;
+                    showQuestion();
+                });
+            } else {
+                document.getElementById('nextQuestion').classList.remove('hidden');
+                document.getElementById('nextQuestion').textContent = 'เริ่มเกมใหม่';
+                document.getElementById('nextQuestion').addEventListener('click', initQuiz);
+            }
+        }
+
+        // Memory Game
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let isProcessing = false;
+        let timerInterval;
+        let startTime;
+
+        function initMemoryGame() {
+            // Reset game state
+            flippedCards = [];
+            matchedPairs = 0;
+            isProcessing = false;
+            document.getElementById('matchCount').textContent = '0';
+            document.getElementById('gameComplete').classList.add('hidden');
+            
+            // Shuffle cards
+            const cards = Array.from(document.querySelectorAll('.memory-card'));
+            cards.forEach(card => {
+                card.classList.remove('flipped');
+                card.querySelector('.memory-card-inner').style.transform = '';
+                const randomPos = Math.floor(Math.random() * cards.length);
+                card.style.order = randomPos;
+                
+                // Add click event
+                card.addEventListener('click', flipCard);
+            });
+            
+            // Reset and start timer
+            clearInterval(timerInterval);
+            startTime = new Date();
+            document.getElementById('timer').textContent = '00:00';
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            const now = new Date();
+            const elapsed = Math.floor((now - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60).toString().padStart(2, '0');
+            const seconds = (elapsed % 60).toString().padStart(2, '0');
+            document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+        }
+
+        function flipCard() {
+            if (isProcessing) return;
+            if (this.classList.contains('flipped')) return;
+            
+            this.classList.add('flipped');
+            flippedCards.push(this);
+            
+            if (flippedCards.length === 2) {
+                isProcessing = true;
+                
+                if (flippedCards[0].getAttribute('data-pair') === flippedCards[1].getAttribute('data-pair')) {
+                    // Match found
+                    setTimeout(() => {
+                        flippedCards[0].removeEventListener('click', flipCard);
+                        flippedCards[1].removeEventListener('click', flipCard);
+                        flippedCards = [];
+                        isProcessing = false;
+                        matchedPairs++;
+                        document.getElementById('matchCount').textContent = matchedPairs;
+                        
+                        if (matchedPairs === 6) {
+                            gameComplete();
+                        }
+                    }, 500);
+                } else {
+                    // No match
+                    setTimeout(() => {
+                        flippedCards[0].classList.remove('flipped');
+                        flippedCards[1].classList.remove('flipped');
+                        flippedCards = [];
+                        isProcessing = false;
+                    }, 1000);
+                }
+            }
+        }
+
+        function gameComplete() {
+            clearInterval(timerInterval);
+            const finalTime = document.getElementById('timer').textContent;
+            document.getElementById('finalTime').textContent = finalTime;
+            document.getElementById('gameComplete').classList.remove('hidden');
+        }
+
+        function resetMemoryGame() {
+            document.getElementById('gameComplete').classList.add('hidden');
+            initMemoryGame();
+        }
+
+        // Initialize the app with home screen
+        document.addEventListener('DOMContentLoaded', function() {
+            showScreen('home');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93775344010b893f',t:'MTc0NTg1MTMzNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+
+<script>
+    // เก็บจำนวนผู้เข้าชมไว้ใน localStorage
+    document.addEventListener("DOMContentLoaded", () => {
+        const visitorCountElement = document.getElementById("visitorCount");
+        let count = localStorage.getItem("visitorCount");
+        if (!count) {
+            count = 0;
+        }
+        count++;
+        localStorage.setItem("visitorCount", count);
+        visitorCountElement.textContent = count;
+    });
+</script>
+
+
+</body>
+
+</html>
