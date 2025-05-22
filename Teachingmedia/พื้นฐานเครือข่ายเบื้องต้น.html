@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>พื้นฐานเครือข่ายคอมพิวเตอร์</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f0f9ff;
+        }
+        
+        .card {
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        
+        .matched {
+            opacity: 0.7;
+            cursor: default;
+        }
+        
+        .section-transition {
+            transition: all 0.5s ease;
+        }
+        
+        .section-transition:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-blue-800 mb-4">พื้นฐานเครือข่ายคอมพิวเตอร์</h1>
+            <div class="w-24 h-1 bg-blue-500 mx-auto rounded-full"></div>
+        </header>
+        
+        <nav class="mb-10">
+            <ul class="flex flex-wrap justify-center gap-4 text-lg">
+                <li><a href="#meaning" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">ความหมาย</a></li>
+                <li><a href="#types" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">ประเภท</a></li>
+                <li><a href="#benefits" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">ประโยชน์</a></li>
+                <li><a href="#game" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">เกมจับคู่คำศัพท์</a></li>
+            </ul>
+        </nav>
+        
+        <section id="meaning" class="mb-16 bg-white p-8 rounded-xl shadow-lg section-transition">
+            <h2 class="text-3xl font-bold text-blue-700 mb-6 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                ความหมายของเครือข่ายคอมพิวเตอร์
+            </h2>
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+                <div class="md:w-1/2">
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        เครือข่ายคอมพิวเตอร์ (Computer Network) คือ การเชื่อมต่อคอมพิวเตอร์ตั้งแต่ 2 เครื่องขึ้นไปเข้าด้วยกัน 
+                        โดยใช้สื่อกลางในการสื่อสารข้อมูล เช่น สายเคเบิล หรือคลื่นวิทยุ เพื่อให้ผู้ใช้สามารถสื่อสาร แลกเปลี่ยนข้อมูล 
+                        และใช้ทรัพยากรร่วมกันได้ เช่น ไฟล์ข้อมูล เครื่องพิมพ์ หรือโปรแกรมต่างๆ
+                    </p>
+                    <p class="text-lg text-gray-700 mt-4 leading-relaxed">
+                        การเชื่อมต่อเครือข่ายทำให้เกิดการสื่อสารและแลกเปลี่ยนข้อมูลระหว่างอุปกรณ์ต่างๆ ได้อย่างรวดเร็วและมีประสิทธิภาพ 
+                        ไม่ว่าจะอยู่ในระยะใกล้หรือไกลกันก็ตาม
+                    </p>
+                </div>
+                <div class="md:w-1/2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" class="w-full h-auto">
+                        <rect x="50" y="50" width="80" height="60" rx="5" fill="#3B82F6" />
+                        <rect x="270" y="50" width="80" height="60" rx="5" fill="#3B82F6" />
+                        <rect x="50" y="190" width="80" height="60" rx="5" fill="#3B82F6" />
+                        <rect x="270" y="190" width="80" height="60" rx="5" fill="#3B82F6" />
+                        <rect x="160" y="120" width="80" height="60" rx="5" fill="#2563EB" />
+                        <line x1="90" y1="110" x2="160" y2="140" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5,5" />
+                        <line x1="310" y1="110" x2="240" y2="140" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5,5" />
+                        <line x1="90" y1="190" x2="160" y2="160" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5,5" />
+                        <line x1="310" y1="190" x2="240" y2="160" stroke="#94A3B8" stroke-width="3" stroke-dasharray="5,5" />
+                        <text x="90" y="80" text-anchor="middle" fill="white" font-size="12">คอมพิวเตอร์</text>
+                        <text x="310" y="80" text-anchor="middle" fill="white" font-size="12">คอมพิวเตอร์</text>
+                        <text x="90" y="220" text-anchor="middle" fill="white" font-size="12">คอมพิวเตอร์</text>
+                        <text x="310" y="220" text-anchor="middle" fill="white" font-size="12">คอมพิวเตอร์</text>
+                        <text x="200" y="150" text-anchor="middle" fill="white" font-size="12">เซิร์ฟเวอร์</text>
+                    </svg>
+                </div>
+            </div>
+        </section>
+        
+        <section id="types" class="mb-16 bg-white p-8 rounded-xl shadow-lg section-transition">
+            <h2 class="text-3xl font-bold text-blue-700 mb-6 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                ประเภทของเครือข่าย
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500 hover:shadow-lg transition">
+                    <h3 class="text-2xl font-bold text-blue-700 mb-3">LAN</h3>
+                    <h4 class="text-xl text-blue-600 mb-4">Local Area Network</h4>
+                    <p class="text-gray-700">เครือข่ายท้องถิ่น เป็นเครือข่ายที่ครอบคลุมพื้นที่ขนาดเล็ก เช่น ห้องเรียน อาคาร หรือสำนักงาน มีระยะทางไม่เกิน 10 กิโลเมตร</p>
+                    <div class="mt-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" class="w-full h-auto">
+                            <rect x="10" y="10" width="180" height="100" rx="5" stroke="#3B82F6" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+                            <rect x="30" y="30" width="40" height="30" rx="3" fill="#3B82F6" />
+                            <rect x="130" y="30" width="40" height="30" rx="3" fill="#3B82F6" />
+                            <rect x="80" y="70" width="40" height="30" rx="3" fill="#3B82F6" />
+                            <line x1="70" y1="45" x2="130" y2="45" stroke="#94A3B8" stroke-width="2" />
+                            <line x1="100" y1="45" x2="100" y2="70" stroke="#94A3B8" stroke-width="2" />
+                            <text x="100" y="20" text-anchor="middle" fill="#3B82F6" font-size="12" font-weight="bold">LAN</text>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500 hover:shadow-lg transition">
+                    <h3 class="text-2xl font-bold text-blue-700 mb-3">MAN</h3>
+                    <h4 class="text-xl text-blue-600 mb-4">Metropolitan Area Network</h4>
+                    <p class="text-gray-700">เครือข่ายระดับเมือง เป็นเครือข่ายที่ครอบคลุมพื้นที่ขนาดกลาง เช่น เมือง หรือจังหวัด มีระยะทางประมาณ 10-50 กิโลเมตร</p>
+                    <div class="mt-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" class="w-full h-auto">
+                            <rect x="10" y="10" width="80" height="45" rx="5" stroke="#3B82F6" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+                            <rect x="110" y="10" width="80" height="45" rx="5" stroke="#3B82F6" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+                            <rect x="60" y="65" width="80" height="45" rx="5" stroke="#3B82F6" stroke-width="2" fill="none" stroke-dasharray="5,5" />
+                            <rect x="25" y="20" width="20" height="15" rx="2" fill="#3B82F6" />
+                            <rect x="55" y="20" width="20" height="15" rx="2" fill="#3B82F6" />
+                            <rect x="125" y="20" width="20" height="15" rx="2" fill="#3B82F6" />
+                            <rect x="155" y="20" width="20" height="15" rx="2" fill="#3B82F6" />
+                            <rect x="75" y="75" width="20" height="15" rx="2" fill="#3B82F6" />
+                            <rect x="105" y="75" width="20" height="15" rx="2" fill="#3B82F6" />
+                            <line x1="90" y1="32" x2="110" y2="32" stroke="#94A3B8" stroke-width="2" />
+                            <line x1="100" y1="32" x2="100" y2="65" stroke="#94A3B8" stroke-width="2" />
+                            <text x="100" y="60" text-anchor="middle" fill="#3B82F6" font-size="12" font-weight="bold">MAN</text>
+                        </svg>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-500 hover:shadow-lg transition">
+                    <h3 class="text-2xl font-bold text-blue-700 mb-3">WAN</h3>
+                    <h4 class="text-xl text-blue-600 mb-4">Wide Area Network</h4>
+                    <p class="text-gray-700">เครือข่ายบริเวณกว้าง เป็นเครือข่ายที่ครอบคลุมพื้นที่ขนาดใหญ่ เช่น ประเทศ หรือทั่วโลก มีระยะทางมากกว่า 50 กิโลเมตรขึ้นไป</p>
+                    <div class="mt-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" class="w-full h-auto">
+                            <ellipse cx="100" cy="60" rx="90" ry="50" fill="none" stroke="#3B82F6" stroke-width="2" stroke-dasharray="5,5" />
+                            <circle cx="50" cy="40" r="15" fill="#BFDBFE" stroke="#3B82F6" stroke-width="2" />
+                            <circle cx="150" cy="40" r="15" fill="#BFDBFE" stroke="#3B82F6" stroke-width="2" />
+                            <circle cx="70" cy="80" r="15" fill="#BFDBFE" stroke="#3B82F6" stroke-width="2" />
+                            <circle cx="130" cy="80" r="15" fill="#BFDBFE" stroke="#3B82F6" stroke-width="2" />
+                            <line x1="65" y1="40" x2="135" y2="40" stroke="#3B82F6" stroke-width="2" />
+                            <line x1="85" y1="80" x2="115" y2="80" stroke="#3B82F6" stroke-width="2" />
+                            <line x1="50" y1="55" x2="70" y2="65" stroke="#3B82F6" stroke-width="2" />
+                            <line x1="150" y1="55" x2="130" y2="65" stroke="#3B82F6" stroke-width="2" />
+                            <text x="100" y="20" text-anchor="middle" fill="#3B82F6" font-size="12" font-weight="bold">WAN</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="benefits" class="mb-16 bg-white p-8 rounded-xl shadow-lg section-transition">
+            <h2 class="text-3xl font-bold text-blue-700 mb-6 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                ประโยชน์ของเครือข่าย
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg shadow hover:shadow-md transition">
+                    <div class="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-700 mb-2">การแบ่งปันทรัพยากร</h3>
+                    <p class="text-gray-700">สามารถใช้ทรัพยากรร่วมกันได้ เช่น เครื่องพิมพ์ สแกนเนอร์ ฮาร์ดดิสก์ และซอฟต์แวร์ต่างๆ ทำให้ประหยัดค่าใช้จ่าย</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg shadow hover:shadow-md transition">
+                    <div class="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-700 mb-2">การสื่อสารและทำงานร่วมกัน</h3>
+                    <p class="text-gray-700">ช่วยให้ผู้ใช้สามารถสื่อสารและทำงานร่วมกันได้ผ่านอีเมล การประชุมทางไกล และการแชร์ไฟล์</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg shadow hover:shadow-md transition">
+                    <div class="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-700 mb-2">การรักษาความปลอดภัย</h3>
+                    <p class="text-gray-700">สามารถควบคุมการเข้าถึงข้อมูลและทรัพยากรได้อย่างมีประสิทธิภาพ ช่วยป้องกันข้อมูลสำคัญ</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg shadow hover:shadow-md transition">
+                    <div class="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-700 mb-2">ประหยัดเวลาและค่าใช้จ่าย</h3>
+                    <p class="text-gray-700">ลดเวลาและค่าใช้จ่ายในการทำงาน การส่งข้อมูล และการจัดการทรัพยากรต่างๆ</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg shadow hover:shadow-md transition">
+                    <div class="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-700 mb-2">การจัดเก็บข้อมูลส่วนกลาง</h3>
+                    <p class="text-gray-700">สามารถจัดเก็บข้อมูลไว้ที่ศูนย์กลาง ทำให้ง่ายต่อการจัดการ สำรองข้อมูล และเข้าถึงข้อมูล</p>
+                </div>
+                
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg shadow hover:shadow-md transition">
+                    <div class="bg-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-700 mb-2">เพิ่มประสิทธิภาพการทำงาน</h3>
+                    <p class="text-gray-700">ช่วยให้การทำงานมีประสิทธิภาพมากขึ้น สามารถเข้าถึงข้อมูลและทรัพยากรได้อย่างรวดเร็ว</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="game" class="mb-16 bg-white p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-green-700 mb-6 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                เกมจับคู่คำศัพท์
+            </h2>
+            
+            <div class="mb-6 bg-green-50 p-4 rounded-lg">
+                <p class="text-lg text-gray-700">จับคู่คำศัพท์กับความหมายให้ถูกต้อง โดยคลิกที่การ์ดเพื่อเปิดดู และจับคู่ให้ตรงกัน</p>
+                <div class="flex justify-between items-center mt-4">
+                    <div class="text-lg font-medium">คะแนน: <span id="score" class="text-green-600 font-bold">0</span></div>
+                    <div class="text-lg font-medium">เวลา: <span id="timer" class="text-green-600 font-bold">60</span> วินาที</div>
+                    <button id="restart-btn" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">เริ่มใหม่</button>
+                </div>
+            </div>
+            
+            <div id="game-board" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Cards will be generated by JavaScript -->
+            </div>
+            
+            <div id="game-result" class="mt-8 p-6 rounded-lg text-center hidden">
+                <h3 class="text-2xl font-bold mb-4">ผลการเล่นเกม</h3>
+                <p class="text-xl">คุณได้คะแนน: <span id="final-score" class="text-green-600 font-bold">0</span> คะแนน</p>
+                <p class="text-lg mt-2" id="result-message"></p>
+                <button id="play-again-btn" class="mt-4 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">เล่นอีกครั้ง</button>
+            </div>
+        </section>
+        
+        <footer class="text-center text-gray-600 mt-12 pb-8">
+            <p>© 2023 พื้นฐานเครือข่ายคอมพิวเตอร์ - สื่อการเรียนรู้แบบโต้ตอบ</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling for navigation
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            // Memory matching game
+            const gameBoard = document.getElementById('game-board');
+            const scoreElement = document.getElementById('score');
+            const timerElement = document.getElementById('timer');
+            const restartBtn = document.getElementById('restart-btn');
+            const gameResult = document.getElementById('game-result');
+            const finalScoreElement = document.getElementById('final-score');
+            const resultMessageElement = document.getElementById('result-message');
+            const playAgainBtn = document.getElementById('play-again-btn');
+            
+            let score = 0;
+            let timeLeft = 60;
+            let timer;
+            let firstCard = null;
+            let secondCard = null;
+            let lockBoard = false;
+            let matchedPairs = 0;
+            
+            const cardPairs = [
+                { term: 'LAN', definition: 'เครือข่ายท้องถิ่น' },
+                { term: 'WAN', definition: 'เครือข่ายบริเวณกว้าง' },
+                { term: 'MAN', definition: 'เครือข่ายระดับเมือง' },
+                { term: 'Router', definition: 'อุปกรณ์จัดเส้นทางข้อมูล' },
+                { term: 'Switch', definition: 'อุปกรณ์เชื่อมต่อเครือข่าย' },
+                { term: 'Firewall', definition: 'ระบบรักษาความปลอดภัย' }
+            ];
+            
+            function startGame() {
+                score = 0;
+                timeLeft = 60;
+                matchedPairs = 0;
+                scoreElement.textContent = score;
+                timerElement.textContent = timeLeft;
+                gameResult.classList.add('hidden');
+                gameBoard.innerHTML = '';
+                
+                // Create cards
+                const cards = [];
+                cardPairs.forEach(pair => {
+                    cards.push(createCard(pair.term, pair.term));
+                    cards.push(createCard(pair.definition, pair.term));
+                });
+                
+                // Shuffle cards
+                cards.sort(() => Math.random() - 0.5);
+                
+                // Add cards to the board
+                cards.forEach(card => {
+                    gameBoard.appendChild(card);
+                });
+                
+                // Start timer
+                clearInterval(timer);
+                timer = setInterval(() => {
+                    timeLeft--;
+                    timerElement.textContent = timeLeft;
+                    
+                    if (timeLeft <= 0 || matchedPairs === cardPairs.length) {
+                        endGame();
+                    }
+                }, 1000);
+            }
+            
+            function createCard(content, pairId) {
+                const card = document.createElement('div');
+                card.className = 'card h-32 md:h-40';
+                card.dataset.pairId = pairId;
+                
+                const cardInner = document.createElement('div');
+                cardInner.className = 'card-inner relative w-full h-full';
+                
+                const cardFront = document.createElement('div');
+                cardFront.className = 'card-front bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg shadow flex items-center justify-center';
+                cardFront.innerHTML = '<span class="text-2xl">?</span>';
+                
+                const cardBack = document.createElement('div');
+                cardBack.className = 'card-back bg-white border-2 border-blue-500 rounded-lg shadow p-2 flex items-center justify-center text-center';
+                cardBack.innerHTML = `<span class="text-lg font-medium text-blue-800">${content}</span>`;
+                
+                cardInner.appendChild(cardFront);
+                cardInner.appendChild(cardBack);
+                card.appendChild(cardInner);
+                
+                card.addEventListener('click', flipCard);
+                
+                return card;
+            }
+            
+            function flipCard() {
+                if (lockBoard) return;
+                if (this === firstCard) return;
+                
+                this.classList.add('flipped');
+                
+                if (!firstCard) {
+                    firstCard = this;
+                    return;
+                }
+                
+                secondCard = this;
+                checkForMatch();
+            }
+            
+            function checkForMatch() {
+                const isMatch = firstCard.dataset.pairId === secondCard.dataset.pairId;
+                
+                if (isMatch) {
+                    disableCards();
+                    score += 10;
+                    scoreElement.textContent = score;
+                    matchedPairs++;
+                    
+                    if (matchedPairs === cardPairs.length) {
+                        endGame();
+                    }
+                } else {
+                    unflipCards();
+                    if (score > 0) {
+                        score -= 2;
+                        scoreElement.textContent = score;
+                    }
+                }
+            }
+            
+            function disableCards() {
+                firstCard.removeEventListener('click', flipCard);
+                secondCard.removeEventListener('click', flipCard);
+                
+                firstCard.classList.add('matched');
+                secondCard.classList.add('matched');
+                
+                resetBoard();
+            }
+            
+            function unflipCards() {
+                lockBoard = true;
+                
+                setTimeout(() => {
+                    firstCard.classList.remove('flipped');
+                    secondCard.classList.remove('flipped');
+                    
+                    resetBoard();
+                }, 1000);
+            }
+            
+            function resetBoard() {
+                [firstCard, secondCard] = [null, null];
+                lockBoard = false;
+            }
+            
+            function endGame() {
+                clearInterval(timer);
+                finalScoreElement.textContent = score;
+                
+                let message = '';
+                if (matchedPairs === cardPairs.length) {
+                    message = 'ยอดเยี่ยม! คุณจับคู่ได้ครบทุกคู่';
+                } else if (score >= 30) {
+                    message = 'เยี่ยมมาก! คุณทำได้ดี';
+                } else {
+                    message = 'ลองอีกครั้ง คุณสามารถทำได้ดีกว่านี้';
+                }
+                
+                resultMessageElement.textContent = message;
+                gameResult.classList.remove('hidden');
+            }
+            
+            restartBtn.addEventListener('click', startGame);
+            playAgainBtn.addEventListener('click', startGame);
+            
+            // Start the game
+            startGame();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'94389e7192c37328',t:'MTc0Nzg3ODE2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
