@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ความรู้เบื้องต้นเกี่ยวกับคอมพิวเตอร์</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f0f9ff;
+        }
+        
+        .lesson-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
+        }
+        
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        
+        .quiz-option:hover {
+            background-color: #dbeafe;
+        }
+        
+        .quiz-option.selected {
+            background-color: #93c5fd;
+            border-color: #3b82f6;
+        }
+        
+        .quiz-option.correct {
+            background-color: #86efac;
+            border-color: #22c55e;
+        }
+        
+        .quiz-option.incorrect {
+            background-color: #fca5a5;
+            border-color: #ef4444;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <h1 class="text-2xl md:text-3xl font-bold">ความรู้เบื้องต้นเกี่ยวกับคอมพิวเตอร์</h1>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button id="btn-lesson" class="bg-white text-blue-700 px-4 py-2 rounded-lg font-medium hover:bg-blue-50 transition">บทเรียน</button>
+                        <button id="btn-quiz" class="bg-blue-900 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-800 transition">แบบทดสอบ</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- Lesson Content -->
+            <div id="lesson-content" class="tab-content active">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">คอมพิวเตอร์คืออะไร?</h2>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <div class="flex flex-col md:flex-row items-center">
+                            <div class="md:w-1/3 mb-4 md:mb-0 flex justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-48 h-48 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div class="md:w-2/3 md:pl-6">
+                                <p class="text-gray-700 mb-4">คอมพิวเตอร์เป็นอุปกรณ์อิเล็กทรอนิกส์ที่สามารถประมวลผลข้อมูลตามชุดคำสั่งที่กำหนดไว้ได้อย่างรวดเร็วและแม่นยำ</p>
+                                <p class="text-gray-700 mb-4">คอมพิวเตอร์สามารถทำงานได้หลากหลาย เช่น คำนวณตัวเลข จัดเก็บข้อมูล แสดงผลภาพและเสียง เชื่อมต่อกับอินเทอร์เน็ต และอื่นๆ อีกมากมาย</p>
+                                <p class="text-gray-700">ปัจจุบันคอมพิวเตอร์มีหลายรูปแบบ เช่น คอมพิวเตอร์ตั้งโต๊ะ (Desktop) คอมพิวเตอร์พกพา (Laptop) แท็บเล็ต (Tablet) และสมาร์ทโฟน (Smartphone)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">องค์ประกอบพื้นฐานของคอมพิวเตอร์</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="lesson-card bg-white rounded-xl shadow-md p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-semibold text-blue-800">ฮาร์ดแวร์ (Hardware)</h3>
+                            </div>
+                            <p class="text-gray-700">ฮาร์ดแวร์คืออุปกรณ์ที่สามารถจับต้องได้ของคอมพิวเตอร์ แบ่งเป็น:</p>
+                            <ul class="mt-3 space-y-2 text-gray-700">
+                                <li class="flex items-start">
+                                    <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span><strong>อุปกรณ์รับข้อมูล (Input)</strong>: คีย์บอร์ด, เมาส์, ไมโครโฟน</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span><strong>อุปกรณ์แสดงผล (Output)</strong>: จอภาพ, ลำโพง, เครื่องพิมพ์</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span><strong>อุปกรณ์ประมวลผล (Processing)</strong>: CPU, RAM</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span><strong>อุปกรณ์เก็บข้อมูล (Storage)</strong>: ฮาร์ดดิสก์, SSD, แฟลชไดรฟ์</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="lesson-card bg-white rounded-xl shadow-md p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-semibold text-blue-800">ซอฟต์แวร์ (Software)</h3>
+                            </div>
+                            <p class="text-gray-700">ซอฟต์แวร์คือชุดคำสั่งที่ทำให้ฮาร์ดแวร์ทำงาน แบ่งเป็น:</p>
+                            <ul class="mt-3 space-y-2 text-gray-700">
+                                <li class="flex items-start">
+                                    <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span><strong>ระบบปฏิบัติการ (OS)</strong>: Windows, macOS, Android, iOS</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span><strong>โปรแกรมประยุกต์</strong>: Microsoft Office, โปรแกรมตัดต่อวิดีโอ, เกม</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span><strong>ยูทิลิตี้</strong>: โปรแกรมป้องกันไวรัส, โปรแกรมสำรองข้อมูล</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span><strong>เว็บแอปพลิเคชัน</strong>: Google Docs, YouTube, Facebook</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">องค์ประกอบหลักของคอมพิวเตอร์</h2>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-xl font-semibold text-blue-800 mb-3">หน่วยประมวลผลกลาง (CPU)</h3>
+                                <div class="flex mb-4">
+                                    <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-700">เปรียบเสมือนสมองของคอมพิวเตอร์</p>
+                                        <p class="text-gray-700">ทำหน้าที่ประมวลผลคำสั่งและข้อมูลต่างๆ</p>
+                                        <p class="text-gray-700">ยิ่งมีความเร็วสูง ยิ่งประมวลผลได้เร็ว</p>
+                                    </div>
+                                </div>
+
+                                <h3 class="text-xl font-semibold text-blue-800 mb-3">หน่วยความจำหลัก (RAM)</h3>
+                                <div class="flex mb-4">
+                                    <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-700">เป็นหน่วยความจำชั่วคราว</p>
+                                        <p class="text-gray-700">เก็บข้อมูลที่กำลังใช้งานอยู่</p>
+                                        <p class="text-gray-700">ข้อมูลจะหายไปเมื่อปิดเครื่อง</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="text-xl font-semibold text-blue-800 mb-3">หน่วยเก็บข้อมูล (Storage)</h3>
+                                <div class="flex mb-4">
+                                    <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-700">เก็บข้อมูลถาวร แม้ปิดเครื่อง</p>
+                                        <p class="text-gray-700">เช่น ฮาร์ดดิสก์ (HDD), SSD, แฟลชไดรฟ์</p>
+                                        <p class="text-gray-700">มีหน่วยวัดเป็น GB หรือ TB</p>
+                                    </div>
+                                </div>
+
+                                <h3 class="text-xl font-semibold text-blue-800 mb-3">เมนบอร์ด (Mainboard)</h3>
+                                <div class="flex">
+                                    <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-700">แผงวงจรหลักที่เชื่อมต่ออุปกรณ์ต่างๆ</p>
+                                        <p class="text-gray-700">มีช่องเสียบสำหรับ CPU, RAM และอุปกรณ์อื่นๆ</p>
+                                        <p class="text-gray-700">ควบคุมการทำงานร่วมกันของอุปกรณ์ทั้งหมด</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">หน่วยวัดในคอมพิวเตอร์</h2>
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white">
+                                <thead>
+                                    <tr class="bg-blue-100 text-blue-800">
+                                        <th class="py-3 px-4 text-left">หน่วย</th>
+                                        <th class="py-3 px-4 text-left">ย่อ</th>
+                                        <th class="py-3 px-4 text-left">ขนาด</th>
+                                        <th class="py-3 px-4 text-left">เทียบเท่า</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-700">
+                                    <tr class="border-b">
+                                        <td class="py-3 px-4">บิต</td>
+                                        <td class="py-3 px-4">bit</td>
+                                        <td class="py-3 px-4">1 หรือ 0</td>
+                                        <td class="py-3 px-4">หน่วยข้อมูลที่เล็กที่สุด</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-3 px-4">ไบต์</td>
+                                        <td class="py-3 px-4">B</td>
+                                        <td class="py-3 px-4">8 บิต</td>
+                                        <td class="py-3 px-4">1 ตัวอักษร</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-3 px-4">กิโลไบต์</td>
+                                        <td class="py-3 px-4">KB</td>
+                                        <td class="py-3 px-4">1,024 ไบต์</td>
+                                        <td class="py-3 px-4">1 หน้าข้อความ</td>
+                                    </tr>
+                                    <tr class="border-b">
+                                        <td class="py-3 px-4">เมกะไบต์</td>
+                                        <td class="py-3 px-4">MB</td>
+                                        <td class="py-3 px-4">1,024 KB</td>
+                                        <td class="py-3 px-4">1 รูปภาพคุณภาพสูง</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 px-4">กิกะไบต์</td>
+                                        <td class="py-3 px-4">GB</td>
+                                        <td class="py-3 px-4">1,024 MB</td>
+                                        <td class="py-3 px-4">1 ภาพยนตร์</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">ประเภทของคอมพิวเตอร์</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="lesson-card bg-white rounded-xl shadow-md p-6">
+                            <div class="flex flex-col items-center mb-4">
+                                <div class="bg-blue-100 p-4 rounded-full mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-blue-800 text-center">คอมพิวเตอร์ตั้งโต๊ะ</h3>
+                            </div>
+                            <p class="text-gray-700 text-center">คอมพิวเตอร์ที่ตั้งอยู่กับที่ มีประสิทธิภาพสูง สามารถอัพเกรดได้ง่าย</p>
+                        </div>
+
+                        <div class="lesson-card bg-white rounded-xl shadow-md p-6">
+                            <div class="flex flex-col items-center mb-4">
+                                <div class="bg-blue-100 p-4 rounded-full mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-blue-800 text-center">โน้ตบุ๊ก</h3>
+                            </div>
+                            <p class="text-gray-700 text-center">คอมพิวเตอร์พกพา น้ำหนักเบา ใช้งานได้ทุกที่ มีแบตเตอรี่ในตัว</p>
+                        </div>
+
+                        <div class="lesson-card bg-white rounded-xl shadow-md p-6">
+                            <div class="flex flex-col items-center mb-4">
+                                <div class="bg-blue-100 p-4 rounded-full mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-blue-800 text-center">แท็บเล็ต</h3>
+                            </div>
+                            <p class="text-gray-700 text-center">อุปกรณ์พกพาขนาดกลาง ใช้หน้าจอสัมผัส เหมาะสำหรับการใช้งานทั่วไป</p>
+                        </div>
+
+                        <div class="lesson-card bg-white rounded-xl shadow-md p-6">
+                            <div class="flex flex-col items-center mb-4">
+                                <div class="bg-blue-100 p-4 rounded-full mb-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-blue-800 text-center">สมาร์ทโฟน</h3>
+                            </div>
+                            <p class="text-gray-700 text-center">คอมพิวเตอร์ขนาดเล็กที่สามารถโทรศัพท์ได้ พกพาสะดวก ใช้งานได้ทุกที่</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Content -->
+            <div id="quiz-content" class="tab-content">
+                <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-blue-800">แบบทดสอบความรู้</h2>
+                        <div class="flex items-center">
+                            <span id="quiz-score" class="text-lg font-semibold text-blue-800 mr-2">0/10</span>
+                            <button id="reset-quiz" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">เริ่มใหม่</button>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-6">
+                        <div id="quiz-progress" class="bg-blue-600 h-2.5 rounded-full progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div id="quiz-container">
+                        <!-- Quiz questions will be inserted here by JavaScript -->
+                    </div>
+                    <div id="quiz-result" class="hidden text-center py-8">
+                        <div class="mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-blue-800 mb-2">คุณทำแบบทดสอบเสร็จสิ้น!</h3>
+                        <p class="text-xl text-gray-700 mb-4">คะแนนของคุณ: <span id="final-score" class="font-bold text-blue-800">0/10</span></p>
+                        <button id="show-answers" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">ดูเฉลย</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-blue-900 text-white py-6">
+            <div class="container mx-auto px-4 text-center">
+                <p>สื่อการเรียนรู้เกี่ยวกับความรู้เบื้องต้นและองค์ประกอบของคอมพิวเตอร์</p>
+                <p class="mt-2">สำหรับนักเรียนระดับมัธยมต้น</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Tab switching
+        const btnLesson = document.getElementById('btn-lesson');
+        const btnQuiz = document.getElementById('btn-quiz');
+        const lessonContent = document.getElementById('lesson-content');
+        const quizContent = document.getElementById('quiz-content');
+
+        btnLesson.addEventListener('click', () => {
+            lessonContent.classList.add('active');
+            quizContent.classList.remove('active');
+            btnLesson.classList.add('bg-white', 'text-blue-700');
+            btnLesson.classList.remove('bg-blue-900', 'text-white');
+            btnQuiz.classList.add('bg-blue-900', 'text-white');
+            btnQuiz.classList.remove('bg-white', 'text-blue-700');
+        });
+
+        btnQuiz.addEventListener('click', () => {
+            quizContent.classList.add('active');
+            lessonContent.classList.remove('active');
+            btnQuiz.classList.add('bg-white', 'text-blue-700');
+            btnQuiz.classList.remove('bg-blue-900', 'text-white');
+            btnLesson.classList.add('bg-blue-900', 'text-white');
+            btnLesson.classList.remove('bg-white', 'text-blue-700');
+        });
+
+        // Quiz functionality
+        const quizQuestions = [
+            {
+                question: "คอมพิวเตอร์คืออะไร?",
+                options: [
+                    "อุปกรณ์ที่ใช้เล่นเกมเท่านั้น",
+                    "อุปกรณ์อิเล็กทรอนิกส์ที่ประมวลผลข้อมูลตามชุดคำสั่ง",
+                    "อุปกรณ์ที่ใช้เชื่อมต่ออินเทอร์เน็ตเท่านั้น",
+                    "อุปกรณ์ที่ใช้พิมพ์เอกสารเท่านั้น"
+                ],
+                answer: 1
+            },
+            {
+                question: "ส่วนใดของคอมพิวเตอร์ที่เปรียบเสมือนสมอง?",
+                options: [
+                    "RAM",
+                    "ฮาร์ดดิสก์",
+                    "CPU",
+                    "จอภาพ"
+                ],
+                answer: 2
+            },
+            {
+                question: "RAM ย่อมาจากอะไร?",
+                options: [
+                    "Random Access Memory",
+                    "Read Access Memory",
+                    "Random Available Memory",
+                    "Read Available Memory"
+                ],
+                answer: 0
+            },
+            {
+                question: "ข้อใดไม่ใช่อุปกรณ์รับข้อมูล (Input Device)?",
+                options: [
+                    "คีย์บอร์ด",
+                    "เมาส์",
+                    "ลำโพง",
+                    "สแกนเนอร์"
+                ],
+                answer: 2
+            },
+            {
+                question: "ข้อใดคือหน่วยวัดความจุข้อมูลที่มีขนาดใหญ่ที่สุด?",
+                options: [
+                    "กิโลไบต์ (KB)",
+                    "เมกะไบต์ (MB)",
+                    "กิกะไบต์ (GB)",
+                    "เทราไบต์ (TB)"
+                ],
+                answer: 3
+            },
+            {
+                question: "ซอฟต์แวร์ประเภทใดที่ควบคุมการทำงานของฮาร์ดแวร์ทั้งหมด?",
+                options: [
+                    "โปรแกรมประยุกต์",
+                    "ระบบปฏิบัติการ",
+                    "โปรแกรมยูทิลิตี้",
+                    "โปรแกรมกราฟิก"
+                ],
+                answer: 1
+            },
+            {
+                question: "1 ไบต์ เท่ากับกี่บิต?",
+                options: [
+                    "2 บิต",
+                    "4 บิต",
+                    "8 บิต",
+                    "16 บิต"
+                ],
+                answer: 2
+            },
+            {
+                question: "อุปกรณ์ใดที่ใช้เก็บข้อมูลถาวรแม้ปิดเครื่อง?",
+                options: [
+                    "CPU",
+                    "RAM",
+                    "ฮาร์ดดิสก์",
+                    "เมนบอร์ด"
+                ],
+                answer: 2
+            },
+            {
+                question: "ข้อใดไม่ใช่ระบบปฏิบัติการ?",
+                options: [
+                    "Windows",
+                    "macOS",
+                    "Microsoft Word",
+                    "Android"
+                ],
+                answer: 2
+            },
+            {
+                question: "อุปกรณ์ใดที่ไม่จัดเป็นคอมพิวเตอร์?",
+                options: [
+                    "สมาร์ทโฟน",
+                    "แท็บเล็ต",
+                    "โน้ตบุ๊ก",
+                    "เครื่องพิมพ์"
+                ],
+                answer: 3
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let quizCompleted = false;
+        let userAnswers = [];
+
+        const quizContainer = document.getElementById('quiz-container');
+        const quizProgress = document.getElementById('quiz-progress');
+        const quizScore = document.getElementById('quiz-score');
+        const quizResult = document.getElementById('quiz-result');
+        const finalScore = document.getElementById('final-score');
+        const resetQuizBtn = document.getElementById('reset-quiz');
+        const showAnswersBtn = document.getElementById('show-answers');
+
+        function loadQuestion() {
+            if (currentQuestion >= quizQuestions.length) {
+                showResults();
+                return;
+            }
+
+            const question = quizQuestions[currentQuestion];
+            let optionsHTML = '';
+
+            question.options.forEach((option, index) => {
+                optionsHTML += `
+                    <div class="quiz-option mb-3 p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-blue-50" data-index="${index}">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 flex items-center justify-center border border-gray-400 rounded-full mr-3">
+                                <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+                            </div>
+                            <span>${option}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            quizContainer.innerHTML = `
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold text-blue-800 mb-2">คำถามที่ ${currentQuestion + 1} จาก ${quizQuestions.length}</h3>
+                    <p class="text-lg text-gray-700">${question.question}</p>
+                </div>
+                <div class="options-container">
+                    ${optionsHTML}
+                </div>
+            `;
+
+            // Update progress bar
+            const progressPercentage = (currentQuestion / quizQuestions.length) * 100;
+            quizProgress.style.width = `${progressPercentage}%`;
+
+            // Add event listeners to options
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.addEventListener('click', selectOption);
+            });
+        }
+
+        function selectOption(e) {
+            if (quizCompleted) return;
+
+            const selectedOption = e.currentTarget;
+            const selectedIndex = parseInt(selectedOption.dataset.index);
+            const correctIndex = quizQuestions[currentQuestion].answer;
+
+            // Store user's answer
+            userAnswers[currentQuestion] = selectedIndex;
+
+            // Remove hover effect from all options
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.classList.remove('hover:bg-blue-50');
+                option.style.pointerEvents = 'none';
+            });
+
+            // Check if answer is correct
+            if (selectedIndex === correctIndex) {
+                selectedOption.classList.add('correct');
+                score++;
+            } else {
+                selectedOption.classList.add('incorrect');
+                // Highlight correct answer
+                document.querySelectorAll('.quiz-option')[correctIndex].classList.add('correct');
+            }
+
+            // Update score
+            quizScore.textContent = `${score}/${quizQuestions.length}`;
+
+            // Move to next question after a delay
+            setTimeout(() => {
+                currentQuestion++;
+                loadQuestion();
+            }, 1500);
+        }
+
+        function showResults() {
+            quizCompleted = true;
+            quizContainer.classList.add('hidden');
+            quizResult.classList.remove('hidden');
+            finalScore.textContent = `${score}/${quizQuestions.length}`;
+
+            // Update progress bar to 100%
+            quizProgress.style.width = '100%';
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            quizCompleted = false;
+            userAnswers = [];
+            quizScore.textContent = `${score}/${quizQuestions.length}`;
+            quizContainer.classList.remove('hidden');
+            quizResult.classList.add('hidden');
+            loadQuestion();
+        }
+
+        function showAnswers() {
+            quizContainer.classList.remove('hidden');
+            quizResult.classList.add('hidden');
+
+            let answersHTML = '<div class="mb-6"><h3 class="text-xl font-semibold text-blue-800 mb-4">เฉลยคำตอบ</h3></div>';
+
+            quizQuestions.forEach((question, qIndex) => {
+                const userAnswer = userAnswers[qIndex];
+                const correctAnswer = question.answer;
+
+                answersHTML += `
+                    <div class="mb-8 p-4 bg-gray-50 rounded-lg">
+                        <p class="text-lg font-medium text-blue-800 mb-2">คำถามที่ ${qIndex + 1}: ${question.question}</p>
+                        <div class="ml-4">
+                            ${question.options.map((option, oIndex) => {
+                                let optionClass = '';
+                                let icon = '';
+                                
+                                if (oIndex === correctAnswer) {
+                                    optionClass = 'text-green-700';
+                                    icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+                                } else if (oIndex === userAnswer) {
+                                    optionClass = 'text-red-700';
+                                    icon = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-1 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
+                                }
+                                
+                                return `<p class="mb-1 ${optionClass}">${icon}${String.fromCharCode(65 + oIndex)}. ${option}</p>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            answersHTML += `
+                <div class="text-center mt-6">
+                    <button id="back-to-results" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">กลับไปหน้าผลลัพธ์</button>
+                </div>
+            `;
+
+            quizContainer.innerHTML = answersHTML;
+
+            document.getElementById('back-to-results').addEventListener('click', () => {
+                quizContainer.classList.add('hidden');
+                quizResult.classList.remove('hidden');
+            });
+        }
+
+        // Initialize quiz
+        loadQuestion();
+
+        // Event listeners
+        resetQuizBtn.addEventListener('click', resetQuiz);
+        showAnswersBtn.addEventListener('click', showAnswers);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9432275ec1137336',t:'MTc0NzgxMDM3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
