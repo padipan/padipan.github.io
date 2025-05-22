@@ -1,0 +1,667 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รู้จักระบบปฏิบัติการ สำหรับเด็กประถม</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f0f9ff;
+        }
+        
+        .character {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .card {
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quiz-option {
+            transition: all 0.2s ease;
+        }
+        
+        .quiz-option:hover {
+            transform: scale(1.02);
+        }
+        
+        .quiz-option.correct {
+            background-color: #86efac !important;
+        }
+        
+        .quiz-option.incorrect {
+            background-color: #fca5a5 !important;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .btn-tab {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-tab.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 shadow-lg mb-8">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <h1 class="text-3xl md:text-4xl font-bold text-white">มารู้จักระบบปฏิบัติการกันเถอะ!</h1>
+                    <p class="text-blue-100 text-lg mt-2">สื่อการเรียนรู้สำหรับน้องๆ ประถมตอนปลาย</p>
+                </div>
+                <div class="character">
+                    <svg width="120" height="120" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="100" cy="100" r="90" fill="#FFD166"/>
+                        <circle cx="70" cy="80" r="12" fill="white"/>
+                        <circle cx="130" cy="80" r="12" fill="white"/>
+                        <circle cx="70" cy="80" r="6" fill="#333"/>
+                        <circle cx="130" cy="80" r="6" fill="#333"/>
+                        <path d="M70 130 Q100 150 130 130" stroke="#333" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M60 50 Q70 30 90 45" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M140 50 Q130 30 110 45" stroke="#333" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="flex flex-wrap justify-center gap-2 mb-6">
+            <button class="btn-tab active px-4 py-2 rounded-full bg-blue-100 font-medium text-blue-800" data-tab="intro">ระบบปฏิบัติการคืออะไร</button>
+            <button class="btn-tab px-4 py-2 rounded-full bg-blue-100 font-medium text-blue-800" data-tab="types">ประเภทของระบบปฏิบัติการ</button>
+            <button class="btn-tab px-4 py-2 rounded-full bg-blue-100 font-medium text-blue-800" data-tab="functions">หน้าที่ของระบบปฏิบัติการ</button>
+            <button class="btn-tab px-4 py-2 rounded-full bg-blue-100 font-medium text-blue-800" data-tab="quiz">แบบทดสอบ</button>
+        </div>
+
+        <!-- Content Sections -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <!-- Intro Section -->
+            <div id="intro" class="tab-content active">
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="md:w-1/2">
+                        <h2 class="text-2xl font-bold text-blue-800 mb-4">ระบบปฏิบัติการคืออะไร?</h2>
+                        <p class="mb-4 text-gray-700">ระบบปฏิบัติการ (Operating System หรือ OS) เปรียบเสมือน<span class="font-semibold text-blue-600">ผู้จัดการใหญ่</span>ของคอมพิวเตอร์ ทำหน้าที่ควบคุมการทำงานทั้งหมดของเครื่องคอมพิวเตอร์</p>
+                        
+                        <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                            <p class="font-medium text-blue-800">ลองนึกภาพว่า...</p>
+                            <p class="text-gray-700">ถ้าคอมพิวเตอร์เป็นเหมือนร่างกายของเรา ระบบปฏิบัติการก็เปรียบเสมือนสมองที่คอยสั่งการให้ส่วนต่างๆ ทำงานร่วมกันได้อย่างราบรื่น</p>
+                        </div>
+                        
+                        <p class="text-gray-700">ระบบปฏิบัติการช่วยให้เราสามารถใช้งานคอมพิวเตอร์ได้ง่ายขึ้น โดยไม่ต้องพิมพ์คำสั่งที่ซับซ้อน เพียงแค่คลิกที่ไอคอนหรือปุ่มต่างๆ ก็สามารถใช้งานโปรแกรมได้แล้ว</p>
+                    </div>
+                    
+                    <div class="md:w-1/2">
+                        <div class="bg-gray-100 rounded-xl p-6 relative">
+                            <svg class="mx-auto" width="280" height="200" viewBox="0 0 280 200">
+                                <!-- Computer -->
+                                <rect x="60" y="40" width="160" height="120" rx="5" fill="#333" />
+                                <rect x="70" y="50" width="140" height="90" rx="2" fill="#7dd3fc" />
+                                <rect x="100" y="160" width="80" height="10" fill="#333" />
+                                <rect x="90" y="170" width="100" height="5" fill="#333" />
+                                
+                                <!-- OS Elements -->
+                                <rect x="80" y="60" width="30" height="30" rx="4" fill="#3b82f6" />
+                                <rect x="120" y="60" width="30" height="30" rx="4" fill="#10b981" />
+                                <rect x="160" y="60" width="30" height="30" rx="4" fill="#f97316" />
+                                <rect x="80" y="100" width="110" height="10" rx="2" fill="#6366f1" />
+                                <rect x="80" y="120" width="80" height="10" rx="2" fill="#6366f1" />
+                                
+                                <!-- OS Text -->
+                                <text x="140" y="140" font-size="12" text-anchor="middle" fill="white">ระบบปฏิบัติการ</text>
+                            </svg>
+                            
+                            <div class="mt-4 text-center">
+                                <button id="changeOsBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition">เปลี่ยนระบบปฏิบัติการ</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Types Section -->
+            <div id="types" class="tab-content">
+                <h2 class="text-2xl font-bold text-blue-800 mb-6">ประเภทของระบบปฏิบัติการ</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Windows -->
+                    <div class="card bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+                        <div class="flex items-center justify-center mb-4">
+                            <svg width="80" height="80" viewBox="0 0 80 80">
+                                <rect x="10" y="10" width="28" height="28" fill="#0078D4" />
+                                <rect x="42" y="10" width="28" height="28" fill="#0078D4" />
+                                <rect x="10" y="42" width="28" height="28" fill="#0078D4" />
+                                <rect x="42" y="42" width="28" height="28" fill="#0078D4" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-800 mb-2 text-center">Windows</h3>
+                        <p class="text-gray-700">เป็นระบบปฏิบัติการที่ใช้กันมากที่สุดในโลก พัฒนาโดยบริษัทไมโครซอฟท์ ใช้งานง่าย มีโปรแกรมให้เลือกใช้มากมาย</p>
+                        <div class="mt-4 bg-blue-200 rounded-lg p-3">
+                            <p class="text-sm text-blue-800">เหมาะสำหรับ: การใช้งานทั่วไป เล่นเกม ทำงานออฟฟิศ</p>
+                        </div>
+                    </div>
+                    
+                    <!-- macOS -->
+                    <div class="card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 border border-gray-200">
+                        <div class="flex items-center justify-center mb-4">
+                            <svg width="80" height="80" viewBox="0 0 80 80">
+                                <circle cx="40" cy="40" r="30" fill="#333" />
+                                <path d="M40 20 L55 45 L25 45 Z" fill="white" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2 text-center">macOS</h3>
+                        <p class="text-gray-700">เป็นระบบปฏิบัติการของคอมพิวเตอร์ Mac พัฒนาโดยบริษัทแอปเปิล มีความสวยงาม ใช้งานง่าย และปลอดภัย</p>
+                        <div class="mt-4 bg-gray-200 rounded-lg p-3">
+                            <p class="text-sm text-gray-800">เหมาะสำหรับ: งานออกแบบ ตัดต่อวิดีโอ ทำงานสร้างสรรค์</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Linux -->
+                    <div class="card bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-6 border border-orange-200">
+                        <div class="flex items-center justify-center mb-4">
+                            <svg width="80" height="80" viewBox="0 0 80 80">
+                                <circle cx="40" cy="40" r="30" fill="#F0AD4E" />
+                                <circle cx="30" cy="30" r="5" fill="black" />
+                                <circle cx="50" cy="30" r="5" fill="black" />
+                                <path d="M25 45 Q40 60 55 45" stroke="black" stroke-width="3" fill="transparent" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-orange-800 mb-2 text-center">Linux</h3>
+                        <p class="text-gray-700">เป็นระบบปฏิบัติการฟรี ที่ใครก็สามารถนำไปพัฒนาต่อได้ มีความปลอดภัยสูง และมีหลายเวอร์ชันให้เลือกใช้</p>
+                        <div class="mt-4 bg-orange-200 rounded-lg p-3">
+                            <p class="text-sm text-orange-800">เหมาะสำหรับ: เซิร์ฟเวอร์ การเขียนโปรแกรม ผู้ที่ชอบปรับแต่งระบบ</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-yellow-50 p-6 rounded-xl border border-yellow-200">
+                    <h3 class="text-xl font-bold text-yellow-800 mb-3">ระบบปฏิบัติการบนอุปกรณ์พกพา</h3>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex-1">
+                            <div class="flex items-center mb-2">
+                                <svg width="30" height="30" viewBox="0 0 30 30">
+                                    <circle cx="15" cy="15" r="13" fill="#3DDC84" />
+                                    <circle cx="10" cy="10" r="2" fill="white" />
+                                    <circle cx="20" cy="10" r="2" fill="white" />
+                                    <path d="M8 18 Q15 25 22 18" stroke="white" stroke-width="2" fill="transparent" />
+                                </svg>
+                                <h4 class="text-lg font-semibold text-gray-800 ml-2">Android</h4>
+                            </div>
+                            <p class="text-gray-700">ใช้ในสมาร์ทโฟนและแท็บเล็ตหลายยี่ห้อ เช่น Samsung, Xiaomi, OPPO</p>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center mb-2">
+                                <svg width="30" height="30" viewBox="0 0 30 30">
+                                    <circle cx="15" cy="15" r="13" fill="#999" />
+                                    <path d="M10 10 L20 10 L15 20 Z" fill="white" />
+                                </svg>
+                                <h4 class="text-lg font-semibold text-gray-800 ml-2">iOS</h4>
+                            </div>
+                            <p class="text-gray-700">ใช้ในอุปกรณ์ของ Apple เช่น iPhone และ iPad</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Functions Section -->
+            <div id="functions" class="tab-content">
+                <h2 class="text-2xl font-bold text-blue-800 mb-6">หน้าที่ของระบบปฏิบัติการ</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-purple-200 p-3 rounded-full">
+                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                    <path d="M5 15 H25 M15 5 V25" stroke="#7e22ce" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-purple-800 ml-3">จัดการทรัพยากร</h3>
+                        </div>
+                        <p class="text-gray-700">ระบบปฏิบัติการทำหน้าที่จัดสรรทรัพยากรของคอมพิวเตอร์ เช่น หน่วยความจำ (RAM) และหน่วยประมวลผล (CPU) ให้กับโปรแกรมต่างๆ ที่กำลังทำงานอยู่</p>
+                        <div class="mt-4 bg-purple-200 rounded-lg p-3">
+                            <p class="text-sm text-purple-800">เปรียบเสมือน: ครูที่แบ่งขนมให้นักเรียนทุกคนได้รับอย่างเหมาะสม</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-200 p-3 rounded-full">
+                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                    <rect x="5" y="10" width="20" height="15" rx="2" stroke="#16a34a" stroke-width="2"/>
+                                    <path d="M10 10 V7 C10 5.5 12 4 15 4 C18 4 20 5.5 20 7 V10" stroke="#16a34a" stroke-width="2"/>
+                                    <circle cx="15" cy="17" r="3" stroke="#16a34a" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-green-800 ml-3">รักษาความปลอดภัย</h3>
+                        </div>
+                        <p class="text-gray-700">ระบบปฏิบัติการช่วยป้องกันไม่ให้โปรแกรมที่ไม่ปลอดภัยเข้าถึงข้อมูลสำคัญ และป้องกันไวรัสหรือโปรแกรมไม่พึงประสงค์</p>
+                        <div class="mt-4 bg-green-200 rounded-lg p-3">
+                            <p class="text-sm text-green-800">เปรียบเสมือน: ยามรักษาความปลอดภัยที่คอยตรวจสอบคนเข้าออกอาคาร</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 border border-red-200">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-red-200 p-3 rounded-full">
+                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                    <rect x="5" y="5" width="20" height="15" rx="2" stroke="#dc2626" stroke-width="2"/>
+                                    <path d="M8 12 L22 12" stroke="#dc2626" stroke-width="2"/>
+                                    <rect x="10" y="20" width="10" height="5" rx="1" stroke="#dc2626" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-red-800 ml-3">จัดการอุปกรณ์</h3>
+                        </div>
+                        <p class="text-gray-700">ระบบปฏิบัติการช่วยให้คอมพิวเตอร์สามารถสื่อสารกับอุปกรณ์ต่างๆ เช่น เมาส์ คีย์บอร์ด จอภาพ ปริ้นเตอร์ ได้อย่างถูกต้อง</p>
+                        <div class="mt-4 bg-red-200 rounded-lg p-3">
+                            <p class="text-sm text-red-800">เปรียบเสมือน: ล่ามที่ช่วยแปลภาษาให้คนที่พูดคนละภาษาเข้าใจกัน</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-200 p-3 rounded-full">
+                                <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                                    <circle cx="15" cy="15" r="10" stroke="#2563eb" stroke-width="2"/>
+                                    <path d="M15 8 L15 15 L20 18" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-blue-800 ml-3">จัดการโปรแกรม</h3>
+                        </div>
+                        <p class="text-gray-700">ระบบปฏิบัติการช่วยเปิด ปิด และควบคุมการทำงานของโปรแกรมต่างๆ รวมถึงจัดการให้โปรแกรมหลายๆ ตัวทำงานพร้อมกันได้</p>
+                        <div class="mt-4 bg-blue-200 rounded-lg p-3">
+                            <p class="text-sm text-blue-800">เปรียบเสมือน: ผู้กำกับละครที่คอยบอกนักแสดงว่าใครควรขึ้นเวทีเมื่อไหร่</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-yellow-50 p-6 rounded-xl border border-yellow-200">
+                    <h3 class="text-xl font-bold text-yellow-800 mb-4">ลองเล่นกับระบบปฏิบัติการ</h3>
+                    <p class="text-gray-700 mb-4">คลิกที่ปุ่มต่างๆ เพื่อดูว่าระบบปฏิบัติการทำงานอย่างไร</p>
+                    
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <div class="flex flex-wrap gap-3 mb-4">
+                            <button class="os-function-btn px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition" data-function="program">เปิดโปรแกรม</button>
+                            <button class="os-function-btn px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition" data-function="memory">จัดการหน่วยความจำ</button>
+                            <button class="os-function-btn px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition" data-function="security">ตรวจสอบความปลอดภัย</button>
+                            <button class="os-function-btn px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition" data-function="device">เชื่อมต่ออุปกรณ์</button>
+                        </div>
+                        
+                        <div id="os-function-display" class="h-40 bg-gray-100 rounded-lg p-4 flex items-center justify-center">
+                            <p class="text-gray-500 text-center">คลิกที่ปุ่มด้านบนเพื่อดูการทำงานของระบบปฏิบัติการ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div id="quiz" class="tab-content">
+                <h2 class="text-2xl font-bold text-blue-800 mb-6">แบบทดสอบความเข้าใจ</h2>
+                
+                <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl p-6 border border-indigo-200 mb-6">
+                    <p class="text-lg font-medium text-indigo-800 mb-4">ตอบคำถามต่อไปนี้เพื่อทดสอบความเข้าใจของคุณ</p>
+                    
+                    <div id="quiz-container">
+                        <div class="quiz-question mb-8">
+                            <p class="text-lg font-medium text-gray-800 mb-3">1. ระบบปฏิบัติการทำหน้าที่อะไร?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="false">
+                                    <p>เป็นโปรแกรมสำหรับเล่นเกมเท่านั้น</p>
+                                </div>
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="true">
+                                    <p>จัดการและควบคุมการทำงานของคอมพิวเตอร์</p>
+                                </div>
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="false">
+                                    <p>ใช้สำหรับวาดรูปและตกแต่งภาพเท่านั้น</p>
+                                </div>
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="false">
+                                    <p>เป็นอุปกรณ์ฮาร์ดแวร์ที่อยู่ในคอมพิวเตอร์</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-question mb-8">
+                            <p class="text-lg font-medium text-gray-800 mb-3">2. ข้อใดไม่ใช่ระบบปฏิบัติการ?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="false">
+                                    <p>Windows</p>
+                                </div>
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="false">
+                                    <p>macOS</p>
+                                </div>
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="true">
+                                    <p>Microsoft Word</p>
+                                </div>
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="false">
+                                    <p>Android</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="quiz-question mb-8">
+                            <p class="text-lg font-medium text-gray-800 mb-3">3. ระบบปฏิบัติการช่วยให้เราทำอะไรได้?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="false">
+                                    <p>ซ่อมแซมอุปกรณ์ฮาร์ดแวร์ที่เสียหาย</p>
+                                </div>
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="false">
+                                    <p>เพิ่มความเร็วอินเทอร์เน็ตโดยอัตโนมัติ</p>
+                                </div>
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="false">
+                                    <p>ชาร์จแบตเตอรี่ให้เต็มเร็วขึ้น</p>
+                                </div>
+                                <div class="quiz-option bg-white p-4 rounded-lg border border-gray-200 cursor-pointer" data-correct="true">
+                                    <p>ใช้งานโปรแกรมต่างๆ บนคอมพิวเตอร์ได้</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="quiz-result" class="hidden bg-green-100 p-4 rounded-lg border border-green-300 text-center">
+                            <p class="text-xl font-bold text-green-800 mb-2">คะแนนของคุณ: <span id="score">0</span>/3</p>
+                            <p class="text-green-700" id="result-message"></p>
+                            <button id="retry-quiz" class="mt-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">ลองทำอีกครั้ง</button>
+                        </div>
+                        
+                        <div class="text-center mt-6">
+                            <button id="check-answers" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-medium">ตรวจคำตอบ</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                    <h3 class="text-xl font-bold text-blue-800 mb-4">กิจกรรมเพิ่มเติม</h3>
+                    <p class="text-gray-700 mb-4">ลองทำกิจกรรมต่อไปนี้เพื่อเรียนรู้เพิ่มเติมเกี่ยวกับระบบปฏิบัติการ</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <h4 class="font-medium text-blue-800 mb-2">1. สำรวจระบบปฏิบัติการที่บ้าน</h4>
+                            <p class="text-gray-700">ลองสำรวจว่าอุปกรณ์ต่างๆ ที่บ้านของคุณใช้ระบบปฏิบัติการอะไรบ้าง เช่น คอมพิวเตอร์ โทรศัพท์มือถือ แท็บเล็ต สมาร์ททีวี</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200">
+                            <h4 class="font-medium text-blue-800 mb-2">2. วาดภาพระบบปฏิบัติการในจินตนาการ</h4>
+                            <p class="text-gray-700">ลองวาดภาพหน้าจอระบบปฏิบัติการในแบบที่คุณอยากให้เป็น พร้อมอธิบายว่ามีฟีเจอร์อะไรบ้าง</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-gray-600">
+            <p>สื่อการสอนเรื่องระบบปฏิบัติการสำหรับเด็กประถมตอนปลาย</p>
+        </footer>
+    </div>
+
+    <script>
+        // Tab Navigation
+        document.querySelectorAll('.btn-tab').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all tabs
+                document.querySelectorAll('.btn-tab').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked tab
+                button.classList.add('active');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show selected tab content
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // OS Changing Demo
+        const osStyles = [
+            {
+                bg: '#7dd3fc',
+                elements: [
+                    { x: 80, y: 60, w: 30, h: 30, color: '#3b82f6' },
+                    { x: 120, y: 60, w: 30, h: 30, color: '#10b981' },
+                    { x: 160, y: 60, w: 30, h: 30, color: '#f97316' },
+                    { x: 80, y: 100, w: 110, h: 10, color: '#6366f1' },
+                    { x: 80, y: 120, w: 80, h: 10, color: '#6366f1' }
+                ],
+                name: 'Windows'
+            },
+            {
+                bg: '#e4e4e7',
+                elements: [
+                    { x: 80, y: 60, w: 110, h: 10, color: '#71717a' },
+                    { x: 80, y: 80, w: 30, h: 30, color: '#06b6d4' },
+                    { x: 120, y: 80, w: 30, h: 30, color: '#8b5cf6' },
+                    { x: 160, y: 80, w: 30, h: 30, color: '#ec4899' },
+                    { x: 80, y: 120, w: 110, h: 10, color: '#71717a' }
+                ],
+                name: 'macOS'
+            },
+            {
+                bg: '#fef3c7',
+                elements: [
+                    { x: 80, y: 60, w: 110, h: 10, color: '#d97706' },
+                    { x: 80, y: 80, w: 30, h: 30, color: '#059669' },
+                    { x: 120, y: 80, w: 30, h: 30, color: '#7c3aed' },
+                    { x: 160, y: 80, w: 30, h: 30, color: '#db2777' },
+                    { x: 80, y: 120, w: 80, h: 10, color: '#d97706' }
+                ],
+                name: 'Linux'
+            }
+        ];
+        
+        let currentOsIndex = 0;
+        
+        document.getElementById('changeOsBtn').addEventListener('click', () => {
+            currentOsIndex = (currentOsIndex + 1) % osStyles.length;
+            const os = osStyles[currentOsIndex];
+            
+            // Update screen background
+            document.querySelector('rect[x="70"][y="50"]').setAttribute('fill', os.bg);
+            
+            // Update OS elements
+            const elements = document.querySelectorAll('rect[x="80"][y="60"], rect[x="120"][y="60"], rect[x="160"][y="60"], rect[x="80"][y="100"], rect[x="80"][y="120"]');
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].setAttribute('x', os.elements[i].x);
+                elements[i].setAttribute('y', os.elements[i].y);
+                elements[i].setAttribute('width', os.elements[i].w);
+                elements[i].setAttribute('height', os.elements[i].h);
+                elements[i].setAttribute('fill', os.elements[i].color);
+            }
+            
+            // Update OS name
+            document.querySelector('text[x="140"][y="140"]').textContent = os.name;
+        });
+        
+        // OS Functions Demo
+        const osFunctions = {
+            program: {
+                content: `
+                    <div class="flex items-center">
+                        <svg width="50" height="50" viewBox="0 0 50 50">
+                            <rect x="5" y="5" width="40" height="30" rx="3" fill="#3b82f6" />
+                            <rect x="10" y="10" width="30" height="20" rx="2" fill="white" />
+                            <rect x="15" y="15" width="20" height="3" fill="#3b82f6" />
+                            <rect x="15" y="22" width="15" height="3" fill="#3b82f6" />
+                        </svg>
+                        <div class="ml-4">
+                            <p class="font-medium">ระบบปฏิบัติการกำลังเปิดโปรแกรม</p>
+                            <p class="text-sm text-gray-600">จัดสรรหน่วยความจำและทรัพยากรให้โปรแกรม</p>
+                        </div>
+                    </div>
+                `
+            },
+            memory: {
+                content: `
+                    <div class="flex items-center">
+                        <svg width="50" height="50" viewBox="0 0 50 50">
+                            <rect x="10" y="10" width="30" height="30" rx="2" fill="#10b981" />
+                            <rect x="15" y="15" width="8" height="8" fill="white" />
+                            <rect x="27" y="15" width="8" height="8" fill="white" />
+                            <rect x="15" y="27" width="8" height="8" fill="white" />
+                            <rect x="27" y="27" width="8" height="8" fill="#d1fae5" />
+                        </svg>
+                        <div class="ml-4">
+                            <p class="font-medium">ระบบปฏิบัติการกำลังจัดการหน่วยความจำ</p>
+                            <p class="text-sm text-gray-600">แบ่งพื้นที่หน่วยความจำให้แต่ละโปรแกรมใช้งาน</p>
+                        </div>
+                    </div>
+                `
+            },
+            security: {
+                content: `
+                    <div class="flex items-center">
+                        <svg width="50" height="50" viewBox="0 0 50 50">
+                            <path d="M25 5 L45 15 L45 25 C45 35 35 45 25 45 C15 45 5 35 5 25 L5 15 Z" fill="#fca5a5" />
+                            <path d="M25 10 L40 18 L40 25 C40 33 33 40 25 40 C17 40 10 33 10 25 L10 18 Z" fill="#fee2e2" />
+                            <path d="M20 25 L23 30 L30 20" stroke="#b91c1c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                        </svg>
+                        <div class="ml-4">
+                            <p class="font-medium">ระบบปฏิบัติการกำลังตรวจสอบความปลอดภัย</p>
+                            <p class="text-sm text-gray-600">ตรวจจับและป้องกันโปรแกรมที่เป็นอันตราย</p>
+                        </div>
+                    </div>
+                `
+            },
+            device: {
+                content: `
+                    <div class="flex items-center">
+                        <svg width="50" height="50" viewBox="0 0 50 50">
+                            <rect x="5" y="15" width="25" height="15" rx="2" fill="#8b5cf6" />
+                            <circle cx="40" cy="22" r="8" fill="#8b5cf6" />
+                            <path d="M30 22 L35 22" stroke="#8b5cf6" stroke-width="2" />
+                            <rect x="10" y="20" width="15" height="5" fill="white" />
+                        </svg>
+                        <div class="ml-4">
+                            <p class="font-medium">ระบบปฏิบัติการกำลังเชื่อมต่ออุปกรณ์</p>
+                            <p class="text-sm text-gray-600">ติดตั้งไดรเวอร์และเตรียมอุปกรณ์ให้พร้อมใช้งาน</p>
+                        </div>
+                    </div>
+                `
+            }
+        };
+        
+        document.querySelectorAll('.os-function-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const functionType = button.getAttribute('data-function');
+                const display = document.getElementById('os-function-display');
+                
+                display.innerHTML = osFunctions[functionType].content;
+            });
+        });
+        
+        // Quiz Functionality
+        let selectedAnswers = [null, null, null];
+        
+        document.querySelectorAll('.quiz-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Find which question this option belongs to
+                const questionIndex = Array.from(document.querySelectorAll('.quiz-question')).indexOf(this.closest('.quiz-question'));
+                
+                // Remove selection from other options in this question
+                const questionOptions = this.closest('.quiz-question').querySelectorAll('.quiz-option');
+                questionOptions.forEach(opt => {
+                    opt.style.borderColor = '#e5e7eb';
+                    opt.style.backgroundColor = 'white';
+                });
+                
+                // Mark this option as selected
+                this.style.borderColor = '#3b82f6';
+                this.style.backgroundColor = '#eff6ff';
+                
+                // Store the selected answer
+                selectedAnswers[questionIndex] = this.getAttribute('data-correct') === 'true';
+            });
+        });
+        
+        document.getElementById('check-answers').addEventListener('click', () => {
+            // Check if all questions are answered
+            if (selectedAnswers.includes(null)) {
+                alert('กรุณาตอบคำถามให้ครบทุกข้อ');
+                return;
+            }
+            
+            // Mark correct and incorrect answers
+            document.querySelectorAll('.quiz-question').forEach((question, index) => {
+                const options = question.querySelectorAll('.quiz-option');
+                options.forEach(option => {
+                    const isCorrect = option.getAttribute('data-correct') === 'true';
+                    if (isCorrect) {
+                        option.classList.add('correct');
+                    } else if (option.style.backgroundColor === 'rgb(239, 246, 255)' && !isCorrect) {
+                        option.classList.add('incorrect');
+                    }
+                });
+            });
+            
+            // Calculate score
+            const score = selectedAnswers.filter(answer => answer === true).length;
+            document.getElementById('score').textContent = score;
+            
+            // Show result message
+            const resultMessage = document.getElementById('result-message');
+            if (score === 3) {
+                resultMessage.textContent = 'ยอดเยี่ยมมาก! คุณเข้าใจเรื่องระบบปฏิบัติการเป็นอย่างดี';
+            } else if (score === 2) {
+                resultMessage.textContent = 'ดีมาก! คุณเข้าใจเรื่องระบบปฏิบัติการเกือบทั้งหมดแล้ว';
+            } else if (score === 1) {
+                resultMessage.textContent = 'ไม่เลวเลย! แต่คุณยังสามารถทบทวนเนื้อหาเพิ่มเติมได้';
+            } else {
+                resultMessage.textContent = 'ลองทบทวนเนื้อหาอีกครั้งและกลับมาทำแบบทดสอบใหม่นะ';
+            }
+            
+            // Show result
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('check-answers').classList.add('hidden');
+        });
+        
+        document.getElementById('retry-quiz').addEventListener('click', () => {
+            // Reset selected answers
+            selectedAnswers = [null, null, null];
+            
+            // Reset option styling
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.style.borderColor = '#e5e7eb';
+                option.style.backgroundColor = 'white';
+                option.classList.remove('correct', 'incorrect');
+            });
+            
+            // Hide result and show check button
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('check-answers').classList.remove('hidden');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'943a76fe745d7325',t:'MTc0Nzg5NzUyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
