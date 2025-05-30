@@ -1,0 +1,522 @@
+
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สายสัญญาณเครือข่ายสื่อสารข้อมูล</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f0f9ff;
+        }
+        
+        .drag-item {
+            cursor: grab;
+            transition: all 0.2s;
+        }
+        
+        .drag-item:active {
+            cursor: grabbing;
+        }
+        
+        .drop-zone {
+            transition: all 0.3s;
+        }
+        
+        .drop-zone.highlight {
+            background-color: rgba(59, 130, 246, 0.2);
+            transform: scale(1.02);
+        }
+        
+        .quiz-option {
+            transition: all 0.2s;
+        }
+        
+        .quiz-option:hover {
+            transform: translateY(-2px);
+        }
+        
+        .quiz-option.correct {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .quiz-option.incorrect {
+            background-color: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 shadow-lg">
+            <div class="container mx-auto px-4">
+                <h1 class="text-3xl md:text-4xl font-bold text-center">สายสัญญาณเครือข่ายสื่อสารข้อมูล</h1>
+                <p class="text-center mt-2 text-blue-100">เรียนรู้และสนุกไปกับเครือข่ายคอมพิวเตอร์</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8">
+            <!-- Introduction Section -->
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-blue-800 mb-4">สายสัญญาณเครือข่ายคืออะไร?</h2>
+                <p class="mb-4">สายสัญญาณเครือข่ายสื่อสารข้อมูล เป็นสายที่ใช้ในการเชื่อมต่ออุปกรณ์ต่างๆ ในระบบเครือข่าย เพื่อให้สามารถแลกเปลี่ยนข้อมูลกันได้</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                        <h3 class="text-xl font-medium text-blue-700 mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            สายสัญญาณแบบใช้สาย (Wired)
+                        </h3>
+                        <p>สายสัญญาณที่ต้องมีการเชื่อมต่อทางกายภาพระหว่างอุปกรณ์ เช่น สาย Ethernet, สายใยแก้วนำแสง</p>
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">สาย UTP</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">สาย STP</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">สาย Fiber Optic</span>
+                            <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">สาย Coaxial</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-200">
+                        <h3 class="text-xl font-medium text-indigo-700 mb-3 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                            </svg>
+                            สายสัญญาณแบบไร้สาย (Wireless)
+                        </h3>
+                        <p>การเชื่อมต่อที่ไม่ต้องใช้สายทางกายภาพ แต่ใช้คลื่นวิทยุหรือคลื่นแม่เหล็กไฟฟ้าในการส่งข้อมูล</p>
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">Wi-Fi</span>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">Bluetooth</span>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">Cellular (4G/5G)</span>
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">Satellite</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cable Types Section -->
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-blue-800 mb-4">ประเภทของสายสัญญาณแบบใช้สาย</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-blue-700 mb-2">สาย UTP (Unshielded Twisted Pair)</h3>
+                        <div class="flex justify-center mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" class="h-20">
+                                <rect x="5" y="15" width="90" height="10" rx="5" fill="#e5e5e5" />
+                                <circle cx="10" cy="20" r="3" fill="#ff6b6b" />
+                                <circle cx="20" cy="20" r="3" fill="#4ecdc4" />
+                                <circle cx="30" cy="20" r="3" fill="#ffe66d" />
+                                <circle cx="40" cy="20" r="3" fill="#1a535c" />
+                                <circle cx="50" cy="20" r="3" fill="#ff6b6b" />
+                                <circle cx="60" cy="20" r="3" fill="#4ecdc4" />
+                                <circle cx="70" cy="20" r="3" fill="#ffe66d" />
+                                <circle cx="80" cy="20" r="3" fill="#1a535c" />
+                                <rect x="90" y="15" width="5" height="10" fill="#e5e5e5" />
+                            </svg>
+                        </div>
+                        <p class="text-sm">สายคู่บิดเกลียวไม่มีชีลด์ป้องกัน นิยมใช้ในเครือข่ายท้องถิ่น (LAN) ราคาไม่แพง ติดตั้งง่าย</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-blue-700 mb-2">สาย Fiber Optic (ใยแก้วนำแสง)</h3>
+                        <div class="flex justify-center mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" class="h-20">
+                                <rect x="5" y="15" width="90" height="10" rx="5" fill="#333" />
+                                <rect x="10" y="19" width="80" height="2" fill="#00ffcc" />
+                                <rect x="90" y="15" width="5" height="10" fill="#333" />
+                            </svg>
+                        </div>
+                        <p class="text-sm">ส่งข้อมูลด้วยแสง ความเร็วสูงมาก ระยะทางไกล ไม่มีสัญญาณรบกวนทางไฟฟ้า เหมาะกับการเชื่อมต่อระยะไกล</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-blue-700 mb-2">สาย STP (Shielded Twisted Pair)</h3>
+                        <div class="flex justify-center mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" class="h-20">
+                                <rect x="5" y="13" width="90" height="14" rx="7" fill="#888" />
+                                <rect x="7" y="15" width="86" height="10" rx="5" fill="#e5e5e5" />
+                                <circle cx="15" cy="20" r="3" fill="#ff6b6b" />
+                                <circle cx="25" cy="20" r="3" fill="#4ecdc4" />
+                                <circle cx="35" cy="20" r="3" fill="#ffe66d" />
+                                <circle cx="45" cy="20" r="3" fill="#1a535c" />
+                                <circle cx="55" cy="20" r="3" fill="#ff6b6b" />
+                                <circle cx="65" cy="20" r="3" fill="#4ecdc4" />
+                                <circle cx="75" cy="20" r="3" fill="#ffe66d" />
+                                <circle cx="85" cy="20" r="3" fill="#1a535c" />
+                                <rect x="90" y="13" width="5" height="14" fill="#888" />
+                            </svg>
+                        </div>
+                        <p class="text-sm">สายคู่บิดเกลียวที่มีชีลด์ป้องกันสัญญาณรบกวน ใช้ในสภาพแวดล้อมที่มีคลื่นแม่เหล็กไฟฟ้ารบกวนสูง</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <h3 class="text-lg font-medium text-blue-700 mb-2">สาย Coaxial (โคแอกเชียล)</h3>
+                        <div class="flex justify-center mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" class="h-20">
+                                <rect x="5" y="12" width="90" height="16" rx="8" fill="#444" />
+                                <rect x="10" y="15" width="80" height="10" rx="5" fill="#aaa" />
+                                <circle cx="50" cy="20" r="4" fill="#333" />
+                                <rect x="90" y="12" width="5" height="16" fill="#444" />
+                            </svg>
+                        </div>
+                        <p class="text-sm">มีแกนตัวนำตรงกลาง ล้อมรอบด้วยฉนวนและตัวนำด้านนอก ใช้ในระบบเคเบิลทีวี และการเชื่อมต่อระยะสั้น</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Game Section: Drag and Drop -->
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-blue-800 mb-4">เกมจับคู่สายสัญญาณกับการใช้งาน</h2>
+                <p class="mb-6">ลากสายสัญญาณไปวางในพื้นที่การใช้งานที่เหมาะสม</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-lg font-medium text-blue-700 mb-3">สายสัญญาณ</h3>
+                        <div class="space-y-4" id="drag-items">
+                            <div class="drag-item bg-blue-100 p-4 rounded-lg border border-blue-300 shadow-sm" draggable="true" data-type="utp">
+                                <h4 class="font-medium">สาย UTP</h4>
+                                <p class="text-sm text-gray-600">สายคู่บิดเกลียวไม่มีชีลด์</p>
+                            </div>
+                            
+                            <div class="drag-item bg-green-100 p-4 rounded-lg border border-green-300 shadow-sm" draggable="true" data-type="fiber">
+                                <h4 class="font-medium">สาย Fiber Optic</h4>
+                                <p class="text-sm text-gray-600">สายใยแก้วนำแสง</p>
+                            </div>
+                            
+                            <div class="drag-item bg-purple-100 p-4 rounded-lg border border-purple-300 shadow-sm" draggable="true" data-type="stp">
+                                <h4 class="font-medium">สาย STP</h4>
+                                <p class="text-sm text-gray-600">สายคู่บิดเกลียวมีชีลด์</p>
+                            </div>
+                            
+                            <div class="drag-item bg-yellow-100 p-4 rounded-lg border border-yellow-300 shadow-sm" draggable="true" data-type="coaxial">
+                                <h4 class="font-medium">สาย Coaxial</h4>
+                                <p class="text-sm text-gray-600">สายโคแอกเชียล</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-lg font-medium text-blue-700 mb-3">การใช้งาน</h3>
+                        <div class="space-y-4" id="drop-zones">
+                            <div class="drop-zone bg-gray-50 p-4 rounded-lg border border-gray-300 min-h-[80px]" data-accepts="utp">
+                                <h4 class="font-medium">เครือข่ายในสำนักงาน (LAN)</h4>
+                                <p class="text-sm text-gray-600">เชื่อมต่อคอมพิวเตอร์ในระยะใกล้</p>
+                                <div class="dropped-item mt-2"></div>
+                            </div>
+                            
+                            <div class="drop-zone bg-gray-50 p-4 rounded-lg border border-gray-300 min-h-[80px]" data-accepts="fiber">
+                                <h4 class="font-medium">เชื่อมต่อระหว่างเมือง</h4>
+                                <p class="text-sm text-gray-600">การเชื่อมต่อระยะไกลความเร็วสูง</p>
+                                <div class="dropped-item mt-2"></div>
+                            </div>
+                            
+                            <div class="drop-zone bg-gray-50 p-4 rounded-lg border border-gray-300 min-h-[80px]" data-accepts="stp">
+                                <h4 class="font-medium">โรงงานอุตสาหกรรม</h4>
+                                <p class="text-sm text-gray-600">พื้นที่ที่มีสัญญาณรบกวนสูง</p>
+                                <div class="dropped-item mt-2"></div>
+                            </div>
+                            
+                            <div class="drop-zone bg-gray-50 p-4 rounded-lg border border-gray-300 min-h-[80px]" data-accepts="coaxial">
+                                <h4 class="font-medium">ระบบเคเบิลทีวี</h4>
+                                <p class="text-sm text-gray-600">การส่งสัญญาณภาพและเสียง</p>
+                                <div class="dropped-item mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <button id="check-answers" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+                        ตรวจคำตอบ
+                    </button>
+                    <button id="reset-game" class="ml-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors">
+                        เริ่มใหม่
+                    </button>
+                </div>
+                
+                <div id="result-message" class="mt-4 text-center hidden"></div>
+            </section>
+
+            <!-- Quiz Section -->
+            <section class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-blue-800 mb-4">แบบทดสอบความรู้</h2>
+                <p class="mb-6">ทดสอบความรู้เกี่ยวกับสายสัญญาณเครือข่าย</p>
+                
+                <div class="space-y-6" id="quiz-container">
+                    <div class="quiz-question p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-medium mb-3">1. สายใดเหมาะสำหรับการเชื่อมต่อระยะไกลที่สุด?</h3>
+                        <div class="space-y-2">
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="false">
+                                สาย UTP
+                            </div>
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="true">
+                                สาย Fiber Optic
+                            </div>
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="false">
+                                สาย Coaxial
+                            </div>
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="false">
+                                สาย STP
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-question p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-medium mb-3">2. สายสัญญาณแบบไร้สายใช้อะไรในการส่งข้อมูล?</h3>
+                        <div class="space-y-2">
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="false">
+                                กระแสไฟฟ้า
+                            </div>
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="false">
+                                แสง
+                            </div>
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="true">
+                                คลื่นแม่เหล็กไฟฟ้า
+                            </div>
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="false">
+                                เสียง
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-question p-4 bg-gray-50 rounded-lg">
+                        <h3 class="font-medium mb-3">3. สาย UTP มีกี่คู่สาย?</h3>
+                        <div class="space-y-2">
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="false">
+                                2 คู่
+                            </div>
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="true">
+                                4 คู่
+                            </div>
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="false">
+                                6 คู่
+                            </div>
+                            <div class="quiz-option p-2 bg-white border border-gray-300 rounded cursor-pointer hover:bg-gray-100" data-correct="false">
+                                8 คู่
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <div id="quiz-score" class="text-lg font-medium mb-4 hidden"></div>
+                    <button id="check-quiz" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+                        ตรวจคำตอบ
+                    </button>
+                    <button id="reset-quiz" class="ml-4 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-lg transition-colors hidden">
+                        ลองอีกครั้ง
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white py-6">
+            <div class="container mx-auto px-4 text-center">
+                <p>© 2023 สายสัญญาณเครือข่ายสื่อสารข้อมูล - เรียนรู้และสนุกไปกับเครือข่ายคอมพิวเตอร์</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Drag and Drop Game
+        document.addEventListener('DOMContentLoaded', () => {
+            const dragItems = document.querySelectorAll('.drag-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            const checkAnswersBtn = document.getElementById('check-answers');
+            const resetGameBtn = document.getElementById('reset-game');
+            const resultMessage = document.getElementById('result-message');
+            
+            let draggedItem = null;
+            let correctMatches = 0;
+            let totalDropZones = dropZones.length;
+            
+            // Set up drag events
+            dragItems.forEach(item => {
+                item.addEventListener('dragstart', function() {
+                    draggedItem = this;
+                    setTimeout(() => this.style.opacity = '0.5', 0);
+                });
+                
+                item.addEventListener('dragend', function() {
+                    setTimeout(() => this.style.opacity = '1', 0);
+                });
+            });
+            
+            // Set up drop events
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('highlight');
+                });
+                
+                zone.addEventListener('dragleave', function() {
+                    this.classList.remove('highlight');
+                });
+                
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('highlight');
+                    
+                    // Check if there's already an item in this zone
+                    const droppedItem = this.querySelector('.dropped-item');
+                    if (droppedItem.children.length > 0) {
+                        return; // Zone already has an item
+                    }
+                    
+                    // Clone the dragged item and append to drop zone
+                    const clone = draggedItem.cloneNode(true);
+                    clone.style.opacity = '1';
+                    clone.style.cursor = 'default';
+                    clone.setAttribute('draggable', 'false');
+                    droppedItem.appendChild(clone);
+                    
+                    // Hide the original item
+                    draggedItem.style.display = 'none';
+                });
+            });
+            
+            // Check answers
+            checkAnswersBtn.addEventListener('click', () => {
+                correctMatches = 0;
+                
+                dropZones.forEach(zone => {
+                    const droppedItem = zone.querySelector('.dropped-item').firstChild;
+                    if (droppedItem) {
+                        const acceptsType = zone.getAttribute('data-accepts');
+                        const itemType = droppedItem.getAttribute('data-type');
+                        
+                        if (acceptsType === itemType) {
+                            droppedItem.classList.add('bg-green-100');
+                            droppedItem.classList.add('border-green-500');
+                            correctMatches++;
+                        } else {
+                            droppedItem.classList.add('bg-red-100');
+                            droppedItem.classList.add('border-red-500');
+                        }
+                    }
+                });
+                
+                resultMessage.classList.remove('hidden');
+                if (correctMatches === totalDropZones) {
+                    resultMessage.textContent = 'ยอดเยี่ยม! คุณจับคู่ได้ถูกต้องทั้งหมด';
+                    resultMessage.classList.add('text-green-600');
+                    resultMessage.classList.remove('text-red-600');
+                } else {
+                    resultMessage.textContent = `คุณจับคู่ถูกต้อง ${correctMatches} จาก ${totalDropZones} คู่ ลองอีกครั้ง!`;
+                    resultMessage.classList.add('text-red-600');
+                    resultMessage.classList.remove('text-green-600');
+                }
+            });
+            
+            // Reset game
+            resetGameBtn.addEventListener('click', () => {
+                // Show all original drag items
+                dragItems.forEach(item => {
+                    item.style.display = 'block';
+                });
+                
+                // Clear all drop zones
+                dropZones.forEach(zone => {
+                    const droppedItem = zone.querySelector('.dropped-item');
+                    droppedItem.innerHTML = '';
+                });
+                
+                // Hide result message
+                resultMessage.classList.add('hidden');
+            });
+            
+            // Quiz functionality
+            const quizOptions = document.querySelectorAll('.quiz-option');
+            const checkQuizBtn = document.getElementById('check-quiz');
+            const resetQuizBtn = document.getElementById('reset-quiz');
+            const quizScore = document.getElementById('quiz-score');
+            
+            quizOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Deselect other options in the same question
+                    const questionDiv = this.closest('.quiz-question');
+                    const options = questionDiv.querySelectorAll('.quiz-option');
+                    
+                    options.forEach(opt => {
+                        opt.classList.remove('bg-blue-100', 'border-blue-500');
+                    });
+                    
+                    // Select this option
+                    this.classList.add('bg-blue-100', 'border-blue-500');
+                });
+            });
+            
+            checkQuizBtn.addEventListener('click', () => {
+                let score = 0;
+                const questions = document.querySelectorAll('.quiz-question');
+                
+                questions.forEach(question => {
+                    const options = question.querySelectorAll('.quiz-option');
+                    let answered = false;
+                    
+                    options.forEach(option => {
+                        const isSelected = option.classList.contains('bg-blue-100');
+                        const isCorrect = option.getAttribute('data-correct') === 'true';
+                        
+                        if (isSelected) {
+                            answered = true;
+                            option.classList.remove('bg-blue-100', 'border-blue-500');
+                            
+                            if (isCorrect) {
+                                option.classList.add('correct');
+                                score++;
+                            } else {
+                                option.classList.add('incorrect');
+                            }
+                        } else if (isCorrect) {
+                            // Highlight correct answer if user didn't select it
+                            option.classList.add('correct');
+                        }
+                        
+                        // Disable clicking after checking
+                        option.style.pointerEvents = 'none';
+                    });
+                });
+                
+                // Show score
+                quizScore.classList.remove('hidden');
+                quizScore.textContent = `คะแนนของคุณ: ${score} จาก ${questions.length}`;
+                
+                // Hide check button, show reset button
+                checkQuizBtn.classList.add('hidden');
+                resetQuizBtn.classList.remove('hidden');
+            });
+            
+            resetQuizBtn.addEventListener('click', () => {
+                const options = document.querySelectorAll('.quiz-option');
+                
+                options.forEach(option => {
+                    // Reset styling
+                    option.classList.remove('correct', 'incorrect', 'bg-blue-100', 'border-blue-500');
+                    // Enable clicking
+                    option.style.pointerEvents = 'auto';
+                });
+                
+                // Hide score
+                quizScore.classList.add('hidden');
+                
+                // Show check button, hide reset button
+                checkQuizBtn.classList.remove('hidden');
+                resetQuizBtn.classList.add('hidden');
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'947c5de6415d7335',t:'MTc0ODU4ODU1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
