@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมจับเวลาครูปฎิภาณ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1e130c, #9a8478);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            letter-spacing: 1.5px;
+        }
+
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1rem;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .start-btn {
+            background-color: #4CAF50;
+        }
+
+        .start-btn:hover {
+            background-color: #388E3C;
+        }
+
+        .stop-btn {
+            background-color: #F44336;
+        }
+
+        .stop-btn:hover {
+            background-color: #D32F2F;
+        }
+
+        .reset-btn {
+            background-color: #2196F3;
+        }
+
+        .reset-btn:hover {
+            background-color: #1976D2;
+        }
+
+        .container {
+            padding: 40px;
+            background-color: rgb(23, 27, 29);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>โปรแกรมจับเวลา</h2>
+        <h1 id="display">00:00:00.000</h1>
+        <div class="buttons">
+            <button class="start-btn" onclick="startTimer()">จับเวลา</button>
+            <button class="stop-btn" onclick="stopTimer()">หยุด</button>
+            <button class="reset-btn" onclick="resetTimer()">Reset</button>
+        </div>
+        <h4>ผู้พัฒนาต่อยอด : jayvo padipan pantong</h4>
+    </div>
+
+    <script>
+        let milliseconds = 0;
+        let seconds = 0;
+        let minutes = 0;
+        let hours = 0;
+        let interval = null;
+
+        function updateDisplay() {
+            const pad = (val, digits = 2) => val.toString().padStart(digits, '0');
+            const displayElement = document.getElementById('display');
+            
+            if (displayElement) {
+                displayElement.textContent = 
+                    `${pad(hours)}:${pad(minutes)}:${pad(seconds)}.${pad(milliseconds, 3)}`;
+            }
+        }
+
+        function startTimer() {
+            if (interval) return;
+
+            interval = setInterval(() => {
+                milliseconds += 10;
+
+                if (milliseconds === 1000) {
+                    milliseconds = 0;
+                    seconds++;
+                    if (seconds === 60) {
+                        seconds = 0;
+                        minutes++;
+                        if (minutes === 60) {
+                            minutes = 0;
+                            hours++;
+                        }
+                    }
+                }
+
+                updateDisplay();
+            }, 10);
+        }
+
+        function stopTimer() {
+            clearInterval(interval);
+            interval = null;
+        }
+
+        function resetTimer() {
+            clearInterval(interval);
+            interval = null;
+            milliseconds = 0;
+            seconds = 0;
+            minutes = 0;
+            hours = 0;
+            updateDisplay();
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>
