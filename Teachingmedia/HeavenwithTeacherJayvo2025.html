@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>พุทธจักรวาล - ภูมิและสวรรค์ในพระพุทธศาสนา กับครูเจโว</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&family=Sriracha&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Sarabun', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0b0033, #1f0058, #3a0077);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .cosmos-container {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+
+        .realm {
+            position: relative;
+            border-radius: 24px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 900px;
+            backdrop-filter: blur(10px);
+            transition: all 0.8s ease;
+            transform: translateY(50px);
+            opacity: 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .realm.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .realm-title {
+            font-family: 'Sriracha', cursive;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .realm-description {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .level {
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .level:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .level-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .level-description {
+            font-size: 1.05rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 2;
+        }
+
+        .kama-realm {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 107, 129, 0.15));
+            border: 1px solid rgba(255, 107, 107, 0.2);
+        }
+
+        .rupa-realm {
+            background: linear-gradient(135deg, rgba(100, 204, 240, 0.15), rgba(100, 170, 255, 0.15));
+            border: 1px solid rgba(100, 204, 240, 0.2);
+        }
+
+        .arupa-realm {
+            background: linear-gradient(135deg, rgba(186, 130, 255, 0.15), rgba(130, 130, 255, 0.15));
+            border: 1px solid rgba(186, 130, 255, 0.2);
+        }
+
+        .kama-level {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 129, 0.2));
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .kama-level::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(255, 200, 150, 0.4), transparent 70%);
+            z-index: 0;
+        }
+
+        .rupa-level {
+            background: linear-gradient(135deg, rgba(100, 204, 240, 0.2), rgba(100, 170, 255, 0.2));
+            border: 1px solid rgba(100, 204, 240, 0.3);
+        }
+
+        .rupa-level::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(150, 220, 255, 0.4), transparent 70%);
+            z-index: 0;
+        }
+
+        .arupa-level {
+            background: linear-gradient(135deg, rgba(186, 130, 255, 0.2), rgba(130, 130, 255, 0.2));
+            border: 1px solid rgba(186, 130, 255, 0.3);
+        }
+
+        .arupa-level::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(200, 150, 255, 0.4), transparent 70%);
+            z-index: 0;
+        }
+
+        .realm-icon-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .realm-icon {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .icon-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            filter: blur(15px);
+            z-index: 1;
+            animation: pulse 4s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(0.9); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .kama-icon {
+            background: radial-gradient(circle, rgba(255, 150, 100, 0.9), rgba(255, 107, 129, 0.9));
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.7);
+        }
+
+        .kama-glow {
+            background: radial-gradient(circle, rgba(255, 150, 100, 0.7), rgba(255, 107, 129, 0.7));
+        }
+
+        .rupa-icon {
+            background: radial-gradient(circle, rgba(100, 204, 240, 0.9), rgba(100, 170, 255, 0.9));
+            box-shadow: 0 0 30px rgba(100, 204, 240, 0.7);
+        }
+
+        .rupa-glow {
+            background: radial-gradient(circle, rgba(100, 204, 240, 0.7), rgba(100, 170, 255, 0.7));
+        }
+
+        .arupa-icon {
+            background: radial-gradient(circle, rgba(186, 130, 255, 0.9), rgba(130, 130, 255, 0.9));
+            box-shadow: 0 0 30px rgba(186, 130, 255, 0.7);
+        }
+
+        .arupa-glow {
+            background: radial-gradient(circle, rgba(186, 130, 255, 0.7), rgba(130, 130, 255, 0.7));
+        }
+
+        .navigation {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-dot::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .nav-dot.active::after {
+            background-color: #fff;
+            width: 9px;
+            height: 9px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-family: 'Sriracha', cursive;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffcc33, #ff6699);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .cosmic-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.4;
+            z-index: -1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, -30px) rotate(5deg); }
+            50% { transform: translate(0, 40px) rotate(0deg); }
+            75% { transform: translate(-30px, -20px) rotate(-5deg); }
+        }
+
+        .expand-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 30px;
+            padding: 8px 20px;
+            color: white;
+            cursor: pointer;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+        }
+
+        .expand-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sublevel-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.8s ease;
+        }
+
+        .sublevel-container.expanded {
+            max-height: 1500px; /* Adjust as needed */
+        }
+
+        .sublevel {
+            margin: 15px 0 15px 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .sublevel-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .illustration {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            display: block;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+        }
+
+        .level-illustration {
+            width: 80px;
+            height: 80px;
+            float: right;
+            margin-left: 15px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+        }
+
+        .kama-title {
+            background: linear-gradient(to right, #ff9966, #ff5e62);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .rupa-title {
+            background: linear-gradient(to right, #56ccf2, #2f80ed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .arupa-title {
+            background: linear-gradient(to right, #da22ff, #9733ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .overview-title {
+            background: linear-gradient(to right, #ffcc33, #ff6699);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .conclusion-title {
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .cosmic-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float-particle 15s infinite linear;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .realm {
+                margin: 30px 15px;
+                padding: 25px 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .realm-title {
+                font-size: 2rem;
+            }
+
+            .navigation {
+                right: 15px;
+            }
+
+            .realm-icon-container {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 20px;
+            }
+
+            .level-illustration {
+                width: 60px;
+                height: 60px;
+            }
+        }
+		
+		
+		.realm2 {
+			display: flex; /* ใช้ Flexbox */
+			justify-content: center; /* จัดให้อยู่ตรงกลางในแนวนอน */
+			align-items: center; /* จัดให้อยู่ตรงกลางในแนวตั้ง */
+			border: 1px solid #ddd; /* เส้นขอบสำหรับดูพื้นที่ของ div */
+			margin: 40px auto;
+		}
+
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="cosmic-particles" id="particles"></div>
+
+    <div class="cosmic-orb" style="width: 400px; height: 400px; top: 5%; left: 5%; background: radial-gradient(circle, rgba(255, 107, 107, 0.6), transparent 70%);"></div>
+    <div class="cosmic-orb" style="width: 300px; height: 300px; top: 40%; right: 5%; background: radial-gradient(circle, rgba(100, 204, 240, 0.6), transparent 70%); animation-delay: -5s;"></div>
+    <div class="cosmic-orb" style="width: 350px; height: 350px; bottom: 10%; left: 10%; background: radial-gradient(circle, rgba(186, 130, 255, 0.6), transparent 70%); animation-delay: -10s;"></div>
+
+    <div class="navigation" id="navigation"></div>
+
+    <div class="cosmos-container" id="cosmos">
+        <header class="header">
+            <h1>พุทธจักรวาล กับครูเจโว</h1>
+            <p>การจัดลำดับชั้นของสวรรค์และพรหมโลกในพระพุทธศาสนา</p>
+			<div class="realm2">
+					<img src="https://github.com/padipan/padipan.github.io/blob/main/img/jayvovo5.jpg?raw=true" alt="Description" width="300" height="300">
+					<img src="https://github.com/padipan/padipan.github.io/blob/main/img/jayvovo3.jpg?raw=true" alt="Description" width="300" height="300">
+					<img src="https://github.com/padipan/padipan.github.io/blob/main/img/jayvovo.png?raw=true" alt="Description" width="300" height="300">
+					<img src="https://github.com/padipan/padipan.github.io/blob/main/img/jayvovo4.jpg?raw=true" alt="Description" width="300" height="300">
+					<img src="https://github.com/padipan/padipan.github.io/blob/main/img/jayvovo2.jpg?raw=true" alt="Description" width="300" height="300">
+			</div>
+        </header>
+
+        <section class="realm kama-realm" id="overview">
+            <div class="realm-icon-container">
+                <div class="realm-icon kama-icon">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FFD700" stroke="#FFF" stroke-width="0.5"/>
+                        <circle cx="12" cy="12" r="5" fill="#FFF" fill-opacity="0.7"/>
+                        <circle cx="12" cy="12" r="3" fill="#FFF"/>
+                    </svg>
+                </div>
+                <div class="icon-glow kama-glow"></div>
+            </div>
+            <h2 class="realm-title overview-title">ภาพรวมของภูมิในพุทธศาสนา</h2>
+            <p class="realm-description">
+                ในพระพุทธศาสนา การจัดลำดับชั้นของสวรรค์และพรหมโลกแบ่งออกเป็น 3 ส่วนใหญ่ ได้แก่ สวรรค์ 6 ชั้น (กามภูมิ), พรหม 16 ชั้น (รูปภูมิ), และ อรูปพรหม 4 ชั้น (อรูปภูมิ) โดยการเกิดในภูมิใดขึ้นอยู่กับกรรมและการบำเพ็ญในชีวิตที่ผ่านมา
+            </p>
+
+            <svg class="illustration" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="400" fill="url(#cosmicGradient)" rx="20" ry="20"/>
+
+                <circle cx="400" cy="320" r="70" fill="url(#kamaGradient)" opacity="0.9" filter="url(#glow)"/>
+                <text x="400" y="320" text-anchor="middle" fill="white" font-size="18" font-weight="bold">กามภูมิ</text>
+                <text x="400" y="345" text-anchor="middle" fill="white" font-size="14">สวรรค์ 6 ชั้น</text>
+
+                <circle cx="400" cy="200" r="90" fill="url(#rupaGradient)" opacity="0.9" filter="url(#glow)"/>
+                <text x="400" y="200" text-anchor="middle" fill="white" font-size="18" font-weight="bold">รูปภูมิ</text>
+                <text x="400" y="225" text-anchor="middle" fill="white" font-size="14">พรหม 16 ชั้น</text>
+
+                <circle cx="400" cy="80" r="60" fill="url(#arupaGradient)" opacity="0.9" filter="url(#glow)"/>
+                <text x="400" y="80" text-anchor="middle" fill="white" font-size="18" font-weight="bold">อรูปภูมิ</text>
+                <text x="400" y="105" text-anchor="middle" fill="white" font-size="14">อรูปพรหม 4 ชั้น</text>
+
+                <line x1="400" y1="260" x2="400" y2="290" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                <line x1="400" y1="140" x2="400" y2="170" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+
+                <g class="stars">
+                    <circle cx="150" cy="100" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="650" cy="150" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="200" cy="300" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="600" cy="250" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="300" cy="80" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="4.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="500" cy="350" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3.2s" repeatCount="indefinite"/>
+                    </circle>
+                </g>
+
+                <defs>
+                    <linearGradient id="cosmicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#0b0033" stop-opacity="0.6"/>
+                        <stop offset="100%" stop-color="#3a0077" stop-opacity="0.6"/>
+                    </linearGradient>
+
+                    <radialGradient id="kamaGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" stop-color="#ff9966"/>
+                        <stop offset="100%" stop-color="#ff5e62"/>
+                    </radialGradient>
+
+                    <radialGradient id="rupaGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" stop-color="#56ccf2"/>
+                        <stop offset="100%" stop-color="#2f80ed"/>
+                    </radialGradient>
+
+                    <radialGradient id="arupaGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" stop-color="#da22ff"/>
+                        <stop offset="100%" stop-color="#9733ee"/>
+                    </radialGradient>
+
+                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="10" result="blur"/>
+                        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                    </filter>
+                </defs>
+            </svg>
+
+            <div class="level kama-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#kamaGradient)" opacity="0.9"/>
+                    <path d="M50 20 L60 40 L80 45 L65 60 L70 80 L50 70 L30 80 L35 60 L20 45 L40 40 Z" fill="#FFD700" opacity="0.8"/>
+                    <circle cx="50" cy="50" r="15" fill="#FFF" fill-opacity="0.5"/>
+                </svg>
+                <h3 class="level-title">กามภูมิ (มนุษย์ + สวรรค์ 6 ชั้น)</h3>
+                <p class="level-description">มีรูปและเสพกาม ยังติดอยู่ในกามคุณ 5 (รูป เสียง กลิ่น รส สัมผัส) เป็นภูมิที่มีความสุขทางกาย แต่ยังไม่พ้นจากความทุกข์</p>
+            </div>
+            <div class="level rupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#rupaGradient)" opacity="0.9"/>
+                    <circle cx="50" cy="50" r="30" fill="#FFF" fill-opacity="0.3" stroke="#FFF" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="15" fill="#FFF" fill-opacity="0.5"/>
+                </svg>
+                <h3 class="level-title">รูปภูมิ (พรหม 16 ชั้น)</h3>
+                <p class="level-description">มีรูป แต่ปราศจากกาม เป็นที่อยู่ของพรหมผู้ที่บำเพ็ญสมาธิในรูปฌาน มีความสุขทางใจที่ละเอียดประณีตกว่ากามภูมิ</p>
+            </div>
+            <div class="level arupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#arupaGradient)" opacity="0.9"/>
+                    <circle cx="50" cy="50" r="25" fill="#FFF" fill-opacity="0.2"/>
+                    <circle cx="50" cy="50" r="15" fill="#FFF" fill-opacity="0.1"/>
+                    <circle cx="50" cy="50" r="5" fill="#FFF" fill-opacity="0.5"/>
+                </svg>
+                <h3 class="level-title">อรูปภูมิ (อรูปพรหม 4 ชั้น)</h3>
+                <p class="level-description">ไม่มีรูปกายเลย เป็นที่อยู่ของพรหมที่บำเพ็ญสมาบัติในอรูปฌาน มีเพียงจิต เป็นภูมิที่มีความสุขทางใจที่ละเอียดประณีตที่สุดในสังสารวัฏ</p>
+            </div>
+        </section>
+
+        <section class="realm kama-realm" id="kama">
+            <div class="realm-icon-container">
+                <div class="realm-icon kama-icon">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3L16 7.5H8L12 3Z" fill="#FFD700"/>
+                        <path d="M12 3L8 7.5H16L12 3Z" fill="#FFD700"/>
+                        <circle cx="12" cy="14" r="7" fill="#FF9966" stroke="#FFF" stroke-width="0.5"/>
+                        <path d="M9 12L12 15L15 12" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="icon-glow kama-glow"></div>
+            </div>
+            <h2 class="realm-title kama-title">สวรรค์ 6 ชั้น (กามภูมิ)</h2>
+            <p class="realm-description">
+                สวรรค์ในกามภูมิเป็นที่อยู่ของเทวดาที่มีความสุขในกามคุณ (รูป เสียง กลิ่น รส สัมผัส) แต่ยังต้องวนเวียนในสังสารวัฏ
+            </p>
+
+            <svg class="illustration" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="400" fill="url(#kamaBackGradient)" rx="20" ry="20"/>
+
+                <g class="heaven-layers">
+                    <path d="M400,50 Q550,50 600,100 Q650,150 650,200 Q650,250 600,300 Q550,350 400,350 Q250,350 200,300 Q150,250 150,200 Q150,150 200,100 Q250,50 400,50 Z"
+                           fill="url(#heaven6Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="80" text-anchor="middle" fill="white" font-size="16" font-weight="bold">ปรนิมมิตวสวัตดี</text>
+
+                    <path d="M400,80 Q530,80 570,120 Q610,160 610,200 Q610,240 570,280 Q530,320 400,320 Q270,320 230,280 Q190,240 190,200 Q190,160 230,120 Q270,80 400,80 Z"
+                           fill="url(#heaven5Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="110" text-anchor="middle" fill="white" font-size="16" font-weight="bold">นิมมานรดี</text>
+
+                    <path d="M400,110 Q510,110 540,140 Q570,170 570,200 Q570,230 540,260 Q510,290 400,290 Q290,290 260,260 Q230,230 230,200 Q230,170 260,140 Q290,110 400,110 Z"
+                           fill="url(#heaven4Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="140" text-anchor="middle" fill="white" font-size="16" font-weight="bold">ดุสิต</text>
+
+                    <path d="M400,140 Q490,140 510,160 Q530,180 530,200 Q530,220 510,240 Q490,260 400,260 Q310,260 290,240 Q270,220 270,200 Q270,180 290,160 Q310,140 400,140 Z"
+                           fill="url(#heaven3Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="170" text-anchor="middle" fill="white" font-size="16" font-weight="bold">ยามา</text>
+
+                    <path d="M400,170 Q470,170 485,185 Q500,200 500,215 Q500,230 485,245 Q470,260 400,260 Q330,260 315,245 Q300,230 300,215 Q300,200 315,185 Q330,170 400,170 Z"
+                           fill="url(#heaven2Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="200" text-anchor="middle" fill="white" font-size="16" font-weight="bold">ดาวดึงส์</text>
+
+                    <path d="M400,200 Q450,200 460,210 Q470,220 470,230 Q470,240 460,250 Q450,260 400,260 Q350,260 340,250 Q330,240 330,230 Q330,220 340,210 Q350,200 400,200 Z"
+                           fill="url(#heaven1Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="230" text-anchor="middle" fill="white" font-size="16" font-weight="bold">จาตุมหาราชิกา</text>
+
+                    <ellipse cx="400" cy="280" rx="100" ry="30" fill="#8B4513" opacity="0.7"/>
+                    <text x="400" y="285" text-anchor="middle" fill="white" font-size="14">มนุษย์โลก</text>
+                </g>
+
+                <g class="stars">
+                    <circle cx="150" cy="100" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="650" cy="150" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="200" cy="300" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="600" cy="250" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="300" cy="80" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="4.5s" repeatCount="indefinite"/>
+                    </circle>
+                </g>
+
+                <defs>
+                    <linearGradient id="kamaBackGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#330000" stop-opacity="0.6"/>
+                        <stop offset="100%" stop-color="#660033" stop-opacity="0.6"/>
+                    </linearGradient>
+
+                    <linearGradient id="heaven1Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff9966"/>
+                        <stop offset="100%" stop-color="#ff5e62"/>
+                    </linearGradient>
+
+                    <linearGradient id="heaven2Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff7e5f"/>
+                        <stop offset="100%" stop-color="#feb47b"/>
+                    </linearGradient>
+
+                    <linearGradient id="heaven3Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ff9a9e"/>
+                        <stop offset="100%" stop-color="#fad0c4"/>
+                    </linearGradient>
+
+                    <linearGradient id="heaven4Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffecd2"/>
+                        <stop offset="100%" stop-color="#fcb69f"/>
+                    </linearGradient>
+
+                    <linearGradient id="heaven5Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#ffc3a0"/>
+                        <stop offset="100%" stop-color="#ffafbd"/>
+                    </linearGradient>
+
+                    <linearGradient id="heaven6Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#f6d365"/>
+                        <stop offset="100%" stop-color="#fda085"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <div class="level kama-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#heaven1Gradient)" opacity="0.9"/>
+                    <path d="M30 50 L40 40 L60 40 L70 50 L60 60 L40 60 Z" fill="#FFF" fill-opacity="0.5"/>
+                    <circle cx="50" cy="50" r="10" fill="#FFF" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">1. จาตุมหาราชิกา</h3>
+                <p class="level-description">ชั้นที่ใกล้โลกที่สุด มีท้าวจตุโลกบาลทั้ง 4 ดูแล ได้แก่ ท้าวธตรฐ ท้าววิรุฬหก ท้าววิรูปักษ์ และท้าวกุเวร เป็นสวรรค์ที่มีหน้าที่ปกป้องโลกมนุษย์จากอสูรและภัยต่างๆ</p>
+            </div>
+
+            <div class="level kama-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#heaven2Gradient)" opacity="0.9"/>
+                    <path d="M50 20 L65 40 L50 60 L35 40 Z" fill="#FFF" fill-opacity="0.5" stroke="#FFF" stroke-width="1"/>
+                    <circle cx="50" cy="40" r="10" fill="#FFD700" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">2. ดาวดึงส์</h3>
+                <p class="level-description">สวรรค์ของพระอินทร์ (ท้าวสักกะ) เป็นที่ประทับของพระอินทร์และเทวดาอีก 32 องค์ มีปราสาทไพชยนต์อันงดงาม และสวนนันทวันที่เต็มไปด้วยความสุขสำราญ</p>
+            </div>
+
+            <div class="level kama-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#heaven3Gradient)" opacity="0.9"/>
+                    <path d="M30 50 Q50 30 70 50 Q50 70 30 50 Z" fill="#FFF" fill-opacity="0.5" stroke="#FFF" stroke-width="1"/>
+                    <circle cx="50" cy="50" r="10" fill="#ADFF2F" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">3. ยามา</h3>
+                <p class="level-description">สวรรค์ชั้นที่ 3 เป็นที่อยู่ของเทวดาที่ไม่มีความทุกข์หรือลำบากใจใดๆ มีความสุขสบายตลอดเวลา</p>
+            </div>
+
+            <div class="level kama-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#heaven4Gradient)" opacity="0.9"/>
+                    <path d="M50 20 L80 50 L50 80 L20 50 Z" fill="#FFF" fill-opacity="0.5"/>
+                    <circle cx="50" cy="50" r="12" fill="#DA70D6" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">4. ดุสิต</h3>
+                <p class="level-description">สวรรค์ชั้นที่ 4 เป็นที่สถิตของพระโพธิสัตว์และเทวดาผู้ทรงศีล ที่นี่มีความสงบสุขและงดงาม เป็นที่รอคอยการอุบัติของพระพุทธเจ้าในอนาคต</p>
+            </div>
+
+            <div class="level kama-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#heaven5Gradient)" opacity="0.9"/>
+                    <path d="M50 25 A25 25 0 0 1 50 75 A25 25 0 0 1 50 25 Z" fill="#FFF" fill-opacity="0.5"/>
+                    <circle cx="50" cy="50" r="15" fill="#FFA07A" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">5. นิมมานรดี</h3>
+                <p class="level-description">สวรรค์ชั้นที่ 5 เป็นที่อยู่ของเทวดาที่สามารถเนรมิตความสุขและสิ่งของตามความปรารถนาได้ด้วยตนเอง</p>
+            </div>
+
+            <div class="level kama-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#heaven6Gradient)" opacity="0.9"/>
+                    <path d="M50 20 C70 20 80 40 70 60 C60 80 40 80 30 60 C20 40 30 20 50 20 Z" fill="#FFF" fill-opacity="0.5"/>
+                    <circle cx="50" cy="50" r="10" fill="#FFC0CB" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">6. ปรนิมมิตวสวัตดี</h3>
+                <p class="level-description">สวรรค์ชั้นสูงสุดในกามภูมิ เป็นที่อยู่ของเทวดาที่สามารถใช้ผู้อื่นเนรมิตสิ่งต่างๆ ให้ได้ มีความสุขสบายและอำนาจมาก</p>
+            </div>
+        </section>
+
+        <section class="realm rupa-realm" id="rupa">
+            <div class="realm-icon-container">
+                <div class="realm-icon rupa-icon">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4Z" fill="#FFF" fill-opacity="0.7"/>
+                        <path d="M12 6V12L16 14" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="12" cy="12" r="2" fill="#ADD8E6"/>
+                    </svg>
+                </div>
+                <div class="icon-glow rupa-glow"></div>
+            </div>
+            <h2 class="realm-title rupa-title">พรหม 16 ชั้น (รูปภูมิ)</h2>
+            <p class="realm-description">
+                รูปภูมิเป็นที่อยู่ของพรหมที่มีรูปกายแต่ปราศจากกาม มีความสุขจากการบำเพ็ญฌาน (สมาธิ) แบ่งตามระดับของรูปฌานที่บำเพ็ญได้
+            </p>
+
+            <svg class="illustration" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="500" fill="url(#rupaBackGradient)" rx="20" ry="20"/>
+
+                <g class="rupa-layers">
+                    <rect x="100" y="400" width="600" height="70" fill="url(#jhana1Gradient)" opacity="0.9" rx="10" ry="10" filter="url(#glow)"/>
+                    <text x="400" y="425" text-anchor="middle" fill="white" font-size="16" font-weight="bold">ปฐมฌานภูมิ (พรหม 3 ชั้น)</text>
+
+                    <rect x="120" y="320" width="560" height="60" fill="url(#jhana2Gradient)" opacity="0.9" rx="10" ry="10" filter="url(#glow)"/>
+                    <text x="400" y="345" text-anchor="middle" fill="white" font-size="16" font-weight="bold">ทุติยฌานภูมิ (พรหม 3 ชั้น)</text>
+
+                    <rect x="140" y="240" width="520" height="60" fill="url(#jhana3Gradient)" opacity="0.9" rx="10" ry="10" filter="url(#glow)"/>
+                    <text x="400" y="265" text-anchor="middle" fill="white" font-size="16" font-weight="bold">ตติยฌานภูมิ (พรหม 3 ชั้น)</text>
+
+                    <rect x="160" y="160" width="480" height="60" fill="url(#jhana4Gradient)" opacity="0.9" rx="10" ry="10" filter="url(#glow)"/>
+                    <text x="400" y="185" text-anchor="middle" fill="white" font-size="16" font-weight="bold">จตุตถฌานภูมิ (พรหม 7 ชั้น)</text>
+
+                    <line x1="400" y1="390" x2="400" y2="380" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                    <line x1="400" y1="310" x2="400" y2="320" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                    <line x1="400" y1="230" x2="400" y2="240" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                </g>
+
+                <g class="stars">
+                    <circle cx="150" cy="100" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="650" cy="150" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="200" cy="300" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="600" cy="250" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="300" cy="80" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="4.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="500" cy="450" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3.2s" repeatCount="indefinite"/>
+                    </circle>
+                </g>
+
+                <defs>
+                    <linearGradient id="rupaBackGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#002244" stop-opacity="0.6"/>
+                        <stop offset="100%" stop-color="#004488" stop-opacity="0.6"/>
+                    </linearGradient>
+
+                    <linearGradient id="jhana1Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#6dd5ed"/>
+                        <stop offset="100%" stop-color="#2193b0"/>
+                    </linearGradient>
+                    <linearGradient id="jhana2Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#56ccf2"/>
+                        <stop offset="100%" stop-color="#2f80ed"/>
+                    </linearGradient>
+                    <linearGradient id="jhana3Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#a1c4fd"/>
+                        <stop offset="100%" stop-color="#c2e9fb"/>
+                    </linearGradient>
+                    <linearGradient id="jhana4Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#9796f0"/>
+                        <stop offset="100%" stop-color="#fbc7d4"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <div class="level rupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#jhana1Gradient)" opacity="0.9"/>
+                    <path d="M50 20 L50 80 M20 50 L80 50" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="50" cy="50" r="10" fill="#FFF" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">1. ปฐมฌานภูมิ (พรหม 3 ชั้น)</h3>
+                <p class="level-description">พรหมที่เข้าถึงปฐมฌาน มีองค์ 5 คือ วิตก วิจาร ปีติ สุข เอกัคคตา อยู่ในภูมิที่สงบ มีความสุขจากฌาน</p>
+                <button class="expand-btn" data-target="jhana1-sublevels">รายละเอียดเพิ่มเติม</button>
+                <div class="sublevel-container" id="jhana1-sublevels">
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">พรหมปาริสัชชา</h4>
+                        <p>พรหมที่เป็นบริษัทบริวารของท้าวมหาพรหม</p>
+                    </div>
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">พรหมปุโรหิตา</h4>
+                        <p>พรหมที่เป็นปุโรหิตของท้าวมหาพรหม มีความรู้และประสบการณ์มากกว่า</p>
+                    </div>
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">มหาพรหมา</h4>
+                        <p>ท้าวมหาพรหม เป็นผู้ปกครองสูงสุดในปฐมฌานภูมิ มีรัศมีสว่างไสวมาก</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level rupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#jhana2Gradient)" opacity="0.9"/>
+                    <path d="M50 20 L50 80 M20 50 L80 50" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="50" cy="50" r="10" fill="#FFF" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">2. ทุติยฌานภูมิ (พรหม 3 ชั้น)</h3>
+                <p class="level-description">พรหมที่เข้าถึงทุติยฌาน มีองค์ 3 คือ ปีติ สุข เอกัคคตา ละวิตกและวิจารแล้ว มีความสุขละเอียดกว่าปฐมฌาน</p>
+                <button class="expand-btn" data-target="jhana2-sublevels">รายละเอียดเพิ่มเติม</button>
+                <div class="sublevel-container" id="jhana2-sublevels">
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">ปริตตาภา</h4>
+                        <p>พรหมมีรัศมีน้อย</p>
+                    </div>
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">อัปปมาณาภา</h4>
+                        <p>พรหมมีรัศมีมาก</p>
+                    </div>
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">อาภัสสรา</h4>
+                        <p>พรหมมีรัศมีรุ่งเรืองยิ่ง</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level rupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#jhana3Gradient)" opacity="0.9"/>
+                    <path d="M50 20 L50 80 M20 50 L80 50" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="50" cy="50" r="10" fill="#FFF" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">3. ตติยฌานภูมิ (พรหม 3 ชั้น)</h3>
+                <p class="level-description">พรหมที่เข้าถึงตติยฌาน มีองค์ 2 คือ สุข เอกัคคตา ละปีติแล้ว มีความสุขที่ประณีตยิ่งกว่าทุติยฌาน</p>
+                <button class="expand-btn" data-target="jhana3-sublevels">รายละเอียดเพิ่มเติม</button>
+                <div class="sublevel-container" id="jhana3-sublevels">
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">ปริตตสุภา</h4>
+                        <p>พรหมมีสิริ (ความงาม) น้อย</p>
+                    </div>
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">อัปปมาณสุภา</h4>
+                        <p>พรหมมีสิริมาก</p>
+                    </div>
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">สุภกิณหา</h4>
+                        <p>พรหมมีสิริแพร่หลาย</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level rupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#jhana4Gradient)" opacity="0.9"/>
+                    <path d="M50 20 L50 80 M20 50 L80 50" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="50" cy="50" r="10" fill="#FFF" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">4. จตุตถฌานภูมิ (พรหม 7 ชั้น)</h3>
+                <p class="level-description">พรหมที่เข้าถึงจตุตถฌาน มีองค์ 2 คือ อุเบกขา เอกัคคตา ละสุขและทุกข์แล้ว มีความสงบและเป็นกลางอย่างยิ่ง</p>
+                <button class="expand-btn" data-target="jhana4-sublevels">รายละเอียดเพิ่มเติม</button>
+                <div class="sublevel-container" id="jhana4-sublevels">
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">เวหัปผลา</h4>
+                        <p>พรหมผู้มีผลไพบูลย์ คือได้รับผลบุญมาก</p>
+                    </div>
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">อสังญีสัตตา</h4>
+                        <p>พรหมผู้ไม่มีสัญญา (ความจำ) เป็นภูมิของสัตว์ที่บำเพ็ญฌานจนสัญญาระงับ</p>
+                    </div>
+                    <div class="sublevel">
+                        <h4 class="sublevel-title">สุทธาวาสภูมิ (พรหม 5 ชั้น)</h4>
+                        <p>เป็นที่อยู่ของพระอนาคามีบุคคล (ผู้ที่ไม่กลับมาเกิดในกามภูมิอีก)</p>
+                        <ul>
+                            <li><strong>อวิหา</strong>: พรหมที่ไม่เสื่อม</li>
+                            <li><strong>อตัปปา</strong>: พรหมที่ไม่ทำให้เดือดร้อน</li>
+                            <li><strong>สุทัสสา</strong>: พรหมผู้งดงาม</li>
+                            <li><strong>สุทัสสี</strong>: พรหมผู้มองเห็นสิ่งที่ดีงาม</li>
+                            <li><strong>อกนิษฐา</strong>: พรหมชั้นสูงสุด</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="realm arupa-realm" id="arupa">
+            <div class="realm-icon-container">
+                <div class="realm-icon arupa-icon">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="#FFF" stroke-width="2" stroke-dasharray="5,5"/>
+                        <circle cx="12" cy="12" r="5" fill="#FFF" fill-opacity="0.3"/>
+                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4Z" fill="#E0BBE4" opacity="0.5"/>
+                    </svg>
+                </div>
+                <div class="icon-glow arupa-glow"></div>
+            </div>
+            <h2 class="realm-title arupa-title">อรูปพรหม 4 ชั้น (อรูปภูมิ)</h2>
+            <p class="realm-description">
+                อรูปภูมิเป็นที่อยู่ของพรหมที่ไม่มีรูปกาย มีเพียงจิตเท่านั้น เป็นผลมาจากการบำเพ็ญอรูปฌานอย่างลึกซึ้งและประณีต
+            </p>
+
+            <svg class="illustration" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                <rect width="800" height="400" fill="url(#arupaBackGradient)" rx="20" ry="20"/>
+
+                <g class="arupa-layers">
+                    <circle cx="400" cy="300" r="80" fill="url(#arupa1Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="300" text-anchor="middle" fill="white" font-size="16" font-weight="bold">อากาสานัญจายตนภูมิ</text>
+
+                    <circle cx="400" cy="200" r="70" fill="url(#arupa2Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="200" text-anchor="middle" fill="white" font-size="16" font-weight="bold">วิญญาณัญจายตนภูมิ</text>
+
+                    <circle cx="400" cy="120" r="60" fill="url(#arupa3Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="120" text-anchor="middle" fill="white" font-size="16" font-weight="bold">อากิญจัญญายตนภูมิ</text>
+
+                    <circle cx="400" cy="60" r="50" fill="url(#arupa4Gradient)" opacity="0.9" filter="url(#glow)"/>
+                    <text x="400" y="60" text-anchor="middle" fill="white" font-size="16" font-weight="bold">เนวสัญญานาสัญญายตนภูมิ</text>
+
+                    <line x1="400" y1="220" x2="400" y2="270" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                    <line x1="400" y1="140" x2="400" y2="170" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                    <line x1="400" y1="80" x2="400" y2="90" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+                </g>
+
+                <g class="stars">
+                    <circle cx="150" cy="100" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="650" cy="150" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="200" cy="300" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="600" cy="250" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="300" cy="80" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="4.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="500" cy="350" r="2" fill="white" opacity="0.8">
+                        <animate attributeName="opacity" values="0.3;1;0.3" dur="3.2s" repeatCount="indefinite"/>
+                    </circle>
+                </g>
+
+                <defs>
+                    <linearGradient id="arupaBackGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#330033" stop-opacity="0.6"/>
+                        <stop offset="100%" stop-color="#660066" stop-opacity="0.6"/>
+                    </linearGradient>
+
+                    <radialGradient id="arupa1Gradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" stop-color="#e0c3fc"/>
+                        <stop offset="100%" stop-color="#8da4e9"/>
+                    </radialGradient>
+                    <radialGradient id="arupa2Gradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" stop-color="#cfd9ed"/>
+                        <stop offset="100%" stop-color="#e0c3fc"/>
+                    </radialGradient>
+                    <radialGradient id="arupa3Gradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" stop-color="#a8e063"/>
+                        <stop offset="100%" stop-color="#56ab2f"/>
+                    </radialGradient>
+                    <radialGradient id="arupa4Gradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                        <stop offset="0%" stop-color="#fed6e3"/>
+                        <stop offset="100%" stop-color="#a8e063"/>
+                    </radialGradient>
+                </defs>
+            </svg>
+
+            <div class="level arupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#arupa1Gradient)" opacity="0.9"/>
+                    <path d="M20 50 A30 30 0 0 1 80 50 A30 30 0 0 1 20 50 Z" fill="#FFF" fill-opacity="0.5" stroke="#FFF" stroke-width="1"/>
+                </svg>
+                <h3 class="level-title">1. อากาสานัญจายตนภูมิ</h3>
+                <p class="level-description">พรหมที่เข้าถึงอรูปฌานขั้นที่ 1 คือ อากาสานัญจายตนะ โดยกำหนดเอาอากาส (ความว่างเปล่า) เป็นอารมณ์</p>
+            </div>
+
+            <div class="level arupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#arupa2Gradient)" opacity="0.9"/>
+                    <path d="M50 20 L50 80 M20 50 L80 50" stroke="#FFF" stroke-width="0.5"/>
+                    <circle cx="50" cy="50" r="10" fill="#FFF" fill-opacity="0.7"/>
+                </svg>
+                <h3 class="level-title">2. วิญญาณัญจายตนภูมิ</h3>
+                <p class="level-description">พรหมที่เข้าถึงอรูปฌานขั้นที่ 2 คือ วิญญาณัญจายตนะ โดยกำหนดเอาวิญญาณ (ความรู้แจ้ง) เป็นอารมณ์</p>
+            </div>
+
+            <div class="level arupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#arupa3Gradient)" opacity="0.9"/>
+                    <circle cx="50" cy="50" r="20" fill="#FFF" fill-opacity="0.2"/>
+                    <path d="M40 40 L60 60 M60 40 L40 60" stroke="#FFF" stroke-width="1"/>
+                </svg>
+                <h3 class="level-title">3. อากิญจัญญายตนภูมิ</h3>
+                <p class="level-description">พรหมที่เข้าถึงอรูปฌานขั้นที่ 3 คือ อากิญจัญญายตนะ โดยกำหนดเอาความไม่มีอะไรเลยเป็นอารมณ์</p>
+            </div>
+
+            <div class="level arupa-level">
+                <svg class="level-illustration" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="45" fill="url(#arupa4Gradient)" opacity="0.9"/>
+                    <circle cx="50" cy="50" r="10" fill="#FFF" fill-opacity="0.5"/>
+                    <path d="M50 10 L50 90" stroke="#FFF" stroke-width="0.5"/>
+                    <path d="M10 50 L90 50" stroke="#FFF" stroke-width="0.5"/>
+                </svg>
+                <h3 class="level-title">4. เนวสัญญานาสัญญายตนภูมิ</h3>
+                <p class="level-description">พรหมที่เข้าถึงอรูปฌานขั้นที่ 4 คือ เนวสัญญานาสัญญายตนะ เป็นภูมิที่มีสัญญาอย่างละเอียดมาก จนแทบไม่มีสัญญา (ก็ไม่ใช่) หรือไม่มีสัญญาเลย (ก็ไม่ใช่)</p>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2025 พุทธจักรวาล. ข้อมูลจากพระไตรปิฎกและคัมภีร์ทางพระพุทธศาสนา</p>
+			<p>ผู้พัฒนาเว็บไซต์ ปฎิภาณ พานทอง</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const realms = document.querySelectorAll('.realm');
+            const navigation = document.getElementById('navigation');
+            const sections = ['overview', 'kama', 'rupa', 'arupa'];
+
+            // Create navigation dots
+            sections.forEach((id, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('nav-dot');
+                dot.dataset.target = id;
+                dot.addEventListener('click', () => {
+                    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                });
+                navigation.appendChild(dot);
+            });
+
+            const navDots = document.querySelectorAll('.nav-dot');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        const currentId = entry.target.id;
+                        navDots.forEach(dot => {
+                            if (dot.dataset.target === currentId) {
+                                dot.classList.add('active');
+                            } else {
+                                dot.classList.remove('active');
+                            }
+                        });
+                    } else {
+                        entry.target.classList.remove('visible');
+                    }
+                });
+            }, observerOptions);
+
+            realms.forEach(realm => {
+                observer.observe(realm);
+            });
+
+            // Generate stars
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 4}s`;
+                starsContainer.appendChild(star);
+            }
+
+            // Generate cosmic particles
+            const particlesContainer = document.getElementById('particles');
+            const numParticles = 50;
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.width = `${Math.random() * 4 + 2}px`;
+                particle.style.height = particle.style.width;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                particlesContainer.appendChild(particle);
+            }
+
+            // Expand/Collapse sublevels
+            document.querySelectorAll('.expand-btn').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const targetId = event.target.dataset.target;
+                    const sublevelContainer = document.getElementById(targetId);
+                    sublevelContainer.classList.toggle('expanded');
+                    if (sublevelContainer.classList.contains('expanded')) {
+                        event.target.textContent = 'ย่อรายละเอียด';
+                    } else {
+                        event.target.textContent = 'รายละเอียดเพิ่มเติม';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
