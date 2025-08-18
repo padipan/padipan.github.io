@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ผ่านด่านโค้ด Python บอกรักกับเจโว</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    html, body { height: 100%; font-family: "Kanit", system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    /* Shell */
+    .card { background: #0f1226; border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 10px 30px rgba(13, 15, 40, 0.35); }
+    .badge { background: linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06)); border: 1px solid rgba(255,255,255,0.2); }
+    .btn-glow { position: relative; overflow: hidden; }
+    .btn-glow::after { content:""; position:absolute; inset:-100%; background: conic-gradient(from 180deg at 50% 50%, #fff0, #ffffff44, #fff0); animation:sweep 2.8s linear infinite; mix-blend-mode: soft-light; }
+    @keyframes sweep { 0%{transform:translateX(-20%)}100%{transform:translateX(20%)} }
+    /* Editor */
+    .gutter { background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); color: rgba(255,255,255,0.45); user-select:none; }
+    textarea.code { background: transparent; color: white; }
+    /* Hearts */
+    .heart { position: absolute; font-size: 18px; opacity: 0; animation: floatUp 2.8s ease-in forwards; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25)); }
+    @keyframes floatUp { 0%{transform:translateY(0) scale(0.6) rotate(0deg);opacity:0} 15%{opacity:1} 100%{transform:translateY(-160px) scale(1.2) rotate(18deg);opacity:0} }
+    .shimmer { position: relative; overflow: hidden; }
+    .shimmer::before { content:""; position:absolute; top:-150%; left:-150%; width:400%; height:400%; background: radial-gradient(closest-side, rgba(255,255,255,0.12), transparent 60%); animation: shimmerMove 6s linear infinite; pointer-events:none; }
+    @keyframes shimmerMove { 0%{transform:translate(0,0)}100%{transform:translate(25%,25%)} }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-[#0b0f28] via-[#1b1340] to-[#321353] text-white selection:bg-pink-600/70 selection:text-white">
+  <!-- Background Orbs -->
+  <div class="pointer-events-none fixed inset-0 -z-10">
+    <div class="absolute -top-24 -left-16 w-[38rem] h-[38rem] rounded-full blur-3xl opacity-30" style="background: radial-gradient(circle at 30% 30%, #ff6cab, transparent 60%);"></div>
+    <div class="absolute -bottom-24 -right-20 w-[46rem] h-[46rem] rounded-full blur-3xl opacity-25" style="background: radial-gradient(circle at 70% 70%, #7366ff, transparent 60%);"></div>
+  </div>
+
+  <header class="max-w-6xl mx-auto px-6 pt-10 pb-6">
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-white/10 backdrop-blur rounded-xl p-2.5">
+          <svg width="28" height="28" viewBox="0 0 24 24" class="text-pink-400">
+            <path fill="currentColor" d="M12 21s-6.716-4.418-9.192-8.034C1.207 10.208 2.225 7 5.5 7c1.89 0 3.07 1.097 3.82 2.208C9.93 8.097 11.11 7 13 7c3.275 0 4.293 3.208 2.692 5.966C18.716 16.582 12 21 12 21z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-sm text-white/70">Mini Challenge • ผ่านด่านโค้ดพื้นฐาน</p>
+          <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">
+            โค้ด Python บอกรักกับแผนกคอม- อาชีวศึกษาสุรินทร์ <span class="bg-gradient-to-r from-pink-400 via-rose-300 to-indigo-300 bg-clip-text text-transparent">คอมเทคโน-คอมโปรแกรม-คอมกราฟิก แบบผ่านด่าน</span>
+          </h1>
+          <p class="text-white/70 mt-2 max-w-2xl">ทำทีละด่านจากง่ายไปพื้นฐาน: พิมพ์ให้ถูก แล้วปลดล็อกข้อความบอกรักและหัวใจลอยๆ</p>
+        </div>
+      </div>
+      <span class="badge text-xs px-3 py-1 rounded-full text-white/80">มาเรียนที่ วอศ.สุรินทร์</span>
+    </div>
+
+    <!-- Progress -->
+    <div class="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4">
+      <div class="flex items-center gap-4" id="progressBar">
+        <div class="flex-1">
+          <div class="flex items-center">
+            <div class="step w-8 h-8 rounded-full flex items-center justify-center font-bold bg-white/15 border border-white/20" data-step="1">1</div>
+            <div class="flex-1 h-1 mx-2 bg-white/10 rounded" id="link12"></div>
+            <div class="step w-8 h-8 rounded-full flex items-center justify-center font-bold bg-white/10 border border-white/15" data-step="2">2</div>
+            <div class="flex-1 h-1 mx-2 bg-white/10 rounded" id="link23"></div>
+            <div class="step w-8 h-8 rounded-full flex items-center justify-center font-bold bg-white/10 border border-white/15" data-step="3">3</div>
+          </div>
+          <div class="flex justify-between text-xs text-white/60 mt-2">
+            <span>ด่าน 1: print</span>
+            <span>ด่าน 2: ตัวแปร</span>
+            <span>ด่าน 3: ฟังก์ชัน</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 pb-20">
+    <div class="grid lg:grid-cols-3 gap-6">
+      <!-- Level 1 -->
+      <section class="card rounded-2xl overflow-hidden">
+        <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400/80" id="l1dot"></span>
+            <h2 class="font-semibold">ด่าน 1 — print บอกรัก</h2>
+          </div>
+          <span class="text-xs text-white/60">ไฟล์: love1.py</span>
+        </div>
+        <div class="flex">
+          <div class="gutter px-4 py-4 text-right min-w-[3.25rem]">
+            <div class="leading-8">1</div>
+            <div class="leading-8">2</div>
+            <div class="leading-8">3</div>
+          </div>
+          <div class="flex-1 p-4">
+            <textarea id="l1editor" class="code w-full h-40 resize-y outline-none text-[15px] leading-8 placeholder:text-white/30" placeholder="ตัวอย่าง: print('รักคุณ')"></textarea>
+          </div>
+        </div>
+        <div class="px-5 pb-5">
+          <div class="flex flex-wrap gap-3">
+            <button id="l1check" class="btn-glow bg-gradient-to-r from-pink-500 via-rose-500 to-indigo-500 hover:from-pink-600 hover:via-rose-600 hover:to-indigo-600 transition rounded-xl px-5 py-2.5 font-semibold">ตรวจคำตอบ</button>
+            <button id="l1hint" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 border border-white/15">ขอคำใบ้</button>
+            <button id="l1fill" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 border border-white/15">ใส่ตัวอย่าง</button>
+            <button id="l1clear" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 border border-white/15">ล้าง</button>
+          </div>
+          <p id="l1hintBox" class="hidden mt-3 text-sm text-pink-200/90">ใบ้: ใช้คำสั่ง print แล้วใส่คำว่า รักคุณ ไว้ใน ' หรือ "</p>
+          <div id="l1fb" class="hidden rounded-xl p-3 border text-sm mt-3"></div>
+          <div id="l1success" class="hidden shimmer relative mt-4 rounded-xl p-5 bg-gradient-to-br from-pink-500/15 via-rose-500/10 to-indigo-500/15 border border-white/15">
+            <div class="absolute inset-0 pointer-events-none" id="l1hearts"></div>
+            <p class="text-lg">เยี่ยมมาก! คุณบอกรักได้ถูกต้องแล้ว ❤️</p>
+            <div class="mt-3 flex gap-2">
+              <button id="l1more" class="bg-gradient-to-r from-pink-500 to-indigo-500 hover:from-pink-600 hover:to-indigo-600 transition rounded-lg px-3 py-2 text-sm font-semibold">ปล่อยหัวใจอีก</button>
+              <button id="toL2" class="bg-white/10 hover:bg-white/20 rounded-lg px-3 py-2 border border-white/15 text-sm">ไปด่าน 2</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Level 2 -->
+      <section class="card rounded-2xl overflow-hidden opacity-60" id="l2wrap">
+        <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-white/30" id="l2dot"></span>
+            <h2 class="font-semibold">ด่าน 2 — เก็บไว้ในตัวแปร</h2>
+          </div>
+          <span class="text-xs text-white/60">ไฟล์: love2.py</span>
+        </div>
+        <div class="flex">
+          <div class="gutter px-4 py-4 text-right min-w-[3.25rem]">
+            <div class="leading-8">1</div>
+            <div class="leading-8">2</div>
+            <div class="leading-8">3</div>
+            <div class="leading-8">4</div>
+          </div>
+          <div class="flex-1 p-4">
+            <textarea id="l2editor" class="code w-full h-44 resize-y outline-none text-[15px] leading-8 placeholder:text-white/30" placeholder="ตัวอย่าง:
+feeling = 'รักคุณ'
+print(feeling)"></textarea>
+          </div>
+        </div>
+        <div class="px-5 pb-5">
+          <div class="flex flex-wrap gap-3">
+            <button id="l2check" class="btn-glow bg-gradient-to-r from-pink-500 via-rose-500 to-indigo-500 hover:from-pink-600 hover:via-rose-600 hover:to-indigo-600 transition rounded-xl px-5 py-2.5 font-semibold" disabled>ตรวจคำตอบ</button>
+            <button id="l2hint" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 border border-white/15" disabled>ขอคำใบ้</button>
+            <button id="l2fill" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 border border-white/15" disabled>ใส่ตัวอย่าง</button>
+            <button id="l2clear" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 border border-white/15" disabled>ล้าง</button>
+          </div>
+          <p id="l2hintBox" class="hidden mt-3 text-sm text-pink-200/90">ใบ้: สร้างตัวแปรชื่ออะไรก็ได้ให้เท่ากับ 'รักคุณ' แล้วสั่งพิมพ์ชื่อตัวแปรนั้น</p>
+          <div id="l2fb" class="hidden rounded-xl p-3 border text-sm mt-3"></div>
+          <div id="l2success" class="hidden shimmer relative mt-4 rounded-xl p-5 bg-gradient-to-br from-pink-500/15 via-rose-500/10 to-indigo-500/15 border border-white/15">
+            <div class="absolute inset-0 pointer-events-none" id="l2hearts"></div>
+            <p class="text-lg">สุดยอด! คุณเก็บความรู้สึกไว้ในตัวแปรและบอกรักสำเร็จ 💖</p>
+            <div class="mt-3 flex gap-2">
+              <button id="l2more" class="bg-gradient-to-r from-pink-500 to-indigo-500 hover:from-pink-600 hover:to-indigo-600 transition rounded-lg px-3 py-2 text-sm font-semibold">ปล่อยหัวใจอีก</button>
+              <button id="toL3" class="bg-white/10 hover:bg-white/20 rounded-lg px-3 py-2 border border-white/15 text-sm">ไปด่าน 3</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Level 3 -->
+      <section class="card rounded-2xl overflow-hidden opacity-60" id="l3wrap">
+        <div class="px-5 py-4 border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-white/30" id="l3dot"></span>
+            <h2 class="font-semibold">ด่าน 3 — ฟังก์ชันบอกรัก</h2>
+          </div>
+          <span class="text-xs text-white/60">ไฟล์: love3.py</span>
+        </div>
+        <div class="flex">
+          <div class="gutter px-4 py-4 text-right min-w-[3.25rem]">
+            <div class="leading-8">1</div>
+            <div class="leading-8">2</div>
+            <div class="leading-8">3</div>
+            <div class="leading-8">4</div>
+            <div class="leading-8">5</div>
+          </div>
+          <div class="flex-1 p-4">
+            <textarea id="l3editor" class="code w-full h-48 resize-y outline-none text-[15px] leading-8 placeholder:text-white/30" placeholder="ตัวอย่าง:
+def say_love():
+    print('รักคุณ')
+say_love()"></textarea>
+          </div>
+        </div>
+        <div class="px-5 pb-5">
+          <div class="flex flex-wrap gap-3">
+            <button id="l3check" class="btn-glow bg-gradient-to-r from-pink-500 via-rose-500 to-indigo-500 hover:from-pink-600 hover:via-rose-600 hover:to-indigo-600 transition rounded-xl px-5 py-2.5 font-semibold" disabled>ตรวจคำตอบ</button>
+            <button id="l3hint" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 border border-white/15" disabled>ขอคำใบ้</button>
+            <button id="l3fill" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 border border-white/15" disabled>ใส่ตัวอย่าง</button>
+            <button id="l3clear" class="bg-white/10 hover:bg-white/20 rounded-xl px-4 py-2 border border-white/15" disabled>ล้าง</button>
+          </div>
+          <p id="l3hintBox" class="hidden mt-3 text-sm text-pink-200/90">ใบ้: สร้างฟังก์ชัน say_love แล้วให้บรรทัดในฟังก์ชันบอกว่า print('รักคุณ') จากนั้นเรียกใช้</p>
+          <div id="l3fb" class="hidden rounded-xl p-3 border text-sm mt-3"></div>
+          <div id="l3success" class="hidden shimmer relative mt-4 rounded-xl p-5 bg-gradient-to-br from-pink-500/15 via-rose-500/10 to-indigo-500/15 border border-white/15">
+            <div class="absolute inset-0 pointer-events-none" id="l3hearts"></div>
+            <p class="text-lg">ครบทุกด่าน! ฟังก์ชันบอกรักของคุณทำงานแล้ว 🎉</p>
+            <p class="text-white/90 mt-1">ฉันรักคุณ ❤️</p>
+            <div class="mt-3 flex gap-2">
+              <button id="l3more" class="bg-gradient-to-r from-pink-500 to-indigo-500 hover:from-pink-600 hover:to-indigo-600 transition rounded-lg px-3 py-2 text-sm font-semibold">ปล่อยหัวใจอีก</button>
+              <button id="restart" class="bg-white/10 hover:bg-white/20 rounded-lg px-3 py-2 border border-white/15 text-sm">เริ่มใหม่ทั้งหมด</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="max-w-6xl mx-auto px-6 pb-10 text-center text-white/60 text-sm">
+    ผ่านด่านง่ายๆ เริ่มจาก print('รักคุณ') → ตัวแปร → ฟังก์ชัน • ใช้ได้ทั้ง ' และ " กับ JAYVO 
+  </footer>
+
+  <script>
+    // Helpers
+    const qs = (sel) => document.querySelector(sel);
+    const ids = (arr) => Object.fromEntries(arr.map(id => [id, document.getElementById(id)]));
+
+    const {
+      l1editor, l1check, l1hint, l1fill, l1clear, l1hintBox, l1fb, l1success, l1more, l1hearts, toL2,
+      l2editor, l2check, l2hint, l2fill, l2clear, l2hintBox, l2fb, l2success, l2more, l2hearts, toL3, l2wrap,
+      l3editor, l3check, l3hint, l3fill, l3clear, l3hintBox, l3fb, l3success, l3more, l3hearts, l3wrap, restart
+    } = ids([
+      "l1editor","l1check","l1hint","l1fill","l1clear","l1hintBox","l1fb","l1success","l1more","l1hearts","toL2",
+      "l2editor","l2check","l2hint","l2fill","l2clear","l2hintBox","l2fb","l2success","l2more","l2hearts","toL3","l2wrap",
+      "l3editor","l3check","l3hint","l3fill","l3clear","l3hintBox","l3fb","l3success","l3more","l3hearts","l3wrap","restart"
+    ]);
+
+    const l1dot = document.getElementById('l1dot');
+    const l2dot = document.getElementById('l2dot');
+    const l3dot = document.getElementById('l3dot');
+    const link12 = document.getElementById('link12');
+    const link23 = document.getElementById('link23');
+    const steps = document.querySelectorAll('.step');
+
+    // Patterns
+    const p1 = /^\s*print\s*\(\s*(['"])รักคุณ\1\s*\)\s*$/u;
+
+    function checkLevel2(code) {
+      // Accept: any_var = 'รักคุณ' (or ") then print(any_var)
+      const assignMatch = code.match(/^\s*([A-Za-z_]\w*)\s*=\s*(['"])รักคุณ\2\s*(?:;)?/u);
+      if (!assignMatch) return { ok:false, msg:"เริ่มจากสร้างตัวแปรให้เท่ากับ 'รักคุณ' ก่อน แล้วค่อยพิมพ์ชื่อตัวแปรนั้น" };
+      const varName = assignMatch[1];
+      const printRe = new RegExp("\\bprint\\s*\\(\\s*" + varName + "\\s*\\)", "u");
+      if (!printRe.test(code)) return { ok:false, msg:"ยังไม่ได้พิมพ์ชื่อตัวแปรในคำสั่ง print ลองใส่ " + varName };
+      return { ok:true };
+    }
+
+    function checkLevel3(code) {
+      // Accept either:
+      // A) def say_love(): print('รักคุณ') ... then say_love()
+      // B) def say_love(): return 'รักคุณ' ... then print(say_love())
+      const hasDef = /def\s+say_love\s*\(\s*\)\s*:/u.test(code);
+      if (!hasDef) return { ok:false, msg:"สร้างฟังก์ชันชื่อ say_love ก่อนนะ" };
+      const printsInside = /def\s+say_love\s*\(\s*\)\s*:\s*[\r\n]+[\t ]*print\s*\(\s*(['"])รักคุณ\1\s*\)/u.test(code);
+      const returns = /def\s+say_love\s*\(\s*\)\s*:\s*[\r\n]+[\t ]*return\s+(['"])รักคุณ\1/u.test(code);
+      const called = /\bsay_love\s*\(\s*\)/u.test(code);
+      const printWrap = /print\s*\(\s*say_love\s*\(\s*\)\s*\)/u.test(code);
+
+      if (printsInside && called) return { ok:true };
+      if (returns && printWrap) return { ok:true };
+      if (printsInside && !called) return { ok:false, msg:"เรียกใช้ฟังก์ชัน say_love ด้วยนะ" };
+      if (returns && !printWrap) return { ok:false, msg:"เมื่อตอบกลับด้วยค่า ให้พิมพ์ print(say_love()) ด้วย" };
+      return { ok:false, msg:"ลองให้ฟังก์ชันบอกรักภายใน หรือคืนค่าแล้วค่อยพิมพ์ออกมา" };
+    }
+
+    // Feedback UI
+    function showFB(box, ok, msg) {
+      box.className = "";
+      box.classList.add("rounded-xl","p-3","border","text-sm","mt-3");
+      if (ok) box.classList.add("bg-emerald-500/10","border-emerald-400/30","text-emerald-200");
+      else box.classList.add("bg-rose-500/10","border-rose-400/30","text-rose-200");
+      box.textContent = msg;
+      box.classList.remove("hidden");
+    }
+    const hide = (el)=> el.classList.add("hidden");
+    const show = (el)=> el.classList.remove("hidden");
+
+    // Hearts
+    function hearts(layer, amount=24) {
+      const colors = ["#fecdd3","#fda4af","#fb7185","#f472b6","#c4b5fd","#a5b4fc","#93c5fd"];
+      const bounds = layer.getBoundingClientRect();
+      for (let i=0; i<amount; i++) {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.textContent = "❤";
+        h.style.color = colors[Math.floor(Math.random()*colors.length)];
+        h.style.left = (Math.random() * (bounds.width - 24)) + "px";
+        h.style.bottom = "10px";
+        h.style.opacity = "0";
+        h.style.animationDelay = (Math.random()*0.6)+"s";
+        h.style.fontSize = (14 + Math.random()*16) + "px";
+        layer.appendChild(h);
+        requestAnimationFrame(()=>{ h.style.opacity="1"; });
+        setTimeout(()=> h.remove(), 3200);
+      }
+    }
+
+    // Progress visuals
+    function setStepDone(n) {
+      steps.forEach(s=>{
+        const num = Number(s.dataset.step);
+        if (num <= n) {
+          s.classList.add("bg-emerald-500/30","border-emerald-300/40");
+          s.textContent = "✓";
+        }
+      });
+      if (n >= 1) { link12.classList.add("bg-emerald-500/30"); }
+      if (n >= 2) { link23.classList.add("bg-emerald-500/30"); }
+    }
+
+    // Level 1 events
+    l1check.addEventListener('click', ()=>{
+      const v = l1editor.value.trim();
+      if (!v) { showFB(l1fb,false,"ลองพิมพ์ print('รักคุณ') ก่อนนะ"); hide(l1success); return; }
+      if (v.split(/\r?\n/).filter(Boolean).length>1) { showFB(l1fb,false,"ใช้เพียงหนึ่งบรรทัดพอ"); hide(l1success); return; }
+      if (p1.test(v)) {
+        showFB(l1fb,true,"ถูกต้อง! ไปต่อด่าน 2 ได้เลย 💖");
+        show(l1success); hearts(l1hearts,28);
+        // unlock level 2
+        l2wrap.classList.remove("opacity-60");
+        [l2check,l2hint,l2fill,l2clear].forEach(b=> b.removeAttribute('disabled'));
+        document.querySelector('.step[data-step="1"]').classList.add("ring-2","ring-emerald-300/40");
+        setStepDone(1);
+        l1dot.classList.remove("bg-emerald-400/80"); l1dot.classList.add("bg-emerald-300");
+      } else {
+        if (/^print\s*รักคุณ/u.test(v)) showFB(l1fb,false,"อย่าลืมใส่ ' หรือ \" ครอบคำว่า รักคุณ");
+        else if (/รักคุณ/u.test(v) && !/^print\s*\(/u.test(v)) showFB(l1fb,false,"เพิ่มคำว่า print และวงเล็บครอบ ‘รักคุณ’ ด้วยนะ");
+        else showFB(l1fb,false,"ยังไม่ใช่ ลองรูปแบบ: print('รักคุณ')");
+        hide(l1success);
+      }
+    });
+    l1hint.addEventListener('click', ()=> l1hintBox.classList.toggle('hidden'));
+    l1fill.addEventListener('click', ()=> { l1editor.value = "print('รักคุณ')"; l1editor.focus(); });
+    l1clear.addEventListener('click', ()=> { l1editor.value=""; hide(l1success); l1editor.focus(); });
+    document.getElementById('toL2').addEventListener('click', ()=> document.getElementById('l2editor').focus());
+    l1more.addEventListener('click', ()=> hearts(l1hearts,36));
+
+    // Level 2 events
+    l2check.addEventListener('click', ()=>{
+      const v = l2editor.value.trim();
+      if (!v) { showFB(l2fb,false,"ตัวอย่าง: feeling = 'รักคุณ' แล้วบรรทัดถัดมา print(feeling)"); hide(l2success); return; }
+      const res = checkLevel2(v);
+      if (res.ok) {
+        showFB(l2fb,true,"ใช่เลย! พร้อมเข้าสู่ด่านฟังก์ชัน 🎯");
+        show(l2success); hearts(l2hearts,28);
+        // unlock level 3
+        l3wrap.classList.remove("opacity-60");
+        [l3check,l3hint,l3fill,l3clear].forEach(b=> b.removeAttribute('disabled'));
+        setStepDone(2);
+        l2dot.classList.remove("bg-white/30"); l2dot.classList.add("bg-emerald-300");
+      } else {
+        showFB(l2fb,false,res.msg || "ลองใหม่อีกครั้งนะ");
+        hide(l2success);
+      }
+    });
+    l2hint.addEventListener('click', ()=> l2hintBox.classList.toggle('hidden'));
+    l2fill.addEventListener('click', ()=> { l2editor.value = "feeling = 'รักคุณ'\nprint(feeling)"; l2editor.focus(); });
+    l2clear.addEventListener('click', ()=> { l2editor.value=""; hide(l2success); l2editor.focus(); });
+    document.getElementById('toL3').addEventListener('click', ()=> document.getElementById('l3editor').focus());
+    l2more.addEventListener('click', ()=> hearts(l2hearts,36));
+
+    // Level 3 events
+    l3check.addEventListener('click', ()=>{
+      const v = l3editor.value.replace(/\r\n/g,"\n");
+      if (!v.trim()) { showFB(l3fb,false,"สร้างฟังก์ชัน say_love แล้วเรียกใช้ เช่นในตัวอย่าง"); hide(l3success); return; }
+      const res = checkLevel3(v);
+      if (res.ok) {
+        showFB(l3fb,true,"สำเร็จครบทุกด่าน! คุณคือโปรรักแล้ว 💘");
+        show(l3success); hearts(l3hearts,32);
+        setStepDone(3);
+        l3dot.classList.remove("bg-white/30"); l3dot.classList.add("bg-emerald-300");
+      } else {
+        showFB(l3fb,false, res.msg || "ยังไม่ผ่าน ลองดูใบ้ด้านบน");
+        hide(l3success);
+      }
+    });
+    l3hint.addEventListener('click', ()=> l3hintBox.classList.toggle('hidden'));
+    l3fill.addEventListener('click', ()=> { l3editor.value = "def say_love():\n    print('รักคุณ')\n\nsay_love()"; l3editor.focus(); });
+    l3clear.addEventListener('click', ()=> { l3editor.value=""; hide(l3success); l3editor.focus(); });
+    l3more.addEventListener('click', ()=> hearts(l3hearts,36));
+
+    // Restart all
+    restart.addEventListener('click', ()=>{
+      // Clear editors
+      l1editor.value = ""; l2editor.value = ""; l3editor.value = "";
+      // Hide successes and feedback
+      [l1success,l2success,l3success,l1fb,l2fb,l3fb].forEach(hide);
+      // Lock levels 2 & 3
+      l2wrap.classList.add("opacity-60"); l3wrap.classList.add("opacity-60");
+      [l2check,l2hint,l2fill,l2clear,l3check,l3hint,l3fill,l3clear].forEach(b=> b.setAttribute('disabled','disabled'));
+      // Reset progress
+      steps.forEach((s,i)=>{ s.textContent = (i+1); s.classList.remove("bg-emerald-500/30","border-emerald-300/40","ring-2","ring-emerald-300/40"); });
+      link12.classList.remove("bg-emerald-500/30"); link23.classList.remove("bg-emerald-500/30");
+      l1dot.className = "inline-block w-2.5 h-2.5 rounded-full bg-emerald-400/80";
+      l2dot.className = "inline-block w-2.5 h-2.5 rounded-full bg-white/30";
+      l3dot.className = "inline-block w-2.5 h-2.5 rounded-full bg-white/30";
+      l1editor.focus();
+    });
+
+    // Quick keyboard: Ctrl/Cmd+Enter checks current visible focus
+    document.addEventListener('keydown', (e)=>{
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        const active = document.activeElement;
+        if (active === l1editor) l1check.click();
+        else if (active === l2editor) l2check.click();
+        else if (active === l3editor) l3check.click();
+      }
+    });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'970e3ab6005a45bd',t:'MTc1NTQ4Njc0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
