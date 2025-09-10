@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดเก็บข้อมูลอุปกรณ์ - แผนกเทคโนโลยีธุรกิจดิจิทัล วอศ.สุรินทร์ 68</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9a56 0%, #ffad56 25%, #ffc947 50%, #ffdd59 75%, #fff3a0 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(255, 154, 86, 0.3);
+        }
+        .orange-gradient {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        }
+        .peach-gradient {
+            background: linear-gradient(135deg, #ffb347 0%, #ff8c42 100%);
+        }
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+        .image-container img {
+            transition: transform 0.3s ease;
+        }
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .link-text {
+            word-break: break-all;
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+        .copy-button {
+            transition: all 0.2s ease;
+        }
+        .copy-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container mx-auto max-w-6xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="mb-4">
+                <span class="text-6xl">🏢</span>
+                <span class="text-6xl">💻</span>
+                <span class="text-6xl">📱</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+                จัดเก็บข้อมูลอุปกรณ์ของแผนกวิชาเทคโนโลยีธุรกิจดิจิทัล
+            </h1>
+            <div class="text-white/90 text-lg drop-shadow">
+                🔍 พิมพ์ค้นหาอย่างใดอย่างหนึ่ง อุปกรณ์ที่ได้รับจัดสรรมีอะไรบ้าง จำนวนเท่าไร่ ✨ <br>
+				🔍 แผนกวิชาเทคโนโลยีธุรกิจดิจิทัล วิทยาลัยอาชีวศึกษาสุรินทร์✨ <br>
+				🔍 ผู้ดูแลระบบ คุณครูเจโว ปฎิภาณ พานทอง✨
+            </div>
+        </div>
+
+        <!-- Search Form -->
+        <div class="glass-effect rounded-3xl p-8 mb-8 shadow-2xl">
+            <h2 class="text-2xl font-semibold text-orange-800 mb-6 flex items-center justify-center">
+                🔎 ค้นหาข้อมูลอุปกรณ์
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        📅 ประทับเวลา
+                    </label>
+                    <input type="text" id="timestamp" placeholder="เช่น 2024-01-15" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        🖥️ ชื่ออุปกรณ์
+                    </label>
+                    <input type="text" id="deviceName" placeholder="เช่น โน้ตบุ๊ค Dell" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        🔢 จำนวน
+                    </label>
+                    <input type="number" id="quantity" placeholder="เช่น 5" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        🖼️ รูปภาพ
+                    </label>
+                    <input type="text" id="image" placeholder="Google Drive URL หรือ URL รูปภาพ" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        📂 ประเภท
+                    </label>
+                    <input type="text" id="category" placeholder="เช่น คอมพิวเตอร์" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        💰 งบจัดซื้อ
+                    </label>
+                    <input type="text" id="budget" placeholder="เช่น งบประจำปี 2024" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+            </div>
+            
+            <div class="text-center space-x-4">
+                <button onclick="searchData()" 
+                        class="orange-gradient text-white font-bold py-4 px-10 rounded-2xl shadow-xl transform transition hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300 inline-flex items-center">
+                    <span class="mr-2">🔍</span>
+                    ค้นหาข้อมูล
+                    <span class="ml-2">✨</span>
+                </button>
+                
+                <button onclick="showAllData()" 
+                        class="peach-gradient text-white font-bold py-4 px-10 rounded-2xl shadow-xl transform transition hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300 inline-flex items-center">
+                    <span class="mr-2">📋</span>
+                    แสดงทั้งหมด
+                    <span class="ml-2">🎯</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Container -->
+        <div id="resultsContainer" class="hidden">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-white drop-shadow-lg flex items-center justify-center">
+                    <span class="mr-3">📋</span>
+                    <span id="resultsTitle">ผลการค้นหา</span>
+                    <span class="ml-3">🎯</span>
+                </h2>
+                <div id="resultsCount" class="text-white/90 text-lg mt-2"></div>
+            </div>
+            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Results will be populated here -->
+            </div>
+        </div>
+
+        <!-- Loading Animation -->
+        <div id="loadingContainer" class="hidden text-center py-12">
+            <div class="pulse-animation text-6xl mb-4">⏳</div>
+            <div class="text-white text-xl font-semibold">กำลังโหลดข้อมูล...</div>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNvtmnXr-MqbDgcMFnXpCE4rtWNLSvk5Q17noaB1mVZspYJa39ix-flPo05srbBfTy7Q/exec';
+
+        // Function to convert Google Drive URL to direct image URL
+        function convertGoogleDriveUrl(url) {
+            if (!url || url.trim() === '') return '';
+            
+            // Check if it's already a direct URL
+            if (url.includes('drive.google.com/uc?')) {
+                return url;
+            }
+            
+            // Extract file ID from various Google Drive URL formats
+            let fileId = '';
+            
+            // Format: https://drive.google.com/open?id=FILE_ID
+            if (url.includes('drive.google.com/open?id=')) {
+                fileId = url.split('id=')[1].split('&')[0];
+            }
+            // Format: https://drive.google.com/file/d/FILE_ID/view
+            else if (url.includes('drive.google.com/file/d/')) {
+                fileId = url.split('/d/')[1].split('/')[0];
+            }
+            // Format: https://docs.google.com/document/d/FILE_ID/
+            else if (url.includes('docs.google.com')) {
+                fileId = url.split('/d/')[1].split('/')[0];
+            }
+            
+            // Return direct URL if file ID found
+            if (fileId) {
+                return `https://drive.google.com/uc?export=view&id=${fileId}`;
+            }
+            
+            // Return original URL if no conversion needed
+            return url;
+        }
+
+        // Copy text to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: '📋 คัดลอกแล้ว!',
+                    text: 'ลิงค์ถูกคัดลอกไปยังคลิปบอร์ดแล้ว ✨',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: '#fff3e0',
+                    color: '#e65100'
+                });
+            }).catch(function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: '❌ ไม่สามารถคัดลอกได้',
+                    text: 'กรุณาคัดลอกด้วยตนเอง',
+                    confirmButtonColor: '#ff6b35',
+                    background: '#fff3e0',
+                    color: '#e65100'
+                });
+            });
+        }
+
+        // Load all data on page load
+        window.addEventListener('load', function() {
+            showAllData();
+        });
+
+        async function showAllData() {
+            document.getElementById('resultsTitle').textContent = 'รายการอุปกรณ์ทั้งหมด';
+            
+            // Show loading
+            showLoading();
+
+            try {
+                const url = new URL(SCRIPT_URL);
+                url.searchParams.append('action', 'getAll');
+
+                const response = await fetch(url.toString());
+                const data = await response.json();
+
+                hideLoading();
+
+                if (data.success && data.results && data.results.length > 0) {
+                    displayResults(data.results, 'ทั้งหมด');
+                } else {
+                    document.getElementById('resultsContainer').classList.add('hidden');
+                    Swal.fire({
+                        icon: 'info',
+                        title: '📝 ไม่มีข้อมูลในระบบ',
+                        text: 'ยังไม่มีข้อมูลอุปกรณ์ในระบบ 📋',
+                        confirmButtonColor: '#ff6b35',
+                        background: '#fff3e0',
+                        color: '#e65100'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                hideLoading();
+                Swal.fire({
+                    icon: 'error',
+                    title: '❌ เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถเชื่อมต่อกับระบบได้ กรุณาลองใหม่อีกครั้ง 🔄',
+                    confirmButtonColor: '#ff6b35',
+                    background: '#fff3e0',
+                    color: '#e65100'
+                });
+            }
+        }
+
+        async function searchData() {
+            // Get search parameters
+            const searchParams = {
+                timestamp: document.getElementById('timestamp').value.trim(),
+                deviceName: document.getElementById('deviceName').value.trim(),
+                quantity: document.getElementById('quantity').value.trim(),
+                image: document.getElementById('image').value.trim(),
+                category: document.getElementById('category').value.trim(),
+                budget: document.getElementById('budget').value.trim()
+            };
+
+            // Check if at least one field is filled
+            const hasSearchCriteria = Object.values(searchParams).some(value => value !== '');
+            
+            if (!hasSearchCriteria) {
+                // If no search criteria, show all data
+                showAllData();
+                return;
+            }
+
+            document.getElementById('resultsTitle').textContent = 'ผลการค้นหา';
+
+            // Show loading
+            showLoading();
+
+            try {
+                // Create URL with search parameters
+                const url = new URL(SCRIPT_URL);
+                url.searchParams.append('action', 'search');
+                
+                Object.entries(searchParams).forEach(([key, value]) => {
+                    if (value) {
+                        url.searchParams.append(key, value);
+                    }
+                });
+
+                const response = await fetch(url.toString());
+                const data = await response.json();
+
+                hideLoading();
+
+                if (data.success && data.results && data.results.length > 0) {
+                    displayResults(data.results, 'ค้นหา');
+                    Swal.fire({
+                        icon: 'success',
+                        title: '✅ ค้นหาสำเร็จ!',
+                        text: `🎉 พบข้อมูล ${data.results.length} รายการ`,
+                        timer: 2000,
+                        showConfirmButton: false,
+                        background: '#fff3e0',
+                        color: '#e65100'
+                    });
+                } else {
+                    document.getElementById('resultsContainer').classList.add('hidden');
+                    Swal.fire({
+                        icon: 'info',
+                        title: '❌ ไม่พบข้อมูลในระบบ',
+                        text: 'ไม่พบข้อมูลที่ตรงกับเงื่อนไขการค้นหา 🔍',
+                        confirmButtonColor: '#ff6b35',
+                        background: '#fff3e0',
+                        color: '#e65100'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                hideLoading();
+                Swal.fire({
+                    icon: 'error',
+                    title: '❌ เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถเชื่อมต่อกับระบบได้ กรุณาลองใหม่อีกครั้ง 🔄',
+                    confirmButtonColor: '#ff6b35',
+                    background: '#fff3e0',
+                    color: '#e65100'
+                });
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loadingContainer').classList.remove('hidden');
+            document.getElementById('resultsContainer').classList.add('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingContainer').classList.add('hidden');
+        }
+
+        function displayResults(results, type) {
+            const resultsGrid = document.getElementById('resultsGrid');
+            const resultsContainer = document.getElementById('resultsContainer');
+            const resultsCount = document.getElementById('resultsCount');
+            
+            resultsGrid.innerHTML = '';
+            resultsCount.textContent = `📊 จำนวน ${results.length} รายการ`;
+            
+            results.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'glass-effect rounded-2xl p-6 shadow-xl card-hover';
+                
+                // Convert Google Drive URL if needed
+                const imageUrl = convertGoogleDriveUrl(item.image);
+                const originalUrl = item.image;
+                
+                card.innerHTML = `
+                    <div class="peach-gradient rounded-xl p-5 mb-4 text-white">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <span class="mr-2">🏷️</span>
+                            รายการที่ ${index + 1}
+                            <span class="ml-2">✨</span>
+                        </h3>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    📅 เวลา:
+                                </span>
+                                <span class="text-white/95 ml-2">${item.timestamp || '-'}</span>
+                            </div>
+                            
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    🖥️ อุปกรณ์:
+                                </span>
+                                <span class="text-white font-bold ml-2">${item.deviceName || '-'}</span>
+                            </div>
+                            
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    🔢 จำนวน:
+                                </span>
+                                <span class="text-white/95 ml-2">${item.quantity || '-'}</span>
+                            </div>
+                            
+                            <div class="bg-white/20 rounded-lg p-3">
+                                <div class="flex items-center mb-3">
+                                    <span class="text-white font-semibold flex items-center">
+                                        🖼️ รูปภาพ:
+                                    </span>
+                                </div>
+                                
+                                ${originalUrl && originalUrl.trim() !== '' ? `
+                                    <!-- Original Link -->
+                                    <div class="mb-4 bg-white/10 rounded-lg p-3">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-white/90 text-sm font-medium">🔗 ลิงค์ต้นฉบับ:</span>
+                                            <button onclick="copyToClipboard('${originalUrl}')" 
+                                                    class="copy-button px-2 py-1 rounded-md text-xs text-white/90 hover:text-white">
+                                                📋 คัดลอก
+                                            </button>
+                                        </div>
+                                        <div class="link-text text-white/80 bg-white/10 rounded p-2 break-all">
+                                            ${originalUrl}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Direct Link (if converted) -->
+                                    ${imageUrl !== originalUrl ? `
+                                        <div class="mb-4 bg-white/10 rounded-lg p-3">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <span class="text-white/90 text-sm font-medium">🎯 ลิงค์ตรง:</span>
+                                                <button onclick="copyToClipboard('${imageUrl}')" 
+                                                        class="copy-button px-2 py-1 rounded-md text-xs text-white/90 hover:text-white">
+                                                    📋 คัดลอก
+                                                </button>
+                                            </div>
+                                            <div class="link-text text-white/80 bg-white/10 rounded p-2 break-all">
+                                                ${imageUrl}
+                                            </div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    <!-- Image Preview -->
+                                    <div class="flex justify-center">
+                                        <div class="image-container w-full max-w-sm">
+                                            <img src="${imageUrl}" alt="รูปอุปกรณ์" 
+                                                 class="w-full h-48 object-cover rounded-xl shadow-lg cursor-pointer"
+                                                 onclick="showImageModal('${imageUrl}', '${item.deviceName || 'อุปกรณ์'}')"
+                                                 onerror="this.style.display='none'; this.parentElement.nextElementSibling.style.display='flex';">
+                                        </div>
+                                        <div class="w-full max-w-sm h-48 bg-white/10 rounded-xl shadow-lg hidden items-center justify-center">
+                                            <div class="text-center text-white/80">
+                                                <div class="text-4xl mb-2">❌</div>
+                                                <div class="text-sm">ไม่สามารถแสดงรูปภาพได้</div>
+                                                <div class="text-xs mt-1 opacity-70">ตรวจสอบสิทธิ์การเข้าถึงไฟล์</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ` : `
+                                    <div class="w-full max-w-sm h-48 bg-white/10 rounded-xl shadow-lg flex items-center justify-center mx-auto">
+                                        <div class="text-center text-white/80">
+                                            <div class="text-5xl mb-3">📷</div>
+                                            <div class="text-sm font-medium">ไม่มีรูปภาพ</div>
+                                        </div>
+                                    </div>
+                                `}
+                            </div>
+                            
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    📂 ประเภท:
+                                </span>
+                                <span class="text-white/95 ml-2">${item.category || '-'}</span>
+                            </div>
+                            
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    💰 งบซื้อ:
+                                </span>
+                                <span class="text-white/95 ml-2">${item.budget || '-'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                resultsGrid.appendChild(card);
+            });
+            
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show image in modal
+        function showImageModal(imageUrl, deviceName) {
+            Swal.fire({
+                title: `🖼️ รูปภาพ: ${deviceName}`,
+                imageUrl: imageUrl,
+                imageWidth: 600,
+                imageHeight: 450,
+                imageAlt: `รูปภาพของ ${deviceName}`,
+                showCloseButton: true,
+                showConfirmButton: false,
+                background: '#fff3e0',
+                backdrop: 'rgba(255, 107, 53, 0.4)',
+                customClass: {
+                    image: 'rounded-xl shadow-2xl'
+                }
+            });
+        }
+
+        // Allow Enter key to trigger search
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchData();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97cd841dc35610d6',t:'MTc1NzQ5MjUzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
