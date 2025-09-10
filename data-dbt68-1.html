@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดเก็บข้อมูลอุปกรณ์ - แผนกเทคโนโลยีธุรกิจดิจิทัล</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9a56 0%, #ffad56 25%, #ffc947 50%, #ffdd59 75%, #fff3a0 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(255, 154, 86, 0.3);
+        }
+        .orange-gradient {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        }
+        .peach-gradient {
+            background: linear-gradient(135deg, #ffb347 0%, #ff8c42 100%);
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container mx-auto max-w-6xl">
+        <div class="text-center mb-8">
+            <div class="mb-4">
+                <span class="text-6xl">🏢</span>
+                <span class="text-6xl">💻</span>
+                <span class="text-6xl">📱</span>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+                จัดเก็บข้อมูลอุปกรณ์ของแผนกวิชาเทคโนโลยีธุรกิจดิจิทัล
+            </h1>
+			<h2 class="text-3xl md:text-4xl font-bold text-white mb-4 drop-shadow-lg">
+                วิทยาลัยอาชีวศึกษาสุรินทร์ ผู้ดูแลระบบ ครูปฎิภาณ พานทอง
+            </h2>
+            <div class="text-white/90 text-lg drop-shadow">
+                🔍 ค้นหาและจัดการข้อมูลอุปกรณ์อย่างมีประสิทธิภาพ ✨
+            </div>
+        </div>
+        <div class="glass-effect rounded-3xl p-8 mb-8 shadow-2xl">
+            <h2 class="text-2xl font-semibold text-orange-800 mb-6 flex items-center justify-center">
+                🔎 ค้นหาข้อมูลอุปกรณ์
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        📅 ประทับเวลา
+                    </label>
+                    <input type="text" id="timestamp" placeholder="เช่น 2024-01-15"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        🖥️ ชื่ออุปกรณ์
+                    </label>
+                    <input type="text" id="deviceName" placeholder="เช่น โน้ตบุ๊ค Dell"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        🔢 จำนวน
+                    </label>
+                    <input type="number" id="quantity" placeholder="เช่น 5"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        🖼️ รูปภาพ
+                    </label>
+                    <input type="text" id="image" placeholder="URL รูปภาพ"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        📂 ประเภท
+                    </label>
+                    <input type="text" id="category" placeholder="เช่น คอมพิวเตอร์"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+                <div>
+                    <label class="block text-orange-800 text-sm font-semibold mb-3 flex items-center">
+                        💰 งบจัดซื้อ
+                    </label>
+                    <input type="text" id="budget" placeholder="เช่น งบประจำปี 2024"
+                            class="w-full px-4 py-3 rounded-xl border-2 border-orange-200 bg-white/70 text-orange-900 placeholder-orange-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 transition-all">
+                </div>
+            </div>
+            <div class="text-center">
+                <button onclick="searchData()"
+                         class="orange-gradient text-white font-bold py-4 px-10 rounded-2xl shadow-xl transform transition hover:scale-105 focus:outline-none focus:ring-4 focus:ring-orange-300 flex items-center justify-center mx-auto">
+                    <span class="mr-2">🔍</span>
+                    ค้นหาข้อมูล
+                    <span class="ml-2">✨</span>
+                </button>
+            </div>
+        </div>
+        <div id="resultsContainer" class="hidden">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-white drop-shadow-lg flex items-center justify-center">
+                    <span class="mr-3">📋</span>
+                    ผลการค้นหา
+                    <span class="ml-3">🎯</span>
+                </h2>
+            </div>
+            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+        </div>
+    </div>
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNvtmnXr-MqbDgcMFnXpCE4rtWNLSvk5Q17noaB1mVZspYJa39ix-flPo05srbBfTy7Q/exec';
+
+        async function searchData() {
+            // Get search parameters
+            const searchParams = {
+                timestamp: document.getElementById('timestamp').value.trim(),
+                deviceName: document.getElementById('deviceName').value.trim(),
+                quantity: document.getElementById('quantity').value.trim(),
+                image: document.getElementById('image').value.trim(),
+                category: document.getElementById('category').value.trim(),
+                budget: document.getElementById('budget').value.trim()
+            };
+
+            // Check if at least one field is filled
+            const hasSearchCriteria = Object.values(searchParams).some(value => value !== '');
+
+            if (!hasSearchCriteria) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '⚠️ กรุณากรอกข้อมูล',
+                    text: 'กรุณากรอกข้อมูลในช่องใดช่องหนึ่งเพื่อค้นหา',
+                    confirmButtonColor: '#ff6b35',
+                    background: '#fff3e0',
+                    color: '#e65100'
+                });
+                return;
+            }
+
+            // Show loading
+            Swal.fire({
+                title: '🔍 กำลังค้นหาข้อมูล...',
+                text: 'กรุณารอสักครู่ ✨',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                background: '#fff3e0',
+                color: '#e65100',
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            try {
+                // Create URL with search parameters
+                const url = new URL(SCRIPT_URL);
+                url.searchParams.append('action', 'search');
+
+                Object.entries(searchParams).forEach(([key, value]) => {
+                    if (value) {
+                        url.searchParams.append(key, value);
+                    }
+                });
+
+                const response = await fetch(url.toString());
+                const data = await response.json();
+
+                Swal.close();
+
+                if (data.success && data.results && data.results.length > 0) {
+                    displayResults(data.results);
+                    Swal.fire({
+                        icon: 'success',
+                        title: '✅ ค้นหาสำเร็จ!',
+                        text: `🎉 พบข้อมูล ${data.results.length} รายการ`,
+                        timer: 2000,
+                        showConfirmButton: false,
+                        background: '#fff3e0',
+                        color: '#e65100'
+                    });
+                } else {
+                    document.getElementById('resultsContainer').classList.add('hidden');
+                    Swal.fire({
+                        icon: 'info',
+                        title: '❌ ไม่พบข้อมูลในระบบ',
+                        text: 'ไม่พบข้อมูลที่ตรงกับเงื่อนไขการค้นหา 🔍',
+                        confirmButtonColor: '#ff6b35',
+                        background: '#fff3e0',
+                        color: '#e65100'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: '❌ เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถเชื่อมต่อกับระบบได้ กรุณาลองใหม่อีกครั้ง 🔄',
+                    confirmButtonColor: '#ff6b35',
+                    background: '#fff3e0',
+                    color: '#e65100'
+                });
+            }
+        }
+
+        function displayResults(results) {
+            const resultsGrid = document.getElementById('resultsGrid');
+            const resultsContainer = document.getElementById('resultsContainer');
+
+            resultsGrid.innerHTML = '';
+
+            results.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'glass-effect rounded-2xl p-6 shadow-xl card-hover';
+
+                card.innerHTML = `
+                    <div class="peach-gradient rounded-xl p-5 mb-4 text-white">
+                        <h3 class="text-xl font-bold mb-4 flex items-center">
+                            <span class="mr-2">🏷️</span>
+                            รายการที่ ${index + 1}
+                            <span class="ml-2">✨</span>
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    📅 เวลา:
+                                </span>
+                                <span class="text-white/95 ml-2">${item.timestamp || '-'}</span>
+                            </div>
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    🖥️ อุปกรณ์:
+                                </span>
+                                <span class="text-white font-bold ml-2">${item.deviceName || '-'}</span>
+                            </div>
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    🔢 จำนวน:
+                                </span>
+                                <span class="text-white/95 ml-2">${item.quantity || '-'}</span>
+                            </div>
+                            <div class="bg-white/20 rounded-lg p-3">
+                                <div class="flex items-center mb-2">
+                                    <span class="text-white font-semibold flex items-center">
+                                        🖼️ รูปภาพ:
+                                    </span>
+                                </div>
+                                <div class="flex justify-center">
+                                    ${item.image && item.image.trim() !== '' ? `
+                                        <img src="${item.image}" alt="รูปอุปกรณ์"
+                                              class="w-full max-w-sm h-40 object-cover rounded-xl shadow-lg cursor-pointer hover:opacity-90 transition-all transform hover:scale-105"
+                                             onclick="showImageModal('${item.image}', '${item.deviceName || 'อุปกรณ์'}')"
+                                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="w-full max-w-sm h-40 bg-white/10 rounded-xl shadow-lg hidden items-center justify-center">
+                                            <div class="text-center text-white/80">
+                                                <div class="text-4xl mb-2">❌</div>
+                                                <div class="text-sm">ไม่สามารถแสดงรูปภาพได้</div>
+                                            </div>
+                                        </div>
+                                    ` : `
+                                        <div class="w-full max-w-sm h-40 bg-white/10 rounded-xl shadow-lg flex items-center justify-center">
+                                            <div class="text-center text-white/80">
+                                                <div class="text-5xl mb-3">📷</div>
+                                                <div class="text-sm font-medium">ไม่มีรูปภาพ</div>
+                                            </div>
+                                        </div>
+                                    `}
+                                </div>
+                            </div>
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    📂 ประเภท:
+                                </span>
+                                <span class="text-white/95 ml-2">${item.category || '-'}</span>
+                            </div>
+                            <div class="bg-white/20 rounded-lg p-3 flex items-start">
+                                <span class="text-white font-semibold w-20 flex-shrink-0 flex items-center">
+                                    💰 งบซื้อ:
+                                </span>
+                                <span class="text-white/95 ml-2">${item.budget || '-'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultsGrid.appendChild(card);
+            });
+            resultsContainer.classList.remove('hidden');
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+        // Show image in modal
+        function showImageModal(imageUrl, deviceName) {
+            Swal.fire({
+                title: `🖼️ รูปภาพ: ${deviceName}`,
+                imageUrl: imageUrl,
+                imageWidth: 500,
+                imageHeight: 400,
+                imageAlt: `รูปภาพของ ${deviceName}`,
+                showCloseButton: true,
+                showConfirmButton: false,
+                background: '#fff3e0',
+                backdrop: 'rgba(255, 107, 53, 0.4)',
+                customClass: {
+                    image: 'rounded-xl shadow-2xl'
+                }
+            });
+        }
+        // Allow Enter key to trigger search
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchData();
+            }
+        });
+    </script>
+</body>
+</html>
