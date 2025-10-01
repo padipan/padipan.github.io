@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เนื้อหาความรู้ภาษาคอมพิวเตอร์</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .category-icon {
+            background: linear-gradient(45deg, #4f46e5, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">💻 เนื้อหาความรู้ภาษาคอมพิวเตอร์</h1>
+            <p class="text-xl md:text-2xl opacity-90">แหล่งเรียนรู้ภาษาโปรแกรมมิ่งครบครัน สำหรับทุกระดับ</p>
+            <div class="mt-8">
+                <button class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                    🚀 เริ่มเรียนรู้เลย
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Category 1: Basic Languages -->
+        <section class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                    <span class="category-icon">🎯</span> ภาษาพื้นฐาน (Basic)
+                </h2>
+                <p class="text-gray-600">เริ่มต้นการเขียนโปรแกรมด้วยภาษาพื้นฐานที่สำคัญ</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('C')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">⚡</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">C Language</h3>
+                        <p class="text-gray-600 mb-6">ภาษาโปรแกรมมิ่งพื้นฐานที่ทรงพลัง เหมาะสำหรับเริ่มต้น</p>
+                        <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
+                            📚 พื้นฐาน
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('Python')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🐍</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Python</h3>
+                        <p class="text-gray-600 mb-6">ภาษาที่เรียนรู้ง่าย เหมาะสำหรับผู้เริ่มต้น</p>
+                        <div class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+                            🌟 แนะนำ
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('Java')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">☕</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Java</h3>
+                        <p class="text-gray-600 mb-6">ภาษาที่ใช้งานได้หลากหลาย เป็นที่นิยมในองค์กร</p>
+                        <div class="bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-medium">
+                            🏢 Enterprise
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category 2: Web Languages -->
+        <section class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                    <span class="category-icon">🌐</span> ภาษาสำหรับเว็บไซต์ (Web Languages)
+                </h2>
+                <p class="text-gray-600">สร้างเว็บไซต์และแอปพลิเคชันเว็บที่ทันสมัย</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="openLanguage('HTML')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🏗️</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">HTML</h3>
+                        <p class="text-gray-600 text-sm mb-4">โครงสร้างเว็บไซต์</p>
+                        <div class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-medium">
+                            Markup
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="openLanguage('CSS')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🎨</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">CSS</h3>
+                        <p class="text-gray-600 text-sm mb-4">จัดแต่งหน้าตา</p>
+                        <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
+                            Styling
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="openLanguage('JavaScript')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">⚡</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">JavaScript</h3>
+                        <p class="text-gray-600 text-sm mb-4">ความโต้ตอบ</p>
+                        <div class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-xs font-medium">
+                            Dynamic
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="openLanguage('PHP')">
+                    <div class="text-center">
+                        <div class="text-4xl mb-3">🐘</div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">PHP</h3>
+                        <p class="text-gray-600 text-sm mb-4">Backend เว็บ</p>
+                        <div class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium">
+                            Server-side
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category 3: Database Languages -->
+        <section class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                    <span class="category-icon">🗄️</span> ภาษาสำหรับฐานข้อมูล (Database Languages)
+                </h2>
+                <p class="text-gray-600">จัดการและค้นหาข้อมูลอย่างมีประสิทธิภาพ</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('SQL')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">📊</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">SQL</h3>
+                        <p class="text-gray-600 mb-6">ภาษาสำหรับจัดการฐานข้อมูลเชิงสัมพันธ์</p>
+                        <div class="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-sm font-medium">
+                            🔍 Query Language
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('MongoDB')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🍃</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">MongoDB Query</h3>
+                        <p class="text-gray-600 mb-6">ภาษาสำหรับฐานข้อมูล NoSQL</p>
+                        <div class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+                            📄 Document DB
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category 4: OOP Languages -->
+        <section class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                    <span class="category-icon">🏗️</span> ภาษาสำหรับพัฒนาเชิงวัตถุ (OOP)
+                </h2>
+                <p class="text-gray-600">เขียนโปรแกรมแบบเชิงวัตถุสำหรับโปรเจกต์ขนาดใหญ่</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('Java-OOP')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">☕</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Java OOP</h3>
+                        <p class="text-gray-600 mb-6">เขียนโปรแกรมเชิงวัตถุด้วย Java</p>
+                        <div class="bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-medium">
+                            🎯 OOP Focus
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('CPP')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">⚙️</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">C++</h3>
+                        <p class="text-gray-600 mb-6">ภาษาที่ทรงพลังสำหรับระบบและเกม</p>
+                        <div class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium">
+                            🚀 Performance
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('CSharp')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🔷</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">C#</h3>
+                        <p class="text-gray-600 mb-6">ภาษาสำหรับพัฒนาแอปพลิเคชัน Microsoft</p>
+                        <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
+                            🏢 Microsoft
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category 5: Data & AI Languages -->
+        <section class="mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">
+                    <span class="category-icon">🤖</span> ภาษาสำหรับ Data & AI
+                </h2>
+                <p class="text-gray-600">วิเคราะห์ข้อมูลและพัฒนาปัญญาประดิษฐ์</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('Python-AI')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🐍</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Python AI/ML</h3>
+                        <p class="text-gray-600 mb-6">เรียนรู้เครื่อง และปัญญาประดิษฐ์</p>
+                        <div class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+                            🧠 AI/ML
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('R')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">📈</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">R Language</h3>
+                        <p class="text-gray-600 mb-6">วิเคราะห์ข้อมูลและสถิติ</p>
+                        <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-medium">
+                            📊 Statistics
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-8 card-hover cursor-pointer" onclick="openLanguage('Julia')">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🔬</div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3">Julia</h3>
+                        <p class="text-gray-600 mb-6">คำนวณทางวิทยาศาสตร์ความเร็วสูง</p>
+                        <div class="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-medium">
+                            🚀 Scientific
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- External Learning Resources -->
+        <section class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-12 text-white text-center">
+            <h2 class="text-3xl font-bold mb-6">🌟 แหล่งเรียนรู้เพิ่มเติม</h2>
+            <p class="text-xl mb-8 opacity-90">ขยายความรู้ด้วยแหล่งเรียนรู้คุณภาพจากทั่วโลก</p>
+            <div class="grid md:grid-cols-4 gap-6">
+                <a href="https://www.codecademy.com" target="_blank" rel="noopener noreferrer" 
+                   class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 hover:bg-opacity-30 transition-all">
+                    <div class="text-3xl mb-3">🎓</div>
+                    <h3 class="font-bold mb-2">Codecademy</h3>
+                    <p class="text-sm opacity-80">เรียนโค้ดแบบ Interactive</p>
+                </a>
+                
+                <a href="https://www.freecodecamp.org" target="_blank" rel="noopener noreferrer"
+                   class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 hover:bg-opacity-30 transition-all">
+                    <div class="text-3xl mb-3">🔥</div>
+                    <h3 class="font-bold mb-2">freeCodeCamp</h3>
+                    <p class="text-sm opacity-80">เรียนฟรี มีใบประกาศนียบัตร</p>
+                </a>
+                
+                <a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer"
+                   class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 hover:bg-opacity-30 transition-all">
+                    <div class="text-3xl mb-3">🏛️</div>
+                    <h3 class="font-bold mb-2">Coursera</h3>
+                    <p class="text-sm opacity-80">คอร์สจากมหาวิทยาลัยชั้นนำ</p>
+                </a>
+                
+                <a href="https://www.udemy.com" target="_blank" rel="noopener noreferrer"
+                   class="bg-white bg-opacity-20 backdrop-blur-sm rounded-xl p-6 hover:bg-opacity-30 transition-all">
+                    <div class="text-3xl mb-3">💼</div>
+                    <h3 class="font-bold mb-2">Udemy</h3>
+                    <p class="text-sm opacity-80">คอร์สเชิงปฏิบัติ</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h3 class="text-2xl font-bold mb-4">💻 เนื้อหาความรู้ภาษาคอมพิวเตอร์</h3>
+            <p class="text-gray-400 mb-6">คุณครูปฎิภาณ พานทอง</p>
+            <div class="flex justify-center space-x-6 text-sm text-gray-400">
+                <span>📚 ช่องทางการติดต่อ</span>
+                <span>🎯 facebook : ครูปฎิภาณเพจ</span>
+                <span>🚀 ช่อง youtube : @ปฎิภาณพานทอง</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Language Details -->
+    <div id="languageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="modalTitle" class="text-3xl font-bold text-gray-800"></h2>
+                    <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 text-2xl">✕</button>
+                </div>
+                <div id="modalContent" class="text-gray-600 leading-relaxed">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+                <div class="mt-8 flex gap-4">
+                    <button onclick="closeModal()" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
+                        ปิด
+                    </button>
+                    <a id="externalLink" href="#" target="_blank" rel="noopener noreferrer" 
+                       class="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors">
+                        เรียนรู้เพิ่มเติม 🔗
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const languageData = {
+            'C': {
+                title: 'C Language',
+                content: `
+                    <div class="text-5xl mb-4 text-center">⚡</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับภาษา C</h3>
+                    <p class="mb-4">ภาษา C เป็นภาษาโปรแกรมมิ่งระดับกลางที่พัฒนาโดย Dennis Ritchie ในปี 1972 เป็นภาษาที่มีประสิทธิภาพสูงและใช้ในการพัฒนาระบบปฏิบัติการ</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>ประสิทธิภาพสูง และควบคุมหน่วยความจำได้ดี</li>
+                        <li>เป็นพื้นฐานของภาษาอื่นๆ เช่น C++, Java</li>
+                        <li>เหมาะสำหรับการเขียนระบบปฏิบัติการ</li>
+                        <li>มีไลบรารีมาตรฐานที่หลากหลาย</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การพัฒนาระบบปฏิบัติการ</li>
+                        <li>การเขียนโปรแกรมระบบฝังตัว</li>
+                        <li>การพัฒนาคอมไพเลอร์</li>
+                        <li>การเขียนโปรแกรมที่ต้องการประสิทธิภาพสูง</li>
+                    </ul>
+                `,
+                link: 'https://www.learn-c.org/'
+            },
+            'Python': {
+                title: 'Python',
+                content: `
+                    <div class="text-5xl mb-4 text-center">🐍</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับภาษา Python</h3>
+                    <p class="mb-4">Python เป็นภาษาโปรแกรมมิ่งระดับสูงที่เน้นความเรียบง่ายและอ่านง่าย เหมาะสำหรับผู้เริ่มต้นและใช้งานได้หลากหลาย</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>ไวยากรณ์เรียบง่าย เรียนรู้ง่าย</li>
+                        <li>มีไลบรารีมากมายสำหรับงานต่างๆ</li>
+                        <li>รองรับการเขียนโปรแกรมหลายรูปแบบ</li>
+                        <li>ชุมชนนักพัฒนาขนาดใหญ่</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การพัฒนาเว็บแอปพลิเคชัน</li>
+                        <li>วิทยาศาสตร์ข้อมูลและ AI</li>
+                        <li>การทำงานอัตโนมัติ (Automation)</li>
+                        <li>การพัฒนาเกมและแอปพลิเคชัน</li>
+                    </ul>
+                `,
+                link: 'https://www.python.org/about/gettingstarted/'
+            },
+            'Java': {
+                title: 'Java',
+                content: `
+                    <div class="text-5xl mb-4 text-center">☕</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับภาษา Java</h3>
+                    <p class="mb-4">Java เป็นภาษาโปรแกรมมิ่งเชิงวัตถุที่ทำงานบนหลากหลายแพลตฟอร์ม มีความปลอดภัยสูงและเป็นที่นิยมในองค์กรขนาดใหญ่</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>ทำงานได้บนทุกแพลตฟอร์ม (Write Once, Run Anywhere)</li>
+                        <li>ความปลอดภัยสูง</li>
+                        <li>การจัดการหน่วยความจำอัตโนมัติ</li>
+                        <li>มีไลบรารีและเฟรมเวิร์กมากมาย</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การพัฒนาแอปพลิเคชันองค์กร</li>
+                        <li>การพัฒนาแอปมือถือ Android</li>
+                        <li>การพัฒนาเว็บแอปพลิเคชัน</li>
+                        <li>ระบบการเงินและธนาคาร</li>
+                    </ul>
+                `,
+                link: 'https://docs.oracle.com/javase/tutorial/'
+            },
+            'HTML': {
+                title: 'HTML',
+                content: `
+                    <div class="text-5xl mb-4 text-center">🏗️</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ HTML</h3>
+                    <p class="mb-4">HTML (HyperText Markup Language) เป็นภาษามาร์กอัปสำหรับสร้างโครงสร้างเว็บไซต์ เป็นพื้นฐานของทุกเว็บไซต์</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>เรียนรู้ง่าย เป็นพื้นฐานของเว็บ</li>
+                        <li>รองรับโดยเว็บเบราว์เซอร์ทุกตัว</li>
+                        <li>ใช้ร่วมกับ CSS และ JavaScript ได้</li>
+                        <li>มีมาตรฐานที่ชัดเจน</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การสร้างโครงสร้างเว็บไซต์</li>
+                        <li>การจัดวางเนื้อหาบนหน้าเว็บ</li>
+                        <li>การสร้างฟอร์มและตาราง</li>
+                        <li>การเชื่อมโยงหน้าเว็บ</li>
+                    </ul>
+                `,
+                link: 'https://developer.mozilla.org/en-US/docs/Web/HTML'
+            },
+            'CSS': {
+                title: 'CSS',
+                content: `
+                    <div class="text-5xl mb-4 text-center">🎨</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ CSS</h3>
+                    <p class="mb-4">CSS (Cascading Style Sheets) เป็นภาษาสำหรับจัดแต่งรูปแบบและหน้าตาของเว็บไซต์ ทำให้เว็บไซต์สวยงามและใช้งานง่าย</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>แยกเนื้อหาออกจากการจัดแต่ง</li>
+                        <li>ควบคุมรูปแบบได้อย่างละเอียด</li>
+                        <li>รองรับการออกแบบแบบ Responsive</li>
+                        <li>มีเอฟเฟกต์และแอนิเมชันในตัว</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การจัดแต่งสีและฟอนต์</li>
+                        <li>การจัดวางเลย์เอาต์</li>
+                        <li>การสร้างเอฟเฟกต์และแอนิเมชัน</li>
+                        <li>การทำเว็บไซต์ Responsive</li>
+                    </ul>
+                `,
+                link: 'https://developer.mozilla.org/en-US/docs/Web/CSS'
+            },
+            'JavaScript': {
+                title: 'JavaScript',
+                content: `
+                    <div class="text-5xl mb-4 text-center">⚡</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ JavaScript</h3>
+                    <p class="mb-4">JavaScript เป็นภาษาโปรแกรมมิ่งที่ทำให้เว็บไซต์มีความโต้ตอบและไดนามิก สามารถทำงานทั้งฝั่ง Client และ Server</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>ทำงานได้ทันทีในเว็บเบราว์เซอร์</li>
+                        <li>สร้างความโต้ตอบกับผู้ใช้</li>
+                        <li>มีไลบรารีและเฟรมเวิร์กมากมาย</li>
+                        <li>ใช้ได้ทั้ง Frontend และ Backend</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การสร้างเว็บไซต์แบบโต้ตอบ</li>
+                        <li>การพัฒนาเว็บแอปพลิเคชัน</li>
+                        <li>การพัฒนาแอปมือถือ</li>
+                        <li>การพัฒนาเซิร์ฟเวอร์ (Node.js)</li>
+                    </ul>
+                `,
+                link: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'
+            },
+            'PHP': {
+                title: 'PHP',
+                content: `
+                    <div class="text-5xl mb-4 text-center">🐘</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ PHP</h3>
+                    <p class="mb-4">PHP เป็นภาษาโปรแกรมมิ่งฝั่งเซิร์ฟเวอร์ที่ออกแบบมาสำหรับการพัฒนาเว็บไซต์โดยเฉพาะ เป็นที่นิยมอย่างแพร่หลาย</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>เรียนรู้ง่าย เหมาะสำหรับเว็บไซต์</li>
+                        <li>รองรับฐานข้อมูลหลากหลายชนิด</li>
+                        <li>มีเฟรมเวิร์กมากมาย</li>
+                        <li>ชุมชนนักพัฒนาขนาดใหญ่</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การพัฒนาเว็บไซต์ไดนามิก</li>
+                        <li>ระบบจัดการเนื้อหา (CMS)</li>
+                        <li>ระบบอีคอมเมิร์ซ</li>
+                        <li>เว็บแอปพลิเคชันขนาดใหญ่</li>
+                    </ul>
+                `,
+                link: 'https://www.php.net/manual/en/getting-started.php'
+            },
+            'SQL': {
+                title: 'SQL',
+                content: `
+                    <div class="text-5xl mb-4 text-center">📊</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ SQL</h3>
+                    <p class="mb-4">SQL (Structured Query Language) เป็นภาษาสำหรับจัดการฐานข้อมูลเชิงสัมพันธ์ ใช้ในการค้นหา เพิ่ม แก้ไข และลบข้อมูล</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>เป็นมาตรฐานสากลสำหรับฐานข้อมูล</li>
+                        <li>ไวยากรณ์ใกล้เคียงภาษาอังกฤษ</li>
+                        <li>ประสิทธิภาพสูงในการจัดการข้อมูล</li>
+                        <li>รองรับโดยฐานข้อมูลหลากหลายยี่ห้อ</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การค้นหาและวิเคราะห์ข้อมูล</li>
+                        <li>การจัดการฐานข้อมูลองค์กร</li>
+                        <li>การสร้างรายงานและแดชบอร์ด</li>
+                        <li>การพัฒนาระบบสารสนเทศ</li>
+                    </ul>
+                `,
+                link: 'https://www.w3schools.com/sql/'
+            },
+            'MongoDB': {
+                title: 'MongoDB Query Language',
+                content: `
+                    <div class="text-5xl mb-4 text-center">🍃</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ MongoDB Query</h3>
+                    <p class="mb-4">MongoDB Query Language เป็นภาษาสำหรับจัดการฐานข้อมูล NoSQL แบบ Document-based ที่ยืดหยุ่นและรองรับข้อมูลที่ซับซ้อน</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>รองรับข้อมูลแบบ JSON/BSON</li>
+                        <li>ยืดหยุ่นในการจัดเก็บข้อมูล</li>
+                        <li>ประสิทธิภาพสูงสำหรับข้อมูลขนาดใหญ่</li>
+                        <li>รองรับการทำงานแบบกระจาย</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>แอปพลิเคชันเว็บสมัยใหม่</li>
+                        <li>ระบบจัดการเนื้อหาที่ซับซ้อน</li>
+                        <li>การวิเคราะห์ข้อมูลขนาดใหญ่</li>
+                        <li>แอปพลิเคชันแบบเรียลไทม์</li>
+                    </ul>
+                `,
+                link: 'https://docs.mongodb.com/manual/tutorial/'
+            },
+            'Java-OOP': {
+                title: 'Java OOP',
+                content: `
+                    <div class="text-5xl mb-4 text-center">☕</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ Java OOP</h3>
+                    <p class="mb-4">การเขียนโปรแกรมเชิงวัตถุด้วย Java เน้นการจัดระเบียบโค้ดผ่านคลาสและออบเจกต์ เหมาะสำหรับโปรเจกต์ขนาดใหญ่</p>
+                    
+                    <h4 class="font-bold mb-2">หลักการ OOP:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>Encapsulation - การห่อหุ้มข้อมูล</li>
+                        <li>Inheritance - การสืบทอดคุณสมบัติ</li>
+                        <li>Polymorphism - การมีหลายรูปแบบ</li>
+                        <li>Abstraction - การซ่อนรายละเอียด</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>ระบบจัดการขนาดใหญ่</li>
+                        <li>แอปพลิเคชันองค์กร</li>
+                        <li>เกมและซิมูเลชัน</li>
+                        <li>ระบบการเงินและธนาคาร</li>
+                    </ul>
+                `,
+                link: 'https://docs.oracle.com/javase/tutorial/java/concepts/'
+            },
+            'CPP': {
+                title: 'C++',
+                content: `
+                    <div class="text-5xl mb-4 text-center">⚙️</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ C++</h3>
+                    <p class="mb-4">C++ เป็นภาษาโปรแกรมมิ่งที่รวมความทรงพลังของ C กับการเขียนโปรแกรมเชิงวัตถุ เหมาะสำหรับงานที่ต้องการประสิทธิภาพสูง</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>ประสิทธิภาพสูงและควบคุมหน่วยความจำได้</li>
+                        <li>รองรับทั้ง Procedural และ OOP</li>
+                        <li>มีไลบรารี STL ที่ทรงพลัง</li>
+                        <li>ใช้ในอุตสาหกรรมหลากหลาย</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การพัฒนาเกมและกราฟิก</li>
+                        <li>ระบบปฏิบัติการและไดรเวอร์</li>
+                        <li>แอปพลิเคชันที่ต้องการความเร็ว</li>
+                        <li>ระบบฝังตัวและ IoT</li>
+                    </ul>
+                `,
+                link: 'https://www.learncpp.com/'
+            },
+            'CSharp': {
+                title: 'C#',
+                content: `
+                    <div class="text-5xl mb-4 text-center">🔷</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ C#</h3>
+                    <p class="mb-4">C# เป็นภาษาโปรแกรมมิ่งเชิงวัตถุที่พัฒนาโดย Microsoft ออกแบบมาให้ใช้งานง่ายและมีประสิทธิภาพในระบบ .NET</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>ไวยากรณ์เรียบง่ายและทันสมัย</li>
+                        <li>รองรับการพัฒนาหลากหลายแพลตฟอร์ม</li>
+                        <li>มีเครื่องมือพัฒนาที่ดีจาก Microsoft</li>
+                        <li>ความปลอดภัยและเสถียรภาพสูง</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>แอปพลิเคชัน Windows</li>
+                        <li>เว็บแอปพลิเคชัน ASP.NET</li>
+                        <li>แอปมือถือ Xamarin</li>
+                        <li>เกมด้วย Unity</li>
+                    </ul>
+                `,
+                link: 'https://docs.microsoft.com/en-us/dotnet/csharp/'
+            },
+            'Python-AI': {
+                title: 'Python AI/ML',
+                content: `
+                    <div class="text-5xl mb-4 text-center">🐍</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับ Python สำหรับ AI/ML</h3>
+                    <p class="mb-4">Python เป็นภาษาหลักสำหรับปัญญาประดิษฐ์และการเรียนรู้ของเครื่อง มีไลบรารีที่ทรงพลังและชุมชนที่แข็งแกร่ง</p>
+                    
+                    <h4 class="font-bold mb-2">ไลบรารีสำคัญ:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>NumPy - การคำนวณเชิงตัวเลข</li>
+                        <li>Pandas - การจัดการข้อมูล</li>
+                        <li>Scikit-learn - Machine Learning</li>
+                        <li>TensorFlow/PyTorch - Deep Learning</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การวิเคราะห์และทำนายข้อมูล</li>
+                        <li>การประมวลผลภาพและเสียง</li>
+                        <li>ระบบแนะนำและ Chatbot</li>
+                        <li>การวิจัยและพัฒนา AI</li>
+                    </ul>
+                `,
+                link: 'https://www.python.org/about/apps/'
+            },
+            'R': {
+                title: 'R Language',
+                content: `
+                    <div class="text-5xl mb-4 text-center">📈</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับภาษา R</h3>
+                    <p class="mb-4">R เป็นภาษาโปรแกรมมิ่งที่ออกแบบมาเฉพาะสำหรับการวิเคราะห์ทางสถิติและการแสดงผลข้อมูล เป็นที่นิยมในวงการวิจัย</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>เครื่องมือทางสถิติที่ครบครัน</li>
+                        <li>การแสดงผลข้อมูลที่สวยงาม</li>
+                        <li>แพ็กเกจมากมายสำหรับงานเฉพาะ</li>
+                        <li>ชุมชนนักวิจัยที่แข็งแกร่ง</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การวิเคราะห์ข้อมูลทางสถิติ</li>
+                        <li>การสร้างกราฟและแผนภูมิ</li>
+                        <li>การวิจัยทางวิทยาศาสตร์</li>
+                        <li>การวิเคราะห์ทางการเงิน</li>
+                    </ul>
+                `,
+                link: 'https://www.r-project.org/about.html'
+            },
+            'Julia': {
+                title: 'Julia',
+                content: `
+                    <div class="text-5xl mb-4 text-center">🔬</div>
+                    <h3 class="text-xl font-bold mb-4">เกี่ยวกับภาษา Julia</h3>
+                    <p class="mb-4">Julia เป็นภาษาโปรแกรมมิ่งที่ออกแบบมาสำหรับการคำนวณทางวิทยาศาสตร์ความเร็วสูง รวมความง่ายของ Python กับความเร็วของ C</p>
+                    
+                    <h4 class="font-bold mb-2">จุดเด่น:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>ประสิทธิภาพสูงใกล้เคียง C</li>
+                        <li>ไวยากรณ์เรียบง่ายเหมือน Python</li>
+                        <li>รองรับการคำนวณแบบขนาน</li>
+                        <li>เหมาะสำหรับงานวิทยาศาสตร์</li>
+                    </ul>
+                    
+                    <h4 class="font-bold mb-2">ใช้งานใน:</h4>
+                    <ul class="list-disc list-inside mb-4 space-y-1">
+                        <li>การคำนวณทางวิทยาศาสตร์</li>
+                        <li>การจำลองและโมเดลลิ่ง</li>
+                        <li>การวิเคราะห์ข้อมูลขนาดใหญ่</li>
+                        <li>การวิจัยทางคณิตศาสตร์</li>
+                    </ul>
+                `,
+                link: 'https://julialang.org/learning/'
+            }
+        };
+
+        function openLanguage(language) {
+            const modal = document.getElementById('languageModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+            const link = document.getElementById('externalLink');
+            
+            const data = languageData[language];
+            if (data) {
+                title.textContent = data.title;
+                content.innerHTML = data.content;
+                link.href = data.link;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('languageModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('languageModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98795c1e72e0893d',t:'MTc1OTI5NDQ0My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
